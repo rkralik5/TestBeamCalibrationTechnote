@@ -1,0 +1,22 @@
+% Encoding: UTF-8
+
+@Electronic{NOVA-doc-51327-v3,
+  author       = {Mark Messier and Teresa Lackey},
+  howpublished = {NOVA Document 51327-v3},
+  month        = jul,
+  title        = {Data driven cosmic generation},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=51327&version=3},
+  year         = {2021},
+}
+
+@Electronic{NOVA-doc-39244-v1,
+  author       = {Kevin Mulder},
+  howpublished = {NOVA Document 39244-v1},
+  title        = {Testbeam Calibration update},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=39244},
+}
+
+@Article{,
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
