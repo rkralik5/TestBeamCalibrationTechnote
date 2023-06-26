@@ -51,11 +51,13 @@ What is this about and what will I describe in here
 
 \section{Introduction}
 Why is Test Beam?
-"The idea, as with any test beam experiment, is to expose a detector to a beam of very well-characterized particles, so that we can improve our understanding our how the detector responds to such particles. We make use of upstream detectors to collect data on the beam particles before they interact in the NOvA detector. For example, we will be able to see what a 1 GeV proton actually looks like in our detector, without having to simulate it, and we can test how well we would have reconstructed the energy using our existing techniques. We may find we are able to make improvements to our tools to better match what we see in the detector with how reconstruct it. Or we may find we already do a pretty good job. Either way, with a full cross-comparison like this, we can be more confident in our analysis of the data and reduce the level of uncertainty we consider are associated with the relevant measured quantities. Ultimately, the aim will be to reduce the level of uncertainty on the neutrino oscillation analyses and to make even better, more accurate measurements of the Standard Model."%[https://cdcvs.fnal.gov/redmine/projects/novatestbeam/wiki/Introduction_to_Test_Beam_for_Analyzers]
+"The idea, as with any test beam experiment, is to expose a detector to a beam of very well-characterized particles, so that we can improve our understanding our how the detector responds to such particles. We make use of upstream detectors to collect data on the beam particles before they interact in the NOvA detector. For example, we will be able to see what a 1 GeV proton actually looks like in our detector, without having to simulate it, and we can test how well we would have reconstructed the energy using our existing techniques. We may find we are able to make improvements to our tools to better match what we see in the detector with how we reconstruct it. Or we may find we already do a pretty good job. Either way, with a full cross-comparison like this, we can be more confident in our analysis of the data and reduce the level of uncertainty we consider are associated with the relevant measured quantities. Ultimately, the aim will be to reduce the level of uncertainty on the neutrino oscillation analyses and to make even better, more accurate measurements of the Standard Model."%[https://cdcvs.fnal.gov/redmine/projects/novatestbeam/wiki/Introduction_to_Test_Beam_for_Analyzers]
 Why is Test Beam calibration done:
 \begin{itemize}
 \item To be able to directly compare TB to the standard detectors
 \item To be able to verify our calibration procedures using TB data
+\item To study the particle response as a function of energy 
+\item To determine an energy resolution
 \item To compare currently used energy scales to data and understand if we can use TB data for absolute energy scale in all NOvA detectors
 \end{itemize}
 
@@ -101,7 +103,7 @@ Maybe show a plot of response at cell centre and mark the 3 different scintillat
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/TestBeamScintillatorOils.png}
-\caption{Fiber brightness file showing the different scintillator oils used in the Test Beam detector}
+\caption{Uncorrected energy response in the centre of cells across the Test Beam detector showing a clear distinction between the different scintillator oils.}
 \end{figure}
 
 \subsubsection*{Readout}
@@ -115,10 +117,16 @@ Placed in the Fermilab Test Beam Facility with no overburden. Describe environme
 \section{The NOvA calibration}
 Describe the NOvA calibration procedure in general. Describe the benefit of NOvA Test Beam and differences.
 
+\section{Calibration samples}
+How do we create the calibration samples and what cuts are applied?
+
+\subsubsection*{Tricell condition}
+
+
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CalibrationFlowChart.png}
-\caption{Flow chart showing the jobs and files needed for the NOvA calibration.}
+\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration proces, which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
 \end{figure}
 
 \subsection{Calibration uncertainties}
@@ -158,7 +166,7 @@ List all final data and simulation definitions used.
 \centering
 \includegraphics[width=\textwidth]{Plots/BrightnessIndexToValue.pdf}
 \end{subfigure}
-\caption{Brightness map}
+\caption{The Test Beam detector is (like the standard NOvA detectors) divided into 12 brightness bins (left plot), each representing a relative difference in energy response (right plot) due to different brightnesses of the fibers, scintillators, or readout.}
 \end{figure}
 
 
@@ -173,7 +181,7 @@ What was done for the period 2 tb calibration, short overview of what has been d
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/Attenprofs_P2Data_CellPlane_AllRuns.pdf}
-\caption{Brightness map}
+\caption{Distribution of events in the period 2 Test Beam data calibration sample.}
 \end{figure}
 
 \begin{figure}[hbtp]
