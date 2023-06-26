@@ -120,7 +120,19 @@ Describe the NOvA calibration procedure in general. Describe the benefit of NOvA
 \section{Calibration samples}
 How do we create the calibration samples and what cuts are applied?
 
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=\textwidth]{Plots/RemoveTBSpills.pdf}
+\caption{Test Beam beam spill events removed from the calibration samples. Test Beam beam spill is 4.2 seconds long and we remove events (in blue) within a 5 seconds window from the start of the beam spill. The remaining events (green) should mostly consist of cosmic particles. This example and the numbers of entries are for the full period 4 Test Beam sample.}
+\end{figure}
+
+
 \subsubsection*{Tricell condition}
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.25\textwidth]{Plots/TricellConditionWithDescription.png}
+\caption{Illustration of the tricell condition. We only use hits that have two surrounding hits in the same plane to be used in the NOvA calibration. This is to ensure a good quality of the pathlength (w) reconstruction, which is calculated from the known cell height (h) and the reconstructed track angle $\left(\varphi\right)$.}
+\end{figure}
 
 
 \begin{figure}[hbtp]
