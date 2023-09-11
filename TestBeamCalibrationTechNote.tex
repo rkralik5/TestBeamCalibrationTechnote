@@ -16,6 +16,9 @@
 \usepackage{xspace}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
 
 %%% Code to enter C++ code
 \usepackage{listings}
@@ -160,6 +163,8 @@ Maybe also mention the specific times Test Beam detector was operational.
 
 Majority of the Test Beam detector and it's instrumentation is identical to the other NOvA detectors, but there are a few differences, including size, scintillator oil used, readout electronics, or environmental controls, that we're discussing in this section.
 
+Should I aslo talk about the beam halo? Could that have an influence on the calibration? Maybe it's the peaks in the cosz distribution?
+
 \subsubsection*{General parameters}
 The NOvA Test Beam detector consists of two 31-plane blocks, each beginning and ending with a vertical plane, with an additional horizontal plane glued inbetween them to preserve the alternating arrangement \cite{NOVA-doc-29543}. Each plane consists of 2 modules side-by-side and each module is made up of 32 cells. Each cell has an inner (without the PVC) depth and width of $5.9\,\unit{cm}$ and $3.8\,\unit{cm}$ respectively, same as for the other NOvA detectors, and a length of $2.6\,\unit{m}$. This brigns the final dimensions of the Test Beam detector to 63 planes $\times$ 64 cells, or $2.6\times 2.6\times 4.1\,\unit{m^3}$.
 
@@ -168,6 +173,9 @@ The 63 planes are numbered from 0 to 62, with even numbers corresponding to vert
 The detector coordinate system is illustrated on figure \ref{figTBDetector}. It is centered with $\left(0,0,0\right)$ in the centre of the first plane \cite{NOVA-doc-58388}. The x axis runs left to right when facing the front of the detector, y axis bottom to top, and z axis goes along the beam direction from front to the back of the detector. The exact geometry of the Test Beam detector from several alignment surveys is saved in gdml files and used in our analyses \cite{NOVA-doc-57955}.
 
 In the past we encountered an issue when aligning the Test Beam detector with the beamline measurements broke several assumptions within the Test Beam geometry \cite{NOVA-doc-58388}, which manifested as uncalibrated cells in the back of the detector \cite{NOVA-doc-57516-v2}. This was fixed by realigning both the detector and the beamline based on the last alignment survey and implemented in the production tag R23-04-05-testbeam-production.a and there after \cite{NOVA-doc-58388}.
+
+Should I define w here? And tehn mention it in the readout section to say that readout is always on the positive side of the detector.
+Additionally we use the coordinates measured by cell number V and the distance along the cell length W independent of the view in question. Extensive use of W is made throughout this document and the code. Note: W is not the distance to the readout, it is simply an alias for x or y, so W = 0 is at the cente of detector. It happens that the readout and coordinate system are arranged such that more positive values of W are closer to the readout. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector]
 
 %FD: maxPlane=900, maxCell=390. ND: maxPlane=220, maxCell=100. TB: maxPlane=63, maxCell=64
 
@@ -241,35 +249,98 @@ The Test Beam detector is slightly tilted around the Z axis by about 0.7$^{\circ
 %%%                         Calibration description
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The NOvA calibration process}
+\section{NOvA calibration process}
 Test Beam is intentionally following the same calibration procedures as the standard NOvA detectors. This section intends to provide a brief overview of the general NOvA calibration process and introduce basic utilities used.
 
-At some point I could also list all the important variables and their description. Define PE, PECorr, MEU, w...
-
-Maybe also talk that generally calibration is trying to get the GeV response from the original ADC signal and write an equation of how is this done.
+This is all done inside the NOvASoft Calibration package and applied with the Calibrator package.
 
 Describe that the results of the calibration process are store in csv tables and loaded during processing of each event.
 
-Talk about fiber brightness, what it is and why do we have 12 fb bins and how do we get them now. Why are we doing a consolidated planes for simulation.
-
 Give links to other calibration technotes so that people can go take a look if they want more information. This should be just a general overview, stating the facts, no really describing how we got to where we are.
 
-from Calibration\_Meta\_READFIRST.pdf
-pclist = list of \textbf{p}re-\textbf{c}alibrated hist; these	have a position and PE count
-pcliststop = pclist files only containing events that look like stopping muons
+Should I talk about the timing calibration? It's applied when making the RecoHit, so at the same time as applying the Calibration results
 
-Should I talk about the timing calibration? This is done prior to the attenuation when making the pclist/pcliststop files.
-How do you go from the APD/ADC signal and TDU signal into PE? How do we calculate PE?
-The timing calibration itself serves to make each detector use the same time...
+The purpose of calibration is to express the same amount of energy deposited anywhere inside any of NOvA's detectors at any time in the equal amount of energy in terms of physical units ($\unit{MeV}$). NOvA uses cosmic ray muons, which provide a consistent and well understood source of energy deposition. [docdb:7410] Test Beam is following the same calibration procedures as the other NOvA detectors shown as a flow chart on figure \ref{figCalibrationFlowchart}. This section intends to provide only a brief overview of the NOvA calibration process and further details can be found in the other NOvA calibration technical notes [docdb:13579].
+
+Cosmic muons are basically free to use and we're using stopping muons for the absolute calibration.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CalibrationFlowChart.png}
-\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration proces, which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
+\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration proces (red border), which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
+\label{figCalibrationFlowchart}
 \end{figure}
 
-\subsection{Creating calibration samples}
+Maybe talk about timing calibration and drift which is not really implemented yet. Or talk about it when talking about dividing data into epochs...
+
+Calibration is necessary to convert electronic signals to physically meaningful energy in units of GeV. Two calibration steps precede the calorimetric energy calibration. First raw ADCs (Analogue Digital Conversion) are converted to units of photo-electrons (PE) using the known average response of the APDs; secondly an attenuation calibration corrects for the position dependent response [6]. A drift calibration may be included in the future to correct for changes in detector response over time. The calorimetric energy scale calibration is the last step in the calibration chain and the detector response should already be uniform in space and eventually also in time. [docdb:13579 - FA\_Calorimetric\_energy\_scale]
+
+For the near and far detectors calibration is performed separately for the relative calibration and for the absolute calibration.
+
+%The light is attenuated while traveling through the fiber. To find the correct energy of the incident particle these losses are corrected by using cosmic ray muons. The cosmic ray muons are used to calibrate the NOvA detectors because they provide a source of consistent energy across the detectors. The purpose of the attenuation calibration is to provide constants and formulae such that an amount of energy deposited in the detector and registered by an APD can be expressed in comparable units, PECorr which are the corrected photo-electrons (PE) no matter where the deposition occurred. Variations in time are to be handled by the drift calibration. The purpose of the absolute calibration is to provide a scaling factor, independent of channel since all of that variation should have been taken out by the relative calibration, so that energy deposits can be expressed in physically meaningful units (GeV).
+%For both purposes cosmic rays are used as probes. For the attenuation calibration they represent a source of consistent energy deposits across the detector of approximately 1 minimum ionizing particle’s energy, MIP, but this is not assumed. Any average value consistent across the detector would do. For absolute calibration, stopping muons are used, whose precise energy deposits should be estimateable from the Bethe Bloch formula. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, but a lot of this is actually just copied from Backhouse's original calibration technote docdb:7410]
+
+General varibales used to define the energy in NOvA are (most from docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, copied from docdb:7410):
+\begin{table}[!ht]
+\centering
+\def\arraystretch{1.4}
+\begin{tabular}{m{0.1\textwidth} m{0.86\textwidth}}
+ADC & The peak value from the Analog to Digital Converter representing the charge collected by the APDs. This is in RawDigit \\
+PE & Number of Photo Electrons. A simple rescaling of the best estimate of the peak ADC, which only depends on the FEB type and the APD gain settings. Done inside the Calibrator package. This is in CellHit and serves as the input for calibration.\\
+PECorr & Corrected PE after applying the relative calibration. This value should be the same across and within all the cells in a detector. This is in RecoHit\\
+MEU & Muon Energy Unit is the mean detector response per cm to a stopping muon tri-cell hit within the track window.  Mean MeV/cm or mean PECorr/cm\\
+MeV & Estimated energy \textbf{deposited} in the scintiallator calculated from PECorr using the results of the absolute calibration. Additional correction for dead material needs to be made in order to get a calorimetric energy estimate. This is in RecoHit
+\end{tabular}
+\caption{Definitions of variables commonly used in calibration.}
+\label{tabCalibrationVars}
+\end{table}
+
+%Using the average expected APD response, integrated charge from the ADCs are converted to units of photo-electrons (PE) [SA Absolute energy scale]
+
+\iffalse
+The scaling of the ADC to PE depends only on the gain and the version of the FEB. Otherwise it's just a very simple scaling (explain this at the PE definition):
+\begin{equation}
+PE=\frac{\textsf{peakADC}}{\textsf{ADCPerPE}},
+\end{equation}
+\begin{equation}
+\textsf{ADCPerPE}=\textsf{Gain}\times\frac{4095}{ADCScale}
+\end{equation}
+where ADCScale is 217000 for FEBv4.1 and 204800 for FEBv5.2.
+\fi
+
+%The PECorr scaling is 75.0 (NDOS), 37.51 (ND), 39.91 (FD) and 39.91 (TB)
+
+\begin{tikzpicture}[remember picture]
+\node {\(\displaystyle
+E_{deposited} [\unit{MeV}]=\frac{\textsf{MEU}_{truth} [\unit{MeV/cm}]}{\textsf{MEU}_{reco} [\unit{PECorr/cm}]}\times \frac{\textsf{Average response} [\unit{PECorr}]}{\textsf{Fitted response} [\unit{PE}]}\times E_{deposited} [\unit{PE}]
+\)};
+\draw[decorate,decoration={brace,amplitude=10pt,mirror},red] (-4.2,-0.6) -- (-0.4,-0.6) node (A) [midway,yshift=-20pt]{Absolute calibration};
+\node[below,yshift=-10pt,red] at (A) {(Detector, epoch)};
+\draw[decorate,decoration={brace,amplitude=10pt,mirror},blue] (0.0,-0.6) -- (4.6,-0.6) node (B) [midway,yshift=-20pt]{Relative calibration};
+\node[below,yshift=-10pt,blue] at (B) {(Detector, epoch, plane, cell, w)};
+\end{tikzpicture}
+
+
+\subsection{Calibration samples}
+To select cosmic muons for calibration we first remove beam related events based on their time stamp relative to the beam spill as shown on figure \ref{figRemoveBeamSpill}. Then we reconstruct and select events based on their track and spill properties (reference?). Since we require a precise pathlength information we only selection so called \textit{tri-cell} hits, i.e. we require that all accepted hits also have a recorded hit in both neighboring cells of the same plane, as shown on figure \ref{figTricellCondition}. In case there's a bad channel in a neighboring cell, we ignore this channel and look one cell further.
+
+Explain the tricell condition and the xy, z and avg sample more here.
+
 How do we create the calibration samples and what cuts are applied?
+
+The first step in the attenuation calibration is to select the suitable hits from tracks of cosmic ray muons. Because a reliable estimate of pathlength is required, not all hits are suitable for use.  If a cell has each of its neighbors in the same plane hit, then we know, for a Y view cell, that the track entered through the upper wall, and exited through the lower wall. The pathlength then is just the width of the cell divided by the direction cosine. This selection also significantly decreases the chance that the hit in question is a noise hit. Allowance is made for neighboring dead cells, so e.g. “hit, dead, hit, hit” would still lead the 3rd cell to be selected. The second best hit selection, in cases where there are too many dead neighboring cells on each side, is the so-called “z” estimator, where a hit is required at the same cell number in each of the neighboring planes in the same view. The pathlength is then the ratio of cell depth to cz.[docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, copied from docdb:7410]
+
+I should mention that the division into xy hits, z hits and avg hits is already done when creating the calibration samples...
+
+(Dividing data into periods and epochs) A new period is started for a major change to running conditions such as a horn current change, a long shutdown, target replacement, etc. Periods are divided into epochs. A new epoch is started whenever analysis or production reasons dictate. Calibration has been performed for all the periods separately and has used the data that are determined by the Data Quality group to be good. The effects of aging, temperature, partial filling, and cooling are neglected. The drift calibration should be able to account for all of these (but drift calibration doesn't really exist yet afaik). [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector]
+
+from docdb:7410
+A requirement that the track be “throughgoing” (lowest endpoint outside the fiducial volume) was applied, but doesn’t make much difference. I think this selection was broken by the recent changes to StopperSelection anyway.
+(So it seems that it was required for the relative calibration that the muons are through-going, but I assume this was discarded somewhere down the line
+
+from Calibration\_Meta\_READFIRST.pdf
+pclist = list of \textbf{p}re-\textbf{c}alibrated hist; these	have a position and PE count
+pcliststop = pclist files only containing events that look like stopping muons
 
 Mention exactly the name and the location of the fcl files to create the TB pclist/pcliststop files. (Or should I only do this in the next section when mentioning the TB calibration?)
 
@@ -281,6 +352,7 @@ When should I talk about the ADC to PE conversion? Here?
 \centering
 \includegraphics[width=\textwidth]{Plots/RemoveTBSpills.pdf}
 \caption{Test Beam beam spill events removed from the calibration samples. Test Beam beam spill is 4.2 seconds long and we remove events (in blue) within a 5 seconds window from the start of the beam spill. The remaining events (green) should mostly consist of cosmic particles. This example and the numbers of entries are for the full period 4 Test Beam sample.}
+\label{figRemoveBeamSpill}
 \end{figure}
 
 \subsubsection*{Tricell condition}
@@ -297,19 +369,40 @@ When should I talk about the ADC to PE conversion? Here?
 \caption{}
 \end{subfigure}
 \caption{Illustration of the tricell condition (a). We only use hits that have two surrounding hits in the same plane to be used in the NOvA calibration. This is to ensure a good quality of the pathlength (w) reconstruction, which is calculated from the known cell height (h) and the reconstructed track angle $\left(\varphi\right)$. In case the hit is next to a bad channel (b), we ignore this bad channel and require a hit in the next cell over.}
-\label{figCalibrationFlowchart}
+\label{figTricellCondition}
 \end{figure}
 
 Adding the underfilled cells to the bad channels which are automatically skipped for the tricell condition
 
+Stopping muon selection (from docdb:13579 - FA\_Calorimetric\_energy\_scale)
+There are two avenues for selecting stopping muons; i) selecting tracks whose reconstructed end point is contained within the detector and ii) selecting tracks that have a Michel electron at one end. Michel electrons are useful for both identifying muons and effective tagging of the end point of muon tracks. The stopping selection requires the reconstructed end point of the muon track to be at least 50 cm from the detector edge. The identification of a Michel electron at the end of a muon track has two stages of both temporal and spatial range requirements. Firstly, a candidate Michel electron hit is required to occur between 1 and 30 microseconds after the mean time of the hits on the track. Furthermore, the candidate Michel electron must be within a 30 cm sphere surrounding the reconstructed track end point. The candidate Michel electron hit for a muon track is the hit that produces the largest detector response among the hits that pass the above cuts. Secondly, cell hits surrounding the candidate Michel electron hit are associated with the Michel electron if they occur within a 30 cm sphere surrounding the Michel electron candidate. Furthermore, to be associated with the Michel electron the cell hits must occur between 0.5 microseconds before and 0.5 microseconds after the candidate Michel electron. Michel electrons at the end of muon tracks are reconstructed using the candidate and associated Michel electron hits. The stopping muon selection requires a Michel electron at the end of the muon track.
+
+\subsection{Fiber brightness}
+
+Talk about fiber brightness, what it is and why do we have 12 fb bins and how do we get them now. Why are we doing a consolidated planes for simulation.
+
+In the case of both Far and Near Detector Monte Carlo instead of hits being collated by plane and cell they are collated by view and cell. We pursue this strategy because our Monte Carlo cosmic sample is much smaller than the data, and because we can assume that the Monte Carlo detector is approximately uniform plane to plane. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector]
+
+\subsection{Threshold and shielding correction}
+
+Apply the threshold/shielding correction.
+
+In the Far Detector data and MC a large divergence between calibrated and true energies as a function of W was observed [8]. This was traced back to the much longer cell lengths in the FD meaning that thresholds play a large role at the foot of a cell. Also self-shielding of the detector by its own mass lay a role in the observed discrepancy. Thresholds mean that for a hit to be seen by an APD, it may need to have a slight upwards fluctuation in the number of photons produced by the energy deposition. Self-shielding means that the average visible energy depositions from MIPs are not truly spatially uniform in the detector. If not corrected for these effects, there will be a bias in the set of hits that the attenuation fit sees, and leads it to overestimate the light-level, and so under-estimate real hit energies by tens of percent. The approach adopted to solve this problem was to create a correction factor as a function of view, cell, and position along the cell which would be applied before the attenuation correction to remove the effect of thresholds and shielding. To this end MC truth information about the calibration hit sample is used to create a combined threshold and shadowing correction for each cell and view combination,
+\begin{equation}
+T=\frac{PE}{\lambda}\frac{E_{true}}{E_{mip}},
+\end{equation}
+where $T$ is the combined “threshold and shielding” correction factor, $PE$ is the simulated photoelectrons recorded at the readout, $\lambda$ is the number of simulated photons which would be seen at the readout out in the absence of fluctuations, $E_{true}$ is the true energy deposited in the cell and $E_{mip}$ is the naive energy you would expect to be deposited based on the pathlength through the cell. In this way it encodes a threshold correction based on the simulated readout PE with and without the fluctuations, with $\lambda$ dependent on your simulated threshold, as well as a shielding correction based on the simulated energy deposition and a naive no shielding approximation. This equation gives us a cell by cell correction but we use an empirical polynomial fit to that distribution which removes statistical noise from the correction and well describes the initial distribution. This correction factor is applied to the cell by cell data and MC PE/cm distributions before the attenuation fits. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, reference 8 is for docdb:7247, a talk by Backhouse]
+
+In the Far Detector, a large divergence between calibrated and true energies as a function of W was observed. This was traced back to the much longer cell lengths in the FD meaning that thresholds play a large role at the foot of a cell. For a hit to be seen above threshold there, it may need to be a slight upwards fluctuation. This biases the set of hits that the attenuation fit sees, and leads it to overestimate the light-level (and so under-estimate real hit energies) by tens of percent. The approach adopted to solve this was to explicitly allow for this effect in the fits. W = 0 was declared to have nominal amount of effect from thresholds, and corrections were made to every other position to match that. In addition to writing histograms, CosmicCalib now also writes TTrees, containing W , ADC, and pathlength. For a bin closer to the readout than the centre, its energies are scaled down, and hits falling below threshold dropped, until its median ADC/cm matches W = 0. This is then the value written into the profile, rather than the actual median. For bins further away, it is hits at W = 0 that are dropped to determine the ratio. These profiles are then fit in the usual way. This resolves the bulk of the problem in the FD. For consistency, the same procedure should probably be applied in NDOS, although it is unlikely to make much difference there. A remaining approx. 10\% effect (Figure 5) is seen across the Far Detector that is put down to self-shielding of cosmic rays by the detector mass. It behaves as expected, monotonically in y, and symmetrically in x. I’d like to think of a scheme to allow for this in some internal manner, rather than rely on a correction just taken straight from the MC (otherwise why do we have a calibration procedure at all?), but it doesn’t seem to be the highest priority. [docdb:7410]
+
 \subsection{Relative calibration}
 
-Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes).
+Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes) and on the relative calibration wiki page.
 
-Relative calibration/attenuation correction (the exact commands are shown on figure \ref{figCalibrationFlowchart}.
+Relative calibration/attenuation correction (the exact commands are shown on figure \ref{figCalibrationFlowchart}). This is taken from / inspired by Prabhjot technote. Maybe here I can just refer to the flowchart for the commands but for TB I can specify what are the commands exactly. Maybe write down a simple cook book for TB calibration.
 \begin{enumerate}
 \item Create the threshold/shadowing corrections
-\item Create profile histograms of PE/cm over w for each cell in each plane. The job is \texttt{makeattenuationprofileXjob.fcl}, where \texttt{X} is \texttt{nddata}, \texttt{fddata}, \texttt{tbdata}, or \texttt{mc}.
+\item Create attenuation profiles, which are profile histograms of PE per pathlength as a function of w through each cell for all planes. The job is \texttt{makeattenuationprofileXjob.fcl}, where \texttt{X} is \texttt{nddata}, \texttt{fddata}, \texttt{tbdata}, or \texttt{mc}. (For each individual cell create profile histograms of average energy deposited per pathlength through the cell as a function of position within a cell, i.e. PE/cm vs w.
 \item Analyse the calibhist files and draw the histograms
 \item Do the attenuation fit using the \texttt{attenuationfitjob.fcl}
 \end{enumerate}
@@ -319,9 +412,23 @@ Attenutation profiles have a constant binnin fNBins=100 (in w), same for ND, FD 
 TB: 3cm/bin, ND: 5cm/bin, FD: 18cm/bin.
 What effect could this have on the relative calibration results? Particularly on the calibration shape?
 
-Apply the threshold/shielding correction.
-
 Do the fit. What exact fits are we using and in what order? Exponential, fit to residuals...
+
+The attenuation fit considers both short- and long-path light (i.e. when a photon goes straight to the readout and when it loops around the cell first). The profile in a channel is fit to the form,
+\begin{equation}
+y=C+A\left(\exp\left(\frac{W}{X}\right)+\exp\left(-\frac{L+W}{X}\right)\right),
+\end{equation}
+where y is the response, L is the cell length, C, A and X are the free parameters in the fit. X gives the attenuation length as well. Initially, the fit is to the central part of the cell, which is different for each detector. In addition to the approximately quartic behavior at the ends of every channel there are in many channels fairly large residuals. They don’t appear to follow any consistent pattern. The leading hypothesis is that these are due to varying fiber position within the cell. Usually the fiber lies in the corners of the cell, but if it is somehow twisted so that it rises into the center of the cell, then it should collect more light, to an extent comparable to what is seen here. To remove such an irregular pattern, the residual from the analytic fit is simply fit with LOcally WEighted Scatter plot Smoothing, LOWESS. The LOWESS curve at each point is formed from the weighted mean of the deviations. The weighting function is the traditional tri-cube, (insert equation, likely not needed for this technote) [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, already in 1stAna and Backhouse's technote]
+
+For NDOS the fit was a very little bit different, where we didn't use $L$ but $3L/2$. Also it says that "Over the length of an NDOS cell, the effect of the long attenuation length is imperceptible, and is modelled as a constant (If you put a long attenuation term in, the fit drives the length scale to infinity anyway). [docdb:7410]
+
+In many channels, fairly large residuals are visible. They don’t appear to follow any consistent pattern. The hypothesis is that these are due to varying fibre position within the cell. Usually the fibre lies in the corners of the cell, but if it is somehow twisted so that it rises into the centre of the cell, then it should collect more light, to an extent comparable to what is seen here. To remove such an irregular pattern, the residual from the analytic fit is simply fit with LOWESS (locally weighted scatterplot smoothing). The LOWESS curve at each point is formed from the weighted mean of the deviations. The weighting function is the traditional tri-cube:
+\begin{equation}
+w_i=\left(1-\left|\frac{x-x_i}{\sigma}\right|^3\right)^3.
+\end{equation}
+The smoothing length scale $\sigma$ is 30cm. 20 points calculated by this method are stored, to be linearly interpolated between to approximate the full LOWESS curve. If the LOWESS fit at any point exceeds 15\% the original attenuation fit was very bad, and the channel is marked uncalibrated. Figure 4 shows an example of large (10\%) deviations being fitted. This variation is not seen in the MC, and so the LOWESS fit is skipped there. Due to the lower stats available in MC, instead of being collated by plane and cell, the curves are only calculated by view and cell. [docdb:7410]
+
+The current value of $\sigma$ in the code is $1.5\times\textsf{DetWidth}/20$
 
 Now we have the relative calibration done and the constants saves. What are the const and points files that we get? What do they mean?
 
@@ -331,8 +438,30 @@ Apply cuts and get an average PECorr response for each epoch/period individually
 
 Save the results.
 
+Stopping muons provide a good sample of known energy deposits. If we can collect a “golden” sample, they should provide the scale factor to convert PECorr to GeV. So far, the method used has been imperfect, and the absolute calibration constants are known to be off by approx. 10\%. Since a factor already has to be derived to correct for dead material, this is not significantly impeding current efforts, but work was recently gone into improving this area. [docdb:7410 - this was likely before the track window cut was introduced]
+(Here it says that it's not such a big a problem since we have to scale for the dead material anyway. But nowadays we have to account for a large systematic uncertainty in the absolute energy scale in our analyses. How is the dead material correction different from the energy scale uncertainty?)
+
+...the calibration of the calorimetric energy scale of the NOvA detectors uses the energy deposited by stopping muons as a standard candle. To reduce systematic uncertainties, only those energy deposits in a 1-2 m window away from the muon track end point are used. The mean of the detector response distribution is found for data and MC in both near and far detectors. The mean of the distribution of true energy deposits in the track window is used to provide a conversion factor between the detector response and the true energy deposited in the scintillator for minimum ionising muons. The simulated dE/dx is uniform within about 1.8\% for hits around the minimum between 100-200 cm from the track end. The energy that a muon deposits within each cell is estimated using Geant 4 and stored in Fibre Liquid Scintillator (FLS) hits. FLS hits are only those within the active material (liquid scintillator) and energy loss within the passive material (plastic extrusions) is ignored. an estimate of the minimum energy loss rate of stopping muons in the NOvA scintillator is found to be,
+\begin{equation}
+\left.\frac{dE}{dx}\right|_{\textsf{mip}}=\left(1.7915\pm 0.0035\right)\unit{MeV/cm}.
+\end{equation}
+For stopping muons in NOvA it is also important to consider their decay. The muon has a vacuum lifetime of about 2.2 microseconds and favourably decays, with a branching ratio approx. 100\%, into an electron, an electron anti-neutrino and a muon neutrino. The electron produced in this decay is called a Michel electron and is used to select muons that stop within the NOvA detectors. The energy scale calibration is performed using cosmic ray muons. The calibration measures the detector response in data and MC in both near and far detectors and normalises them all by providing a conversion factor, for all four cases, that converts the detector response to energy in GeV. The energy loss rate (dE/dx) of stopping muons is well described by the Bethe-Bloch and is a function of the distance from the stopping point. A track window technique is used to minimise the variations in detector response that depend on the distance to the track end. Using this technique only hits within a region of distances from the track end are used. The position of the track window is chosen such that a mis-reconstruction of the track end point has the minimum effect on the mean detector response. The track window is currently set to be in the range from 100 cm to 200 cm from the track end.[docdb:13579 - FA\_Calorimetric\_energy\_scale]
+
+In the First Analysis  An adjustment was made to the value for the ND data to lower the value of PECorr/cm by about 3.6\%. The adjustment was made based on studies of muons from beam neutrinos interacting in the detector where it was observed that the average beam muon response was 3.6\% lower in data than in MC [8]. For the FD There is a discrepancy in the distributions of PECorr/cm in data and MC; the mean of the distribution is higher in data than in MC. This may be due to mis-modelling of the detector response in the MC. In any case, the data-MC PECorr/cm discrepancy is tuned out when the calorimetric energy scale is applied. [docdb:13579 - FA\_Calorimetric\_energy\_scale]
+
+%% Applying the calibration inside Calibrator
+The calibration constants are written to the database tables calib atten consts and calib atten points. The calib atten consts table contains the seven free parameters in the attenuation fit, plus identifying information. The calib atten points table contains the 20 LOWESS points for each cell, with one point per row. When a request comes to Calibrator to create a RecoHit, usually from a RecoBase object that has provided a W value based on a straight-line extrapolation of its trajectory, ultimately we end up in Calibrator::GetPECorr. This retrieves an AttenCurve object from a cache we hold of all the database values, which can calculate the mean response to cosmic rays at any position. The calibrated energy deposit is then the PE in the CellHit divided by this average cosmic ray response. A correction factor taken from the absolute calibration, also stored in the database, is applied to the answer to give the resulting PECorr. Calibrator also stores the quality of the calibration fit for a given cell such that if we fail to calibrate a cell in the Data to a sufficient quality that cell will not return a calibrated energy in both Data and Monte Carlo. Calibrator also returns the MIP and GeV scales that are described in the accompanying absolute calibration technote. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector]
+...The calibrated energy deposit is then the PE in the CellHit divided by this average cosmic ray responseAn eyeballed factor of 75 is applied to the answer to give the resulting PECorr about the same size as the input PE (this is the factor (originally) used) [docdb:7410]
+
 \subsection{Calibration uncertainties}
 
+First Analysis systematic uncertainties due to calibration:
+Sources of systematic uncertainty of particular concern are those introduced by residual variations remaining after calibration. Systematic errors are introduced by spatial and temporal variations in detector response. Further, any difference between the two detectors may introduce a relative shift in the energy scale between the detectors. A source of systematic uncertainty can be introduced by mis-reconstructing the end point of the muon track. Such a mis-reconstruction would shift the window within which hits are selected and hence the dE/dx of the muon.  The figure shows that the detector response varies by up to about 60\% over the range from 0 to 500 cm to the track end. This large variation illustrates the importance of careful consideration of the track window position and size. The detector response for both data and MC is minimum at about 130 cm from the track end and is flat to about 1\% in the range from 100 cm to 200 cm from the track end. For a track window starting at 100 cm from the track end, a conservative mis-reconstruction of the track end point by 10cm will shift the start of the track window to between 90cm and 110cm. This shift will alter the MEU value by less than 0.4\% over the range.
+If the calibration procedure was ideal the detector response would not vary with position in either data or MC. The calibration is not ideal and the detector response and recorded simulated energy deposition varies with position of the hit within the detector, such variations will introduce systematic errors. The position of a hit can be defined by the plane, cell within the plane, and distance along the cell (w) of the hit. The variation in detector response and simulated energy deposition vs. plane, cell and w for each view has been studied to quantify the systematic uncertainty introduced by these sources.
+The rise in detector response at the far end of FD y-view cells is an issue with several potential sources. The rise in response may be due to an acceptance effect or a light-level threshold effect among other possibilities. An acceptance effect is where greater energy must be deposited at the far end of the cells so that the light can travel along the fibre, hit the APD and be recorded as a hit. Both an acceptance effect and a light-level effect would introduce a bias towards higher energy hits toward the far end of cells.
+Another source of systematic uncertainty is introduced by the variation in detector response with time. The FD response is stable to about 1\% during the period from October 2014 to March 2015. The ND response needs further study but there was no significant trend over 6 months at 5\%. 
+As mentioned in Section 5, the version (7.1) of the calibration used for first analysis has been adjusted based on studies of muons from beam neutrinos interacting in the detector [8]. A shift of 3.6\% was introduced based on the average response of muons where large sections of the track were used. When only a track window of 100-200cm is used on the beam muons the difference is only 2.7\% [8]. Our best hypothesis for this residual 2.7\% difference is that it is caused by showery events that are present in ND data but not ND MC: it was shown in [9] that doing the calorimetric energy scale calibration using a truncated mean (or a median or a fit to the peak) gave a data/MC ratio that differed by 2.7\% compared to using the untruncated mean as described in this document. A comparison of various cross checks of the calorimetric energy scale was undertaken (in [10] and [11]) and concluded that the nearly 5\% difference between ND data and MC seen in a sample of Michele electrons [12] should be applied as both an absolute and relative shift to the calorimetric energy scale. The difference between the level of calorimetric energy resolution of stopping muons was studied and it was found that data and MC agreed best when an 8\% additional smearing was introduced. Studies for the NuMu analysis indicated that this was a negligible systematic uncertainty [13]. 
+[docdb:13579 - FA\_Calorimetric\_energy\_scale]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -391,6 +520,26 @@ From Teresa's thesis:
 \includegraphics[width=\textwidth]{Plots/BrightnessIndexToValue.pdf}
 \end{subfigure}
 \caption{The Test Beam detector is (like the standard NOvA detectors) divided into 12 brightness bins (left plot), each representing a relative difference in energy response (right plot) due to different brightnesses of the fibers, scintillators, or readout.}
+\end{figure}
+
+\subsection{Threshold and shielding corrections}
+The threshold and shielding correction for test beam is almost uniform across all cells as can be seen on figure... This is expected as the hight of the Test Beam detector of 2.6m has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. The correction is basically just a normalization factor, but since the relative calibration only cares about relative differences across the detector, a normalization factor doesn't change anything.
+
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_axview_fb0_P4DataBasedSim.pdf}
+\end{subfigure}
+\begin{subfigure}[b]{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_ayview_fb5_P4DataBasedSim.pdf}
+\end{subfigure}
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_cyview_fb7_P4DataBasedSim.pdf}
+\end{subfigure}
+\caption{Examples of threshold and shielding corrections for the Test Beam detector}
 \end{figure}
 
 \subsection{Simulation}
