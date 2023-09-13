@@ -375,7 +375,7 @@ For each data period/epoch and each simulation version we create two calibration
 
 For data, the relative calibration is done for each individual cell in each plane to properly account for any potential variations. Therefore we have to repeat the attenuation fit $N_{cell}\times N_{plane}$ times. However, generating enough simulated events would be very computationaly intensive. Additionally, we can assume that the simulated detector is approximately uniform plane to plane. Therefore, for simulation, we want to \textit{consolidate} the detector planes and only consider variation in the two views and their cells, so repeat the fit $N_{cell}\times N_{view}$ times \cite{NOVA-doc-13579-SAAttenuationAndThreshold,NOVA-doc-34909}.
 
-There are some variations in the detector response cell by cell, that can be caused by different fiber brightnesses, but also by different qualities of the scintillator, air bubbles, APD gains, looped or zipped fibers and potentially others. To emulate these differences in the simulation without the need to simulate every cell individually and properly, we divide all the cells of each detector into 12 brightness bins, as shown on figure \ref{figFiberBrightnessBins}. These bins describe the relative differences in the detector response between individual cells \cite{NOVA-doc-34909}.
+There are some variations in the detector response cell by cell, that can be caused by different fiber brightnesses, but also by different qualities of the scintillator, air bubbles, APD gains, looped or zipped fibers and potentially others. To emulate these differences in the simulation without the need to simulate every cell individually and properly, we divide all the cells of each detector into 12 brightness bins, as shown on figure \ref{figFiberBrightnessBins}. These bins describe the relative differences in the detector response between individual cells \cite{NOVA-doc-34909}. Therefore in the end, for simulation we perform the attenuation fit in the $N_{view}\times N_{fiber brightness bin}\times N_{cell}$ phase space.
 
 %Do I need to describe here how we do it or is it enough if I just say that we do?
 %To divide the detector into brightness bins, we use the results of the attenuation fit and look at the fitted response at cell centre, which should represent the average response in that cell. Then we normalize the 
@@ -409,69 +409,66 @@ Energy deposited far away from the readout may get attenuated enough to be shift
 
 \subsection{Relative calibration}
 
-Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes) and on the relative calibration wiki page.
+%Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes) and on the relative calibration wiki page.
 
-Relative calibration/attenuation correction (the exact commands are shown on figure \ref{figCalibrationFlowchart}). This is taken from / inspired by Prabhjot technote. Maybe here I can just refer to the flowchart for the commands but for TB I can specify what are the commands exactly. Maybe write down a simple cook book for TB calibration.
+Relative calibration aims to create a fit, called \textit{attenuation fit}, to the detector response over the position in a cell separately for every cell inside each detector. Scaling the fitted response to match the "average response" of the detector effectively removes relative differences throughout and between all cells across the entire detector. This average response is a single number chosen to approximately represent the average response in the middle of the cell. For the Far Detector this number is 39.91 PE, for the Near Detector it's 37.51 and for Test Beam it's the same as for the Far Detector 39.91. The scale of this number has no impact of this result as the absolute scale of the detector response is determined during the absolute calibration \cite{NOVA-doc-7410,NOVA-doc-13579-SAAttenuationAndThreshold}.
+ 
+To create the attenuation fit we follow the following procedure \cite{NOVA-doc-7410}:
 \begin{enumerate}
-\item Create the threshold/shadowing corrections
-\item Create attenuation profiles, which are profile histograms of PE per pathlength as a function of w through each cell for all planes.
-\item Analyse the calibhist files and draw the histograms
-\item Apply the threshold and shielding correction
-\item Do the attenuation fit, which consists of
+\item Create \textit{attenuation profiles}, which are profile histograms of detector response in terms of energy deposited per pathlength (PE/cm) as a function of position in the cell (w) through each cell for all planes. We construct the attenuation profiles over a little wider range than the actual length of the cell and alway with 100 bins for each detector. This means that smaller detectors, like the Test Beam detector, have a finer binning ($\sim 3\unit{cm}$/bin) compared to the Far Detector ($\sim 18\unit{cm}$/bin).
+\item Analyse the attenuation profiles. The job to create the attenuation profiles also creates validation histograms, which should be analyzed prior to performing the attenuation fit to make sure the attenuation profiles look as expected.
+\item Apply the threshold and shielding correction that were created using the simulation pclist sample before the relative calibration.
+\item Do the attenuation fit over the full length of each cell. The fit consists of
 \begin{enumerate}
-\item exponential fit for both the short and the long path
-\item LOWESS
-\end{enumerate}
-\end{enumerate}
-
-Create attenuation profiles
-Attenutation profiles have a constant binnin fNBins=100 (in w), same for ND, FD and TB. This results in an effectively finer binning for TB compared to ND and FD. For FD w = (-900,+900), ND: (-250,+250), TB: (-150,+150).
-TB: 3cm/bin, ND: 5cm/bin, FD: 18cm/bin.
-What effect could this have on the relative calibration results? Particularly on the calibration shape?
-
-Do the fit. What exact fits are we using and in what order? Exponential, fit to residuals...
-
-The attenuation fit considers both short- and long-path light (i.e. when a photon goes straight to the readout and when it loops around the cell first). The profile in a channel is fit to the form,
+\item exponential fit, which combines two cases. Light from the energy deposition traveling straight to the readout, or going the opposite direction, looping around the cell and then to the readout. The fitted function has a form:\\
 \begin{equation}
-y=C+A\left(\exp\left(\frac{W}{X}\right)+\exp\left(-\frac{L+W}{X}\right)\right),
+y=C+A\left(\exp\left(\frac{w}{X}\right)+\exp\left(-\frac{L+w}{X}\right)\right),
 \end{equation}
-where y is the response, L is the cell length, C, A and X are the free parameters in the fit. X gives the attenuation length as well. Initially, the fit is to the central part of the cell, which is different for each detector. In addition to the approximately quartic behavior at the ends of every channel there are in many channels fairly large residuals. They don’t appear to follow any consistent pattern. The leading hypothesis is that these are due to varying fiber position within the cell. Usually the fiber lies in the corners of the cell, but if it is somehow twisted so that it rises into the center of the cell, then it should collect more light, to an extent comparable to what is seen here. To remove such an irregular pattern, the residual from the analytic fit is simply fit with LOcally WEighted Scatter plot Smoothing, LOWESS. The LOWESS curve at each point is formed from the weighted mean of the deviations. The weighting function is the traditional tri-cube, (insert equation, likely not needed for this technote) [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, already in 1stAna and Backhouse's technote]
+where $y$ is the response, $L$ is the length of the cell and $C$, $A$ and $X$ are the fitted parameters. $X$ also represents the attenuation length.
+\item To remove the effect of residuals, mainly at the end of cells, we smooth out the residuals from the exponential fit with LOcally WEighted Scatter plot Smoothing (LOWESS).
+\end{enumerate}
+\item Check the plots of the attenuation fit for a selection of cells.
+\item Save the fit result to the databese in the form of two csv tables. The \textit{calib\_atten\_consts.csv} table holds the results of the exponential fit, together with the final $\chi^2$ of the fit. The \textit{calib\_atten\_points.csv} table holds the results of the LOWESS smoothing.
+\end{enumerate}
 
-For NDOS the fit was a very little bit different, where we didn't use $L$ but $3L/2$. Also it says that "Over the length of an NDOS cell, the effect of the long attenuation length is imperceptible, and is modelled as a constant (If you put a long attenuation term in, the fit drives the length scale to infinity anyway). [docdb:7410]
+To ensure the quality of the attenuation fit, we only apply the results if the final $\chi^2<0.2$. If $\chi^2>0.2$ we ignore the results for this cell and mark it as \textit{uncalibrated}.
 
-In many channels, fairly large residuals are visible. They don’t appear to follow any consistent pattern. The hypothesis is that these are due to varying fibre position within the cell. Usually the fibre lies in the corners of the cell, but if it is somehow twisted so that it rises into the centre of the cell, then it should collect more light, to an extent comparable to what is seen here. To remove such an irregular pattern, the residual from the analytic fit is simply fit with LOWESS (locally weighted scatterplot smoothing). The LOWESS curve at each point is formed from the weighted mean of the deviations. The weighting function is the traditional tri-cube:
-\begin{equation}
-w_i=\left(1-\left|\frac{x-x_i}{\sigma}\right|^3\right)^3.
-\end{equation}
-The smoothing length scale $\sigma$ is 30cm. 20 points calculated by this method are stored, to be linearly interpolated between to approximate the full LOWESS curve. If the LOWESS fit at any point exceeds 15\% the original attenuation fit was very bad, and the channel is marked uncalibrated. Figure 4 shows an example of large (10\%) deviations being fitted. This variation is not seen in the MC, and so the LOWESS fit is skipped there. Due to the lower stats available in MC, instead of being collated by plane and cell, the curves are only calculated by view and cell. [docdb:7410]
+%Attenutation profiles have a constant binnin fNBins=100 (in w), same for ND, FD and TB. This results in an effectively finer binning for TB compared to ND and FD. For FD w = (-900,+900), ND: (-250,+250), TB: (-150,+150). TB: 3cm/bin, ND: 5cm/bin, FD: 18cm/bin. What effect could this have on the relative calibration results? Particularly on the calibration shape?
 
-The current value of $\sigma$ in the code is $1.5\times\textsf{DetWidth}/20$
+%where y is the response, L is the cell length, C, A and X are the free parameters in the fit. X gives the attenuation length as well. Initially, the fit is to the central part of the cell, which is different for each detector. In addition to the approximately quartic behavior at the ends of every channel there are in many channels fairly large residuals. They don’t appear to follow any consistent pattern. The leading hypothesis is that these are due to varying fiber position within the cell. Usually the fiber lies in the corners of the cell, but if it is somehow twisted so that it rises into the center of the cell, then it should collect more light, to an extent comparable to what is seen here. To remove such an irregular pattern, the residual from the analytic fit is simply fit with LOcally WEighted Scatter plot Smoothing, LOWESS. The LOWESS curve at each point is formed from the weighted mean of the deviations. The weighting function is the traditional tri-cube, (insert equation, likely not needed for this technote) [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, already in 1stAna and Backhouse's technote]
 
-Now we have the relative calibration done and the constants saves. What are the const and points files that we get? What do they mean?
+%For NDOS the fit was a very little bit different, where we didn't use $L$ but $3L/2$. Also it says that "Over the length of an NDOS cell, the effect of the long attenuation length is imperceptible, and is modelled as a constant (If you put a long attenuation term in, the fit drives the length scale to infinity anyway). [docdb:7410]
+
+%In many channels, fairly large residuals are visible. They don’t appear to follow any consistent pattern. The hypothesis is that these are due to varying fibre position within the cell. Usually the fibre lies in the corners of the cell, but if it is somehow twisted so that it rises into the centre of the cell, then it should collect more light, to an extent comparable to what is seen here. To remove such an irregular pattern, the residual from the analytic fit is simply fit with LOWESS (locally weighted scatterplot smoothing). The LOWESS curve at each point is formed from the weighted mean of the deviations. The weighting function is the traditional tri-cube:
+%\begin{equation}
+%w_i=\left(1-\left|\frac{x-x_i}{\sigma}\right|^3\right)^3.
+%\end{equation}
+%The smoothing length scale $\sigma$ is 30cm. 20 points calculated by this method are stored, to be linearly interpolated between to approximate the full LOWESS curve. If the LOWESS fit at any point exceeds 15\% the original attenuation fit was very bad, and the channel is marked uncalibrated. Figure 4 shows an example of large (10\%) deviations being fitted. This variation is not seen in the MC, and so the LOWESS fit is skipped there. Due to the lower stats available in MC, instead of being collated by plane and cell, the curves are only calculated by view and cell. [docdb:7410]
+
+%The current value of $\sigma$ in the code is $1.5\times\textsf{DetWidth}/20$
 
 \subsection{Absolute calibration}
 
-Apply cuts and get an average PECorr response for each epoch/period individually and for each view. Get an average over the two views.
+To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are minimum ionising particels and their energy deposition is almost constant and well understood. We take a mean of their corrected deposited energy separate for each view and for each calibrated sample. We then take the average over the two views to get the final $\textsf{MEU}_{reco} \unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
 
-Save the results.
+From simulation we get the mean of the true energy deposited in scintillator $\textsf{MEU}_{truth} \unit{MeV/cm}$ for the same sample of stopping muons. We ignore the energy that's lost in the dead material (PVC extrusions) and deal with it separately. The absolute energy scale for each sample is then the ratio of $\textsf{MEU}_{truth}/\textsf{MEU}_{reco}$. We save these absolute energy scales in another csv table called \textit{calib\_abs\_consts.csv} which stores the $\textsf{MEU}$ values and their errors.
 
-Stopping muons provide a good sample of known energy deposits. If we can collect a “golden” sample, they should provide the scale factor to convert PECorr to GeV. So far, the method used has been imperfect, and the absolute calibration constants are known to be off by approx. 10\%. Since a factor already has to be derived to correct for dead material, this is not significantly impeding current efforts, but work was recently gone into improving this area. [docdb:7410 - this was likely before the track window cut was introduced]
-(Here it says that it's not such a big a problem since we have to scale for the dead material anyway. But nowadays we have to account for a large systematic uncertainty in the absolute energy scale in our analyses. How is the dead material correction different from the energy scale uncertainty?)
+As part of the absolute calibration we also produce validation plots that show the effect of calibration on the distribution of the stopping muons. We analyse these plots and if everything looks all right load all the csv tables into the database.
 
-...the calibration of the calorimetric energy scale of the NOvA detectors uses the energy deposited by stopping muons as a standard candle. To reduce systematic uncertainties, only those energy deposits in a 1-2 m window away from the muon track end point are used. The mean of the detector response distribution is found for data and MC in both near and far detectors. The mean of the distribution of true energy deposits in the track window is used to provide a conversion factor between the detector response and the true energy deposited in the scintillator for minimum ionising muons. The simulated dE/dx is uniform within about 1.8\% for hits around the minimum between 100-200 cm from the track end. The energy that a muon deposits within each cell is estimated using Geant 4 and stored in Fibre Liquid Scintillator (FLS) hits. FLS hits are only those within the active material (liquid scintillator) and energy loss within the passive material (plastic extrusions) is ignored. an estimate of the minimum energy loss rate of stopping muons in the NOvA scintillator is found to be,
-\begin{equation}
-\left.\frac{dE}{dx}\right|_{\textsf{mip}}=\left(1.7915\pm 0.0035\right)\unit{MeV/cm}.
-\end{equation}
-For stopping muons in NOvA it is also important to consider their decay. The muon has a vacuum lifetime of about 2.2 microseconds and favourably decays, with a branching ratio approx. 100\%, into an electron, an electron anti-neutrino and a muon neutrino. The electron produced in this decay is called a Michel electron and is used to select muons that stop within the NOvA detectors. The energy scale calibration is performed using cosmic ray muons. The calibration measures the detector response in data and MC in both near and far detectors and normalises them all by providing a conversion factor, for all four cases, that converts the detector response to energy in GeV. The energy loss rate (dE/dx) of stopping muons is well described by the Bethe-Bloch and is a function of the distance from the stopping point. A track window technique is used to minimise the variations in detector response that depend on the distance to the track end. Using this technique only hits within a region of distances from the track end are used. The position of the track window is chosen such that a mis-reconstruction of the track end point has the minimum effect on the mean detector response. The track window is currently set to be in the range from 100 cm to 200 cm from the track end.[docdb:13579 - FA\_Calorimetric\_energy\_scale]
+%Stopping muons provide a good sample of known energy deposits. If we can collect a “golden” sample, they should provide the scale factor to convert PECorr to GeV. So far, the method used has been imperfect, and the absolute calibration constants are known to be off by approx. 10\%. Since a factor already has to be derived to correct for dead material, this is not significantly impeding current efforts, but work was recently gone into improving this area. [docdb:7410 - this was likely before the track window cut was introduced] (Here it says that it's not such a big a problem since we have to scale for the dead material anyway. But nowadays we have to account for a large systematic uncertainty in the absolute energy scale in our analyses. How is the dead material correction different from the energy scale uncertainty?)
 
-In the First Analysis  An adjustment was made to the value for the ND data to lower the value of PECorr/cm by about 3.6\%. The adjustment was made based on studies of muons from beam neutrinos interacting in the detector where it was observed that the average beam muon response was 3.6\% lower in data than in MC [8]. For the FD There is a discrepancy in the distributions of PECorr/cm in data and MC; the mean of the distribution is higher in data than in MC. This may be due to mis-modelling of the detector response in the MC. In any case, the data-MC PECorr/cm discrepancy is tuned out when the calorimetric energy scale is applied. [docdb:13579 - FA\_Calorimetric\_energy\_scale]
+%...the calibration of the calorimetric energy scale of the NOvA detectors uses the energy deposited by stopping muons as a standard candle. To reduce systematic uncertainties, only those energy deposits in a 1-2 m window away from the muon track end point are used. The mean of the detector response distribution is found for data and MC in both near and far detectors. The mean of the distribution of true energy deposits in the track window is used to provide a conversion factor between the detector response and the true energy deposited in the scintillator for minimum ionising muons. The simulated dE/dx is uniform within about 1.8\% for hits around the minimum between 100-200 cm from the track end. The energy that a muon deposits within each cell is estimated using Geant 4 and stored in Fibre Liquid Scintillator (FLS) hits. FLS hits are only those within the active material (liquid scintillator) and energy loss within the passive material (plastic extrusions) is ignored. an estimate of the minimum energy loss rate of stopping muons in the NOvA scintillator is found to be,
+%\begin{equation}
+%\left.\frac{dE}{dx}\right|_{\textsf{mip}}=\left(1.7915\pm 0.0035\right)\unit{MeV/cm}.
+%\end{equation}
+%For stopping muons in NOvA it is also important to consider their decay. The muon has a vacuum lifetime of about 2.2 microseconds and favourably decays, with a branching ratio approx. 100\%, into an electron, an electron anti-neutrino and a muon neutrino. The electron produced in this decay is called a Michel electron and is used to select muons that stop within the NOvA detectors. The energy scale calibration is performed using cosmic ray muons. The calibration measures the detector response in data and MC in both near and far detectors and normalises them all by providing a conversion factor, for all four cases, that converts the detector response to energy in GeV. The energy loss rate (dE/dx) of stopping muons is well described by the Bethe-Bloch and is a function of the distance from the stopping point. A track window technique is used to minimise the variations in detector response that depend on the distance to the track end. Using this technique only hits within a region of distances from the track end are used. The position of the track window is chosen such that a mis-reconstruction of the track end point has the minimum effect on the mean detector response. The track window is currently set to be in the range from 100 cm to 200 cm from the track end.[docdb:13579 - FA\_Calorimetric\_energy\_scale]
+
+%In the First Analysis  An adjustment was made to the value for the ND data to lower the value of PECorr/cm by about 3.6\%. The adjustment was made based on studies of muons from beam neutrinos interacting in the detector where it was observed that the average beam muon response was 3.6\% lower in data than in MC [8]. For the FD There is a discrepancy in the distributions of PECorr/cm in data and MC; the mean of the distribution is higher in data than in MC. This may be due to mis-modelling of the detector response in the MC. In any case, the data-MC PECorr/cm discrepancy is tuned out when the calorimetric energy scale is applied. [docdb:13579 - FA\_Calorimetric\_energy\_scale]
 
 %% Applying the calibration inside Calibrator
-The calibration constants are written to the database tables calib atten consts and calib atten points. The calib atten consts table contains the seven free parameters in the attenuation fit, plus identifying information. The calib atten points table contains the 20 LOWESS points for each cell, with one point per row. When a request comes to Calibrator to create a RecoHit, usually from a RecoBase object that has provided a W value based on a straight-line extrapolation of its trajectory, ultimately we end up in Calibrator::GetPECorr. This retrieves an AttenCurve object from a cache we hold of all the database values, which can calculate the mean response to cosmic rays at any position. The calibrated energy deposit is then the PE in the CellHit divided by this average cosmic ray response. A correction factor taken from the absolute calibration, also stored in the database, is applied to the answer to give the resulting PECorr. Calibrator also stores the quality of the calibration fit for a given cell such that if we fail to calibrate a cell in the Data to a sufficient quality that cell will not return a calibrated energy in both Data and Monte Carlo. Calibrator also returns the MIP and GeV scales that are described in the accompanying absolute calibration technote. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector]
-...The calibrated energy deposit is then the PE in the CellHit divided by this average cosmic ray responseAn eyeballed factor of 75 is applied to the answer to give the resulting PECorr about the same size as the input PE (this is the factor (originally) used) [docdb:7410]
+%The calibration constants are written to the database tables calib atten consts and calib atten points. The calib atten consts table contains the seven free parameters in the attenuation fit, plus identifying information. The calib atten points table contains the 20 LOWESS points for each cell, with one point per row. When a request comes to Calibrator to create a RecoHit, usually from a RecoBase object that has provided a W value based on a straight-line extrapolation of its trajectory, ultimately we end up in Calibrator::GetPECorr. This retrieves an AttenCurve object from a cache we hold of all the database values, which can calculate the mean response to cosmic rays at any position. The calibrated energy deposit is then the PE in the CellHit divided by this average cosmic ray response. A correction factor taken from the absolute calibration, also stored in the database, is applied to the answer to give the resulting PECorr. Calibrator also stores the quality of the calibration fit for a given cell such that if we fail to calibrate a cell in the Data to a sufficient quality that cell will not return a calibrated energy in both Data and Monte Carlo. Calibrator also returns the MIP and GeV scales that are described in the accompanying absolute calibration technote. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector] ...The calibrated energy deposit is then the PE in the CellHit divided by this average cosmic ray responseAn eyeballed factor of 75 is applied to the answer to give the resulting PECorr about the same size as the input PE (this is the factor (originally) used) [docdb:7410]
 
-Describe that the results of the calibration process are store in csv tables and loaded during processing of each event.
-
+\iffalse
 %%% Validation of calibration results
 From Calibration\_Meta\_READFIRST.pdf:
 Validations	of any calibration correction take the same basic form:
@@ -481,16 +478,19 @@ Validations	of any calibration correction take the same basic form:
 \item Now generate the same plots as in (1) but with the corrections applied. Technically this is the absolute calibration validation plots. Does this mean that the PE/cm plots from the absolute calibration should be/are exactly the same as the calibhist plots? Not entirely as those are only for the stopping muons, whereas the calibhist are for the through-going muons. Does it mean I should maybe generate the calibhist plots with the relative calibration applied?
 \item Ratios of plots in (3) to (1) to highlight any patterns or difficult-to-spot discrpancies between what we think should happen when the constants are applied, and what does happen. But what does this tell us? It's basically just an average of the attenuation correction...
 \end{enumerate}
+\fi
 
 \subsection{Calibration uncertainties}
 
-First Analysis systematic uncertainties due to calibration:
-Sources of systematic uncertainty of particular concern are those introduced by residual variations remaining after calibration. Systematic errors are introduced by spatial and temporal variations in detector response. Further, any difference between the two detectors may introduce a relative shift in the energy scale between the detectors. A source of systematic uncertainty can be introduced by mis-reconstructing the end point of the muon track. Such a mis-reconstruction would shift the window within which hits are selected and hence the dE/dx of the muon.  The figure shows that the detector response varies by up to about 60\% over the range from 0 to 500 cm to the track end. This large variation illustrates the importance of careful consideration of the track window position and size. The detector response for both data and MC is minimum at about 130 cm from the track end and is flat to about 1\% in the range from 100 cm to 200 cm from the track end. For a track window starting at 100 cm from the track end, a conservative mis-reconstruction of the track end point by 10cm will shift the start of the track window to between 90cm and 110cm. This shift will alter the MEU value by less than 0.4\% over the range.
-If the calibration procedure was ideal the detector response would not vary with position in either data or MC. The calibration is not ideal and the detector response and recorded simulated energy deposition varies with position of the hit within the detector, such variations will introduce systematic errors. The position of a hit can be defined by the plane, cell within the plane, and distance along the cell (w) of the hit. The variation in detector response and simulated energy deposition vs. plane, cell and w for each view has been studied to quantify the systematic uncertainty introduced by these sources.
-The rise in detector response at the far end of FD y-view cells is an issue with several potential sources. The rise in response may be due to an acceptance effect or a light-level threshold effect among other possibilities. An acceptance effect is where greater energy must be deposited at the far end of the cells so that the light can travel along the fibre, hit the APD and be recorded as a hit. Both an acceptance effect and a light-level effect would introduce a bias towards higher energy hits toward the far end of cells.
-Another source of systematic uncertainty is introduced by the variation in detector response with time. The FD response is stable to about 1\% during the period from October 2014 to March 2015. The ND response needs further study but there was no significant trend over 6 months at 5\%. 
-As mentioned in Section 5, the version (7.1) of the calibration used for first analysis has been adjusted based on studies of muons from beam neutrinos interacting in the detector [8]. A shift of 3.6\% was introduced based on the average response of muons where large sections of the track were used. When only a track window of 100-200cm is used on the beam muons the difference is only 2.7\% [8]. Our best hypothesis for this residual 2.7\% difference is that it is caused by showery events that are present in ND data but not ND MC: it was shown in [9] that doing the calorimetric energy scale calibration using a truncated mean (or a median or a fit to the peak) gave a data/MC ratio that differed by 2.7\% compared to using the untruncated mean as described in this document. A comparison of various cross checks of the calorimetric energy scale was undertaken (in [10] and [11]) and concluded that the nearly 5\% difference between ND data and MC seen in a sample of Michele electrons [12] should be applied as both an absolute and relative shift to the calorimetric energy scale. The difference between the level of calorimetric energy resolution of stopping muons was studied and it was found that data and MC agreed best when an 8\% additional smearing was introduced. Studies for the NuMu analysis indicated that this was a negligible systematic uncertainty [13]. 
-[docdb:13579 - FA\_Calorimetric\_energy\_scale]
+WORK IN PROGRESS
+
+%First Analysis systematic uncertainties due to calibration:
+%Sources of systematic uncertainty of particular concern are those introduced by residual variations remaining after calibration. Systematic errors are introduced by spatial and temporal variations in detector response. Further, any difference between the two detectors may introduce a relative shift in the energy scale between the detectors. A source of systematic uncertainty can be introduced by mis-reconstructing the end point of the muon track. Such a mis-reconstruction would shift the window within which hits are selected and hence the dE/dx of the muon.  The figure shows that the detector response varies by up to about 60\% over the range from 0 to 500 cm to the track end. This large variation illustrates the importance of careful consideration of the track window position and size. The detector response for both data and MC is minimum at about 130 cm from the track end and is flat to about 1\% in the range from 100 cm to 200 cm from the track end. For a track window starting at 100 cm from the track end, a conservative mis-reconstruction of the track end point by 10cm will shift the start of the track window to between 90cm and 110cm. This shift will alter the MEU value by less than 0.4\% over the range.
+%If the calibration procedure was ideal the detector response would not vary with position in either data or MC. The calibration is not ideal and the detector response and recorded simulated energy deposition varies with position of the hit within the detector, such variations will introduce systematic errors. The position of a hit can be defined by the plane, cell within the plane, and distance along the cell (w) of the hit. The variation in detector response and simulated energy deposition vs. plane, cell and w for each view has been studied to quantify the systematic uncertainty introduced by these sources.
+%The rise in detector response at the far end of FD y-view cells is an issue with several potential sources. The rise in response may be due to an acceptance effect or a light-level threshold effect among other possibilities. An acceptance effect is where greater energy must be deposited at the far end of the cells so that the light can travel along the fibre, hit the APD and be recorded as a hit. Both an acceptance effect and a light-level effect would introduce a bias towards higher energy hits toward the far end of cells.
+%Another source of systematic uncertainty is introduced by the variation in detector response with time. The FD response is stable to about 1\% during the period from October 2014 to March 2015. The ND response needs further study but there was no significant trend over 6 months at 5\%. 
+%As mentioned in Section 5, the version (7.1) of the calibration used for first analysis has been adjusted based on studies of muons from beam neutrinos interacting in the detector [8]. A shift of 3.6\% was introduced based on the average response of muons where large sections of the track were used. When only a track window of 100-200cm is used on the beam muons the difference is only 2.7\% [8]. Our best hypothesis for this residual 2.7\% difference is that it is caused by showery events that are present in ND data but not ND MC: it was shown in [9] that doing the calorimetric energy scale calibration using a truncated mean (or a median or a fit to the peak) gave a data/MC ratio that differed by 2.7\% compared to using the untruncated mean as described in this document. A comparison of various cross checks of the calorimetric energy scale was undertaken (in [10] and [11]) and concluded that the nearly 5\% difference between ND data and MC seen in a sample of Michele electrons [12] should be applied as both an absolute and relative shift to the calorimetric energy scale. The difference between the level of calorimetric energy resolution of stopping muons was studied and it was found that data and MC agreed best when an 8\% additional smearing was introduced. Studies for the NuMu analysis indicated that this was a negligible systematic uncertainty [13]. 
+%[docdb:13579 - FA\_Calorimetric\_energy\_scale]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -524,16 +524,71 @@ Along with setting the energy scale of the detector, we need to calibrate the ti
 \subsubsection{Definitions}
 List all final data and simulation definitions used.
 
-Mention exactly the name and the location of the fcl files to create the TB pclist/pcliststop files. (Or should I only do this in the next section when mentioning the TB calibration? - yes)
+Mention exactly the name and the location of the fcl files to create the TB pclist/pcliststop files.
+
+When were these files produced? Mention that we had to reprocess most of the files in 2023 due to the changed geometry.
 
 From Teresa's thesis:
 "For Test Beam, we have three beam-based triggers, one pulsed trigger, and two data-driven triggers. The data-driven triggers are both activity-based triggers. The first is intended to record cosmic ray induced events for use in calibrating the detector.
+
+\begin{table}[!ht]
+\centering
+\hspace*{-8mm}
+\begin{tabular}{l}
+\hline\hline\\
+\textbf{pclist samples}\\[3pt]\hline
+\textbf{Data period 2:}\\
+\texttt{prod\_pclist\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_period2\_v1}\\
+\textbf{Data period 3:}\\
+\texttt{prod\_pclist\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_epoch3a\_v1}\\
+\texttt{prod\_pclist\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_epoch3b\_v1}\\
+\texttt{prod\_pclist\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_epoch3c\_v1}\\
+\texttt{pclist\_testbeam\_detector\_activity\_epoch3d\_R21-01-28-testbeam-production.a}\\
+\texttt{pclist\_testbeam\_detector\_activity\_epoch3e\_R21-01-28-testbeam-production.a}\\
+\textbf{Data period 4:}\\
+\texttt{prod\_pclist\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_period4\_v1}\\
+\textbf{Simulation:}\\
+\texttt{rkralik\_pclist\_testbeam\_databasedsim\_R23-04-05-testbeam-production.a}\\[5pt]
+\hline\hline\\
+\textbf{pcliststop samples}\\[3pt]\hline
+\textbf{Data period 2:}\\
+\texttt{prod\_pcliststop\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_period2\_v1}\\
+\textbf{Data period 3:}\\
+\texttt{prod\_pcliststop\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_epoch3a\_v1}\\
+\texttt{prod\_pcliststop\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_epoch3b\_v1}\\
+\texttt{prod\_pcliststop\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_epoch3c\_v1}\\
+\texttt{pcliststop\_testbeam\_detector\_activity\_epoch3d\_R21-01-28-testbeam-production.a}\\
+\texttt{pcliststop\_testbeam\_detector\_activity\_epoch3e\_R21-01-28-testbeam-production.a}\\
+\textbf{Data period 4:}\\
+\texttt{prod\_pcliststop\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_period4\_v1}\\
+\textbf{Simulation:}\\
+\texttt{rkralik\_pcliststop\_testbeam\_databasedsim\_R23-04-05-testbeam-production.a}\\[5pt]
+\hline\hline
+\end{tabular}
+\caption{SAMWEB definitions of the Test Beam calibration samples.}
+\label{tabTBCalibrationDefinitions}
+\end{table}
 
 \subsection{Fiber Brightness}
 
 To divide the Test Beam detector into fiber brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}).
 
 Describe and show plots that since we are only using the fitted response at cell centre we can allow fits with $\chi^2>0.2$. Show examples of responses with chisq larger than that and say what is the final chisq chosen. No need to show the final distribution of the fb bins here as they were technically shown in the general calibration description. But might refer back to it...
+
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ExampleCellForFBFile_3000.pdf}
+\end{subfigure}
+%\hfill
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ExampleCellForFBFile_61061.pdf}
+\end{subfigure}
+\caption{The Test Beam detector is (like the standard NOvA detectors) divided into 12 brightness bins (left plot), each representing a relative difference in energy response (right plot) due to different brightnesses of the fibers, scintillators, or readout.}
+\label{figFiberBrightnessExamples}
+\end{figure}
 
 \subsection{Simulation}
 
@@ -553,6 +608,37 @@ We used a data-based simulation of cosmic muons for the Test Beam detector calib
 \includegraphics[width=\textwidth]{Plots/CellResponseAtCentre_Prod4DataBasedSim_Limited.pdf}
 \caption{Overview of the relative calibration results for the Teast Beam detector simulation. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \end{figure}
+
+\iffalse
+\begin{figure}[!ht]
+  \begin{subfigure}{\textwidth}
+    \centering
+    \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
+  \end{subfigure}
+  \vspace*{2mm}
+  
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pe_time_x.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pe_time_y.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pecorr_time_x.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pecorr_time_y.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/cm_time_x.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/cm_time_y.pdf}
+  \end{subfigure}
+  \caption{...}
+  \label{figSimulationResults}
+\end{figure}
+\fi
 
 \subsection{Threshold and shielding corrections}
 The threshold and shielding correction for test beam is almost uniform across all cells as can be seen on figure... This is expected as the hight of the Test Beam detector of 2.6m has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. The correction is basically just a normalization factor, but since the relative calibration only cares about relative differences across the detector, a normalization factor doesn't change anything.
@@ -636,6 +722,37 @@ What was done for the period 2 tb calibration, short overview of what has been d
 \includegraphics[width=0.9\textwidth]{Plots/CellResponseAtCentre_period2_Limited.pdf}
 \caption{Overview of the relative calibration results for the Teast Beam detector period 2 data. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \end{figure}
+
+\iffalse
+\begin{figure}[!ht]
+  \begin{subfigure}{\textwidth}
+    \centering
+    \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
+  \end{subfigure}
+  \vspace*{2mm}
+  
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pe_time_x.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pe_time_y.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pecorr_time_x.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/pecorr_time_y.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/cm_time_x.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{driftsec_tb/cm_time_y.pdf}
+  \end{subfigure}
+  \caption{...}
+  \label{figPeriod2Results}
+\end{figure}
+\fi
 
 \subsection{Period 3}
 Separation of Period 3 data into different epochs based on the running conditions (include plot of the running conditions). We are separating data into pre- and post- filling states. We're using only the fully-refilled post-FEB swap data from period 3 as a basis for the simulation creation.
@@ -807,7 +924,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
 \end{table}
 \end{center}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -830,7 +947,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibW1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -859,7 +976,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibW2}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -882,7 +999,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCell1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -911,7 +1028,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCell2}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -934,7 +1051,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibPlane1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -963,7 +1080,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibPlane2}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -986,7 +1103,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCosX1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -1015,7 +1132,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCosX2}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -1038,7 +1155,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCosY1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -1067,7 +1184,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCosY2}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
   \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -1090,7 +1207,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibCosZ1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -1121,7 +1238,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
 
 \subsection{Drift in TB data}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
@@ -1144,7 +1261,7 @@ simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 
   \label{figAbsCalibDrift1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[height=0.2\linewidth]{essentialsec_tb/legend.pdf}
