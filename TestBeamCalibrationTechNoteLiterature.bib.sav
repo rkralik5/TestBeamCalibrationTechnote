@@ -234,9 +234,29 @@
   howpublished = {NOVA Document 34909},
   month        = dec,
   note         = {NOvA technical note},
-  title        = {{Timing bias introduced by incorrect interpretation of the nanoslice}},
-  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=13518},
+  title        = {{Fibre brightness from cosmic muon data}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=34909},
   year         = {2018},
+}
+
+@Electronic{NOVA-doc-49674,
+  author       = {Anna Maureen Hall},
+  howpublished = {NOVA Document 49674},
+  month        = mar,
+  note         = {NOvA internal document},
+  title        = {{TB P2 Calib. Summary}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=49674},
+  year         = {2021},
+}
+
+@Electronic{NOVA-doc-43249,
+  author       = {Matthew Strait},
+  howpublished = {NOVA Document 43249},
+  month        = feb,
+  note         = {NOvA internal document},
+  title        = {{Current thoughts on light level tuning}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=43249},
+  year         = {2020},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
