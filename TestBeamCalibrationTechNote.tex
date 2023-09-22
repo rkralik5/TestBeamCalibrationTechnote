@@ -152,7 +152,7 @@ Mike's proceedings from ICHEP 2020 \cite{WallbankProceedingsICHEP2020}.
 %What is Test Beam, how does the detector and beamline look like.
 %Placed in MC7b together with a beamline instrumentation (no need to describe beamline).
 
-The NOvA Test Beam detector is a scaled down version of the Near and Far Detectors shown on figure \ref{figTBDetector}. It is placed in the MC7b enclosure of the Fermilab Test Beam Facility in the path of the MCenter beamline with a variety of beamline detectors to measure and identify a range of particles with various momenta \cite{NOVA-doc-22172-v2}.
+The NOvA Test Beam detector is a scaled down version of the near and far detectors shown on figure \ref{figTBDetector}. It is placed in the MC7b enclosure of the Fermilab Test Beam Facility in the path of the MCenter beamline with a variety of beamline detectors to measure and identify a range of particles with various momenta \cite{NOVA-doc-22172-v2}.
 
 \begin{figure}[!ht]
 \centering
@@ -763,11 +763,11 @@ Some cells have a non-flat response across the cell, with one or more regions wi
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_022_035.png}
   \end{subfigure}
-  \caption{Attenuation fits for a selection of cells in the Test Beam calibration simulation. Left plot shows an example of the standard energy deposition in the Test Beam. Right plot shows the effect of zipped fibers.}
+  \caption{Attenuation fits for a selection of cells in period 2. Left plot shows an example of the standard energy deposition in the Test Beam. Right plot shows the effect of zipped fibers.}
   \label{figAttenfitResultsPerio2_ZippedFibers}
 \end{figure}
 
-Since the underfilled cells were marked as bad channels we didn't even attempt to calibrate them. Their neighbours have fewer events due to the tricell condition but majority of them pass the calibration condition, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCells}. The neighbouring cells in plane 1 don't pass the calibration due to low statistics and therefore large fluctuations, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCellsPlane01}. This is likely due to a combination of the tricell condition and plane 1 being on the edge of the detector.
+Since the underfilled cells were marked as bad channels we didn't even attempt to calibrate them. Their neighbours have fewer events due to the tricell condition but majority of them pass the calibration condition, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCells}. The neighbouring cells in plane 1 don't pass the calibration due to low statistics and therefore large fluctuations, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCellsPlane01}. This is likely due to a combination of the tricell condition and plane 1 being on the edge of the detector, which typically has fewer (accepted) hits than the center as shown on figure \ref{figCalibhist_period2}.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -776,7 +776,7 @@ Since the underfilled cells were marked as bad channels we didn't even attempt t
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_011_032.png}
   \end{subfigure}
-  \caption{The cells neighbouring the underfilled cells have fewer events and therefore larger fluctuations than the "usual" Test Beam cell.}
+  \caption{Fit to the energy response in period 2. The cells neighbouring the underfilled cells have fewer events and therefore larger fluctuations than the "usual" Test Beam cell.}
   \label{figAttenfitResultsPerio2_UnderfilledCells}
 \end{figure}
 
@@ -787,7 +787,7 @@ Since the underfilled cells were marked as bad channels we didn't even attempt t
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_001_032.png}
   \end{subfigure}
-  \caption{The neighbouring cells to the underfilled cells in plane 1 are uncalibrated due to low statistics.}
+  \caption{Fit to the energy response in period 2. The neighbouring cells to the underfilled cells in plane 1 are uncalibrated due to low statistics.}
   \label{figAttenfitResultsPerio2_UnderfilledCellsPlane01}
 \end{figure}
 
@@ -800,7 +800,7 @@ The left half of plane 55 has $>3\times$ larger response than it's surrounding p
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_057_011.png}
   \end{subfigure}
-  \caption{Lower halfs of planes 55 and 57 have a different scale of energy response than the surrounding planes.}
+  \caption{Fit to the energy response in period 2. Lower halfs of planes 55 and 57 have a different scale of energy response than the surrounding planes.}
   \label{figAttenfitResultsPerio2_FaultyFEB}
 \end{figure}
 
@@ -813,7 +813,7 @@ The swapped cables in plane 55 have almost no events, which affects both them an
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_055_046.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in period 2. Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
   \label{figAttenfitResultsPerio2_SwappedCables}
 \end{figure}
 
@@ -832,12 +832,28 @@ Several cells in the end of the Test Beam detector are uncalibrated due to bins 
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_060_032.png}
   \end{subfigure}
-  \caption{Examples of cells that have an unusually high or low energy response at the edge of the cell. These cells are not calibrated.}
+  \caption{Fit to the energy response in period 2. Examples of cells that have an unusually high or low energy response at the edge of the cell. These cells are not calibrated.}
   \label{figAttenfitResultsPerio2_CellEdge}
 \end{figure}
 
 \subsection{Period 3}
-Separation of Period 3 data into different epochs based on the running conditions (include plot of the running conditions). We are separating data into pre- and post- filling states. We're using only the fully-refilled post-FEB swap data from period 3 as a basis for the simulation creation.
+The underfilled cells were refilled (or overfilled) during the period 3 data taking. This was the main motivation for dividing period 3 into individual epochs as shown on table \ref{tabTestBeamPeriod3Epochs}. One more major event that could impact the Test Beam data is the replacement of several faulty FEBs, which motivated the creation of epoch 3e.
+
+\begin{table}[!ht]
+\centering
+\def\arraystretch{1.4}
+\begin{tabular}{m{0.11\textwidth} m{0.22\textwidth} m{0.55\textwidth}}
+Epoch 3a & Janurary $12^{\textsf{th}}$ 2021 & Underfilled cells\\
+Epoch 3b & April $21^{\textsf{st}}$ 2021 & Overfilling the back 9 horizontal planes and the 7th horizontal plane from the front\\
+Epoch 3c & April $27^{\textsf{th}}$ 2021 & Overfilling of the 15 front horizontal planes (except the 7th, which was already done) and the 14th horizontal plane\\
+Epoch 3d & April $30^{\textsf{th}}$ 2021 & Overfilling of the remaining 8 horizontal planes\\
+Epoch 3e & May $12^{\textsf{th}}$ 2021 & FEB swaps
+\end{tabular}
+\caption{Test Beam period 3 epochs, their start dates and the reason for thir separation.}
+\label{tabTestBeamPeriod3Epochs}
+\end{table}
+
+The refilling of the underfilled cells can be clearly seen on the cell hits distribution on figure \ref{figCalibhist_period3} and on the distribution of energy deposition across horizontal cells (Y view) on figure \ref{figCalibhistCellPE_period3}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -849,8 +865,13 @@ Separation of Period 3 data into different epochs based on the running condition
 \centering
 \includegraphics[width=0.9\textwidth]{Plots/Attenprofs_P3Data_CellPlane_Epoch3de.pdf}
 \end{subfigure}
-\caption{Distribution of events in the period 3, epoch 3a Test Beam data calibration sample.}
+\caption{Distribution of events in the period 3 Test Beam data calibration sample. Comparison of Epoch 3a data before the refilling of the underfilled cells and Epoch 3de (combination of Epochs 3d and 3e) after the full refilling.}
+\label{figCalibhist_period3}
 \end{figure}
+
+From the cell hits distributions we can also see there are a few channels (cells) that were likely dead for a certain time and weren't recording the same number of events as the surrounding cells. This is specifically plane 48, cell 39 in all of period 3 and plane 18, cell 31 in epochs 3d and 3e.
+
+The energy distributions across vertical cells and planes (X view) on figures \ref{figCalibhistCellPE_period3} and \ref{figCalibhistPlanePE_period3} shows, that the top half of plane 58 has a very distinctly different energy deposition compared to the rest of the cells, while having the same number of events, as can be seen on figure \ref{figCalibhist_period3}. This is the most impactful of the faulty FEBs replaced for Epoch 3e.
 
 \begin{figure}[!hbtp]
 \centering
@@ -894,7 +915,11 @@ Separation of Period 3 data into different epochs based on the running condition
 \label{figCalibhistPlanePE_period3}
 \end{figure}
 
+From these discussion, we have decided to calibrate epochs 3a, 3b and 3c together (all epochs containing any underfilled cells) and separately calibrated epochs 3d and 3e. The faulty FEB in plane 58 is far enough in the back of the detector that we didn't find it necessary to calibrate epochs 3d and 3e separately. Also epochs 3b and 3c only contain a few days worth of data, which wouldn't be enough for a successful attenuation fit.
+
 \subsubsection*{Combined epochs 3a, 3b and 3c relative calibration results}
+
+The results of the attenuation fit are summarised on figure \ref{figCellCentreResponseEp3abc} showing cell $\times$ plane distribution of the fitted response at the centre of each cell.
 
 \begin{figure}[!hbtp]
 \centering
@@ -903,6 +928,8 @@ Separation of Period 3 data into different epochs based on the running condition
 \label{figCellCentreResponseEp3abc}
 \end{figure}
 
+We can see that some of the underfilled cells that have been refilled for epochs 3b or 3c are now calibrated thanks to including them into the same attenuation fit. An example of energy deposition in such a cell is on the left plot of figure \ref{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}.
+
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_005_031.png}
@@ -910,9 +937,13 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_001_032.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in epochs 3 a, b and c. Some underfilled cells that have been refilled in epochs 3b and 3c are now calibrated as shown on the left plot. Cell 32 in plane 1 is the only neighbouring cell to the underfilled cell that didn't manage to get calibrated due to low number of events.}
   \label{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}
 \end{figure}
+
+Same as in period 2 most of the neighbouring cells to the underfilled cells are calibrated, except for cell 32 in plane 1, shown on the right of figure \ref{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}, which is also affected by the low statistics at the edges of the detector.
+
+There is a couple of notably faulty FEBs with a different energy response than their neighbours. Besides the expected top half of plane 58, which has about $5\times$ larger response than the usual, it's also the top half of plane 36, which has about $2.5\times$ larger response as its neighbours. This could mean that the FEB in plane 36 was faulty only for a limited time compared to the FEB in plane 58. The energy deposition for these cells is shown on figure \ref{figAttenfitResultsEpoch3abc_FaultyFEBs}.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -921,9 +952,11 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_058_048_ExtendedRange.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in epochs 3 a, b and c. The most obvious faulty FEBs that have a significantly larger energy response than their neighbours.}
   \label{figAttenfitResultsEpoch3abc_FaultyFEBs}
 \end{figure}
+
+Similarly as in period 2, there are a few cell in the back of the detector that have a sharp rise in the energy response at the edge of the cell, which causes them to be uncalibrated. This can be seen on figure \ref{figAttenfitResultsEpoch3abc_CellEdges}.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -932,11 +965,13 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_060_032.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in epochs 3 a, b and c. Some cells are not calibrated due to large fluctuations at one edge of the cells.}
   \label{figAttenfitResultsEpoch3abc_CellEdges}
 \end{figure}
 
 \subsubsection*{Combined epochs 3d and 3e relative calibration results}
+
+The results of the attenuation fits for epochs 3 d and e are shown on figure \ref{figCellCentreResponseEp3de}. There we can see the expected uncalibrated cells in plane 17 related to the dead channel (or possible still underfilled cell). The energy deposition for this cell and one of its neighbours is shown on figure \ref{figAttenfitResultsEpoch3de_LeftoverUnderfilledCell}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -952,9 +987,11 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3de_017_032.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in epochs 3 d and e. Possibly dead channel or still underfilled cell.}
   \label{figAttenfitResultsEpoch3de_LeftoverUnderfilledCell}
 \end{figure}
+
+Epochs 3 d and e should have all the previously underfilled cells now refilled, but as can be seen on figure \ref{figCellCentreResponseEp3de}, there's several of these cells that are still uncalibrated. The energy deposition in these cells is shown on figure \ref{figAttenfitResultsEpoch3de_RefilledDiscrepancy}. We can see that these cells have a fairly large discrepancy between the left and right side of the cells. This is caused by using different scintillator oils for the initial filling of the cells and for the refilling. Specifically, these cells have been initially filled with the Ash River and the Texas oils, which have higher energy depositions compared to the NDOS oil that was used for the refilling. These oils clearly didn't mix properly which causes a different energy deposition in different parts of the cells. Since this is a physical effect that should be accounted for in the calibration and as we can see the fits are actually performing pretty well and are just confused by the unusual shape. We have therefore decided to manually change the $\chi^2$ inside the cvs tables (results of the attenuation fits), so that the $\chi^2<0.2$ and these cells are considered calibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -963,9 +1000,11 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3de_059_031.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in epochs 3 d and e. The scintillator oil used for refilling of the underfilled cells has lower energy response than the oil used for the intial filling. These oils didn't mix properly causing a different energy response in the left and right side of the cell.}
   \label{figAttenfitResultsEpoch3de_RefilledDiscrepancy}
 \end{figure}
+
+Some of the cells in the back of the detector have a rise, or drop in energy deposition at the edge of the cell, as can be seen on figure \ref{figAttenfitResultsEpoch3de_CellEdges}. This is similar to the effect seen in period 2 and epochs 3abc and since it's again concentrated in the end of the detector we ignored these cells and left them uncalibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -974,11 +1013,13 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3de_062_006.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in epochs 3 d and e. Some cells have a drop, or a rise of energy response at the edge of the cell. This can be cause by low statistics.}
   \label{figAttenfitResultsEpoch3de_CellEdges}
 \end{figure}
 
 \subsection{Period 4}\label{secTBPeriod4}
+
+The period 4 Test Beam data taking period is the best data we managed to collect with almost an ideal condition of the detector. There's only a few commissioning runs in the very beginning, which uncovered some dead channels or faulty FEBs that have been fixed. These runs make epoch 4a shown on the top plot of figure \ref{figCalibhist_period4}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -995,7 +1036,12 @@ Separation of Period 3 data into different epochs based on the running condition
 \includegraphics[width=.9\textwidth]{Plots/Attenprofs_P4Data_CellPlane_GoodRuns.pdf}
 \end{subfigure}
 \caption{Distribution of events in the Test Beam period 4 data calibration sample. The top plot shows the first three comissioning runs, the middle plot the status of the detector during the Cell Masking studies and the bottom plot shows the rest.}
+\label{figCalibhist_period4}
 \end{figure}
+
+There has also been a cell masking study [reference], during which we masked parts of the front of the detector to help with FEB saturation. We can clearly see this on the middle plot of figure \ref{figCalibhist_period4}.
+
+Figures \ref{figCalibhistWPE_period4}, \ref{figCalibhistCellPE_period4} and \ref{figCalibhistPlanePE_period4} show that the epoch 4a and the cell masking study did have a noticeable impact on the energy deposition across the detector. We have therefore decided to ignore these runs and only use the rest of the period 4 data for the calibration.
 
 \begin{figure}[!hbtp]
 \centering
@@ -1041,12 +1087,16 @@ Separation of Period 3 data into different epochs based on the running condition
 
 \subsubsection*{Period 4 relative calibration results}
 
+Results of the attenutation fits for period 4 are summarised on figure \ref{figCellCentreResponsePeriod4}.
+
 \begin{figure}[!hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CellResponseAtCentre_period4_Limited.pdf}
 \caption{Overview of the relative calibration results for the Teast Beam detector period 4 data. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \label{figCellCentreResponsePeriod4}
 \end{figure}
+
+We can see that majority of the detector is calibrated, besided some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}) and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}). We treated the formerly underfilled cells the same way as in epochs 3 d and e, by manually changing their $\chi^2$ to be $<0.2$ and therefore making them calibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -1055,7 +1105,7 @@ Separation of Period 3 data into different epochs based on the running condition
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p4_054_047.png}
   \end{subfigure}
-  \caption{Cells with swapped readout cables have almost no recorded events as shown on the right plot. This also affect their neighbouring cells due to the tricell condition as shown on the left plot.}
+  \caption{Fit to the energy response in period 4. Previously underfilled cells refilled with a scintillator of a different quality causing an unusual distribution of energy deposition (left). Unusually high energy response at the edge of the cell 47 (right).}
   \label{figAttenfitResultsPeriod4}
 \end{figure}
 
