@@ -254,9 +254,49 @@
   howpublished = {NOVA Document 43249},
   month        = feb,
   note         = {NOvA internal document},
-  title        = {{Current thoughts on light level tuning}},
+  title        = {{Update on light level tuning}},
   url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=43249},
   year         = {2020},
+}
+
+@Electronic{NOVA-doc-15750,
+  author       = {Alex Sousa and Ryan Nichol and Karol Lang and Jeff Nelson},
+  howpublished = {NOVA Document 15750},
+  month        = aug,
+  note         = {NOvA technical note},
+  title        = {{NOvA Test Beam Task Force Report}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=15750},
+  year         = {2016},
+}
+
+@Electronic{NOVA-doc-50786,
+  author       = {Anna Maureen Hall},
+  howpublished = {NOVA Document 50786},
+  month        = jun,
+  note         = {NOvA internal document},
+  title        = {{TB P2 Calib Update}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=50786},
+  year         = {2021},
+}
+
+@Electronic{NOVA-doc-42700,
+  author       = {Kevin Mulder},
+  howpublished = {NOVA Document 42700},
+  month        = jan,
+  note         = {NOvA internal document},
+  title        = {{TB Calibration update}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=42700},
+  year         = {2020},
+}
+
+@Electronic{NOVA-doc-59024,
+  author       = {Robert Kralik},
+  howpublished = {NOVA Document 59024},
+  month        = jan,
+  note         = {NOvA internal document},
+  title        = {{Test beam calibration update}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=59024},
+  year         = {2023},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

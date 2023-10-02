@@ -58,100 +58,30 @@ The NOvA Test Beam detector calibration uses the same calibration procedure as t
 
 \section{Introduction}
 
-TO DO: Write introduction. Why is TB calibration important and what it could achieve. Short history of TB calibration. Mention Anna and Kevin.
+The NOvA Test Beam experiment aims to improve NOvA's sensitivity to the neutrino oscillation parameters by improving our understanding of particle interactions and energy deposition in the NOvA detectors, with the hope of reducing the total systematic uncertainty by about 10\% \cite{NOVA-doc-33012}.
+ 
+Specifically, Test Beam allows us to study the response of tagged single particles as a function of their measured energies and compare it to the simulated prediction. It also enables us to determine the energy resolution and the absolute energy scale of these particles. Additionally, we are able to compare the response of beam and cosmic ray muons, to study fibre attenuation, or to validate the entire NOvA calibration process. Test Beam detector was also equipped with a combination of near and far detector readout electronics and filled with a variety of NOvA scintillator oils, which makes it possible to make a comparison of their responses \cite{NOVA-doc-15750}.
 
-\iffalse
-Test Beam seeks to improve NOvA's sensitivity to the neutrino oscillation parameters by improving our understanding of particle interactions and energy deposition in the NOvA detectors and therefore reducing the total systematic uncertainty by $\sim10\%$ [docdb:33012].
+All the aforementioned benefits of running the NOvA Test Beam experiment require, or benefit from, the Test Beam detector calibration.
 
-TO DO:
-\begin{itemize}
-\item Divide the motivation to abstract (why do we care about test beam calibration, what did we do and how did we do it. What are the results)
-\item and introduction (brief history of test beam calibration, maybe a bit more detail into why is test beam calibration imporant)
-\end{itemize}
-
-History of TB calibration. What led to the final version of TB calibration. What can be done next. I think this could also be in the introduction?
-
-Why is Test Beam?
-"The idea, as with any test beam experiment, is to expose a detector to a beam of very well-characterized particles, so that we can improve our understanding of how the detector responds to such particles. We may find we are able to make improvements to our tools to better match what we see in the detector with how we reconstruct it. Or we may find we already do a pretty good job. Either way, with a full cross-comparison like this, we can be more confident in our analysis of the data and reduce the level of uncertainty we consider are associated with the relevant measured quantities. Ultimately, the aim will be to reduce the level of uncertainty on the neutrino oscillation analyses and to make even better, more accurate measurements of the Standard Model."%[https://cdcvs.fnal.gov/redmine/projects/novatestbeam/wiki/Introduction_to_Test_Beam_for_Analyzers]
-Why is Test Beam calibration done:
-\begin{itemize}
-\item To be able to directly compare TB to the standard detectors
-\item To be able to verify our calibration procedures using TB data
-\item To study the particle response as a function of energy 
-\item To determine an energy resolution
-\item To compare currently used energy scales to data and understand if we can use TB data for absolute energy scale in all NOvA detectors
-\end{itemize}
-
-[Mike's proceedings]
-Using these data, the Test Beam program will provide NOvA with a better understanding of the largest systematic uncertainties impacting the analyses, including the detector response, calibration, and hadronic and electromagnetic energy resolution.
+The Test Beam detector calibration was first pioneered by Kevin Moulder who adapted the NOvA calibration codebase for Test Beam and tested it on period 1 Test Beam data \cite{NOVA-doc-42700}. This was followed by Anna Hall who improved it and got the first usable calibration of the Test Beam detector based on the period 2 data \cite{NOVA-doc-50786}. Lastly, Rober Kralik took over and finished the Test Beam calibration with all Test Beam data and a new simulation in 2023 \cite{NOVA-doc-59024}.
 
 %Only considering improvement in the calibration systematic uncertainty, the NOvA Test Beam program can reduce the overal systematic uncertainty for the main NOvA measurements by about 10\% [docdb:33012] (talk also contains a list of other talks on impact of TB in different NOvA areas). For DeltaM2: By increasing exposure, total syst. error decreases by (+) 18.5% (-) 25%; By increasing exposure and reducing calib systs., total syst. error decreases by: (+) 26% (-) 32%; Difference between the above (reducing calib systs. with large exposure): (+) 9.6% (-) 9.4%. For sin2Th23: Difference by reducing calib syst.: (+) 10.8% (-) 9.4%.
 %Statement: “The NOvA Test Beam will improve the total systema6c error on the final measurement of the oscilla6on parameters Dm232 and sin2Th23 by 10% from reduc6on of calibra6on systema6cs alone. Further, NOvA analyses will benefit from the detailed understanding of detector response to hadronic, electromagne6c, and muon energy provided by the Test Beam, which will be essen6al to solidify understanding of systema6cs, uncover poten6ally new uncertain6es, tune the simula6on modeling, and improve reconstruc6on and PID algorithms.”
 %Potential Test Beam impacts: Check modeling of hadronic interacOons in detector (check GEANT systemaOcs), Using Test Beam data as “single-parOcle MC” to train CVN prong-like algorithms, GeneraOve Adversarial Networks for MC improvements using Test Beam data, Check ND calibraOon procedure to try and understand causes of 3-5% discrepancy between data and MC for muons and protons  (Birks suppression measurement), Data/MC comparisons of observed and clustered visible energy to improve dead material correcOons and energy esOmators, Acquire beier understanding of gain and photon transport, aienuaOon, Cherenkov light modeling, [DifferenOal] charged pion and proton cross secOon measurements would be extremely useful!, CalibraOng with test beam muons vs. cosmic muons (differences between horizontal vs. verOcal muons? - possibly shed “light” on the calib shape uncertainty), Study path length inside cell, take beam data with non-orthogonal incidence, Cross-check pi0 invariant mass reconstrucOon and Michel tagging efficiency/spectra, Use neutron source to study modeling of neutron capture (I don't think this was done in the end...), Playing with different GEANT physics lists to boost our confidence in the MC (pions? neutrons?)
 
-%[docdb:25074 - The NOvA Test Beam program paper for DOE] Improvements which enable these physics milestones include reduction of the experiment systematic uncertainties of which many are related to the energy calibration of the detector... Achieving 3sigma CP sensitivity requires all of the above factors; a failure to reduce systematic uncertainties puts this opportunity out of reach. The NOvA test beam effort will provide tagged electron, muon, pion, and proton beams which will enable a detailed understanding of the detector’s muon energy scale, electromagnetic and hadronic response in addition to providing real data for the detailed study of particle identification techniques. Muon energy scale, hadron energy scale, and scintillation model uncertainties combine to contribute 90% of the total systematic error budget for sin2 th23 and would directly benefit from test beam data. A reduction by half would keep them comparable to the final statistical precision of the experiment. Recent oscillation analyses have had to account for large differences between data and simulation in the hadronic energy recorded in the near detector through changes to the detector response and neutrino cross-sections. Our calibration systematic uncertainty is dominated by a 5% difference between the calibrated detector response for muons and protons. Energy calibration and detector response contribute 50% of the total systematic error in electron neutrino appearance. Improved understanding of the detector response will help factor the product (flux × cross-section × detector response) improving future cross-section measurements. The most important impact on the electron-neutrino appearance measurement will likely be the opportunity to verify and improve particle identification algorithms.
+%[docdb:15750 - NOvA Test Beam task force report]: The test beam program was included in the NOvA proposal [1] and was considered as an essential part of the experiment since its inception. Primary goals are oriented toward measurements of detector response to different particles with a range of momenta most relevant to NOvA beam physics studies, establishing of the absolute and relative energy scale of both NOvA detectors, and validating detailed and fast detector simulations code. [List all possible desired studies with Test Beam copied below] Two 31-layer 2 × 2 blocks, with approximate dimensions of 2.6 × 2.6 × 4 m3 were produced at the Minnesota factory before its shutdown (as a comparison, the 3 × 3 NOvA ND has 6 × 32 layers). In addition, 96 1 × 1 layers, with approximate total dimensions of 1.3 × 1.3 × 6.2 m3 were produced. Both 2 × 2 blocks and all the 1 × 1 layers were leak-tested. The 2 × 2 blocks are currently stored at the MINOS surface building, while the 1 × 1 layers are stored at the CDF building(?). The proposed detector to be deployed for the test beam run consists of the two 2 × 2 blocks. The NDOS decommissioning yielded 25000 gallons of scintillator. Since storage available is limited to 12000 gallons, it was decided to blend most of the 5000 gallons of existing ND/FD scintillator with the NDOS scintillator. 200 gallons of ND/FD scintillator, which has a slightly higher photon yield, are reserved for special studies. We also plan to reuse the NDOS secondary containment tub to provide oil+scintillator containment in case the test beam detector undergoes a catastrophic structural failure. Based on MINERvA’s experience, it is anticipated that two months of data taking would provide the necessary samples to carry out the test beam objectives.
 
-%[docdb:15750 - NOvA Test Beam task force report]: The test beam program was included in the NOvA proposal [1] and was considered as an essential part of the experiment since its inception. rimary goals are oriented toward measurements of detector response to different particles with a range of momenta most relevant to NOvA beam physics studies, establishing of the absolute and relative energy scale of both NOvA detectors, and validating detailed and fast detector simulations code. [List all possible desired studies with Test Beam copied below] Two 31-layer 2 × 2 blocks, with approximate dimensions of 2.6 × 2.6 × 4 m3 were produced at the Minnesota factory before its shutdown (as a comparison, the 3 × 3 NOvA ND has 6 × 32 layers). In addition, 96 1 × 1 layers, with approximate total dimensions of 1.3 × 1.3 × 6.2 m3 were produced. Both 2 × 2 blocks and all the 1 × 1 layers were leak-tested. The 2 × 2 blocks are currently stored at the MINOS surface building, while the 1 × 1 layers are stored at the CDF building(?). The proposed detector to be deployed for the test beam run consists of the two 2 × 2 blocks. The NDOS decommissioning yielded 25000 gallons of scintillator. Since storage available is limited to 12000 gallons, it was decided to blend most of the 5000 gallons of existing ND/FD scintillator with the NDOS scintillator. 200 gallons of ND/FD scintillator, which has a slightly higher photon yield, are reserved for special studies. We also plan to reuse the NDOS secondary containment tub to provide oil+scintillator containment in case the test beam detector undergoes a catastrophic structural failure. Based on MINERvA’s experience, it is anticipated that two months of data taking would provide the necessary samples to carry out the test beam objectives.
-\begin{itemize}
-\item Hadronic response and comparison with MC modeling
-\begin{itemize}
-\item response as a function of energy
-\item establishing of an absolute energy scale
-\item determination of energy resolution
-\item studies of topological features and resolution
-\begin{itemize}
-\item pion tracking and showers
-\item proton tracking and showers
-\end{itemize}
-\item studies of timing features and resolution
-\end{itemize}
-\item Electromagnetic response and comparison with MC modeling
-\begin{itemize}
-\item response as a function of energy
-\item establishing of an absolute energy scale
-\item determination of energy resolution
-\item studies of topological features and resolution
-\begin{itemize}
-\item electron signatures
-\item gamma signatures
-\end{itemize}
-\item studies of timing features and resolution
-\item studies of $\pi^0$ from $\pi^-$ charge-exchange
-\end{itemize}
-\item Muon response and comparison with MC modeling
-\begin{itemize}
-\item comparison with detailed optical simulations
-\item determination of energy resolution
-\item studies of topological features and resolution
-\item cross-talk studies
-\item comparison to cosmic ray muons (requires a special trigger)
-\item studies of the muon calibration protocol
-\end{itemize}
-\item Light yield and response studies as a function of particle type and detector configuration
-\begin{itemize}
-\item understanding the Cherenkov light contribution
-\item vertical and horizontal responses and comparison with simulations
-\item data with selected planes rotated by 45 and 90 degrees
-\item slanted (angle) plane response (and subset of programs as above)
-\item fiber attenuation studies
-\item Birks’ constant studies
-\end{itemize}
-\item Near / Far readout comparison
-\item Gather large libraries of particles at known energies and multiple angles of incidence to help develop a CNN prong ID. Also allows training of a particle-based CVN-like PID.
-\end{itemize}
+%Also use information from:
+%\begin{itemize}
+%\item NOvA Test Beam Technical Statement of Work
+%\item NOvA Test Beam program (paper for DOE) [docdb:25074]
+%\item NOvA Test Beam task force report [docdb:15750]
+%\item Overview presentation of NOvA Test Beam [docdb:20495]
+%\item Test Beam support document [docdb:22172]
+%\item NOvA Test Beam program proceedings [docdb:55808]
+%\end{itemize}
 
-Also use information from:
-\begin{itemize}
-\item NOvA Test Beam Technical Statement of Work
-\item NOvA Test Beam program (paper for DOE) [docdb:25074]
-\item NOvA Test Beam task force report [docdb:15750]
-\item Overview presentation of NOvA Test Beam [docdb:20495]
-\item Test Beam support document [docdb:22172]
-\item NOvA Test Beam program proceedings [docdb:55808]
-\end{itemize}
-
-Mike's proceedings from ICHEP 2020 \cite{WallbankProceedingsICHEP2020}.
-\fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%
@@ -167,13 +97,13 @@ The NOvA Test Beam detector is a scaled down version of the near and far detecto
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=.7\textwidth]{Plots/TestBeamDetectorWithArrows.png}
-\caption{Comparison of Test Beam detector scale to the Near and Far NOvA detectors (and a man, giraffe, or Mary Poppins). Also shown are the Test Beam beamline detectors and components (not to scale), with arrows showing the direction of the beam. The three black arrows show the orientation fo the detector coordinate system.}
+\caption{Comparison of Test Beam detector scale to the Near and Far NOvA detectors (and a man, giraffe, or Mary Poppins). Also shown are the Test Beam beamline detectors and components (not to scale), with arrows showing the direction of the beam. The three black arrows show the orientation of the detector coordinate system.}
 \label{figTBDetector}
 \end{figure}
 
 %Should I aslo talk about the beam halo? Could that have an influence on the calibration? Maybe it's the peaks in the cosz distribution?
 
-The Test Beam detector started with commissioning runs in May 2019 and ran, with an exception of regular summer shutdowns, until July 2022, after which it was decomissioned. The Test Beam data periods are:
+The Test Beam detector started with commissioning runs in May 2019 and ran, with an exception of regular summer shutdowns, until July 2022, after which it was decommissioned. The Test Beam data periods are:
 \begin{table}[!ht]
 \centering
 \def\arraystretch{1.4}
@@ -192,17 +122,19 @@ Majority of the Test Beam detector and its instrumentation is identical to the o
 %[docdb:15750 - NOvA Test Beam task force report]: The test beam program was included in the NOvA proposal [1] and was considered as an essential part of the experiment since its inception. The main tangible result of these initial plans and later discussions was a production of special small extrusion modules, made at the end of the modules production stage, as possible components of a future test beam detector. In fact, this production followed and was based on initial simulations of a possible test beam experiment [5].
 
 \subsubsection*{General parameters}
-The NOvA Test Beam detector consists of two 31-plane blocks, each beginning and ending with a vertical plane, with an additional horizontal plane glued inbetween them to preserve the alternating pattern \cite{NOVA-doc-29543}. Each plane consists of 2 modules side-by-side, both made up of 32 cells. Each cell is $2.6\,\unit{m}$ long with an inner (without the PVC) depth and width of $5.9\,\unit{cm}$ and $3.8\,\unit{cm}$ respectively, same as for the other NOvA detectors. This brings the final dimensions of the Test Beam detector to 63 planes $\times$ 64 cells, or $2.6\times 2.6\times 4.1\,\unit{m^3}$.
+The NOvA Test Beam detector consists of two 31-plane blocks, each beginning and ending with a vertical plane, with an additional horizontal plane glued in-between them to preserve the alternating pattern \cite{NOVA-doc-29543}. Each plane consists of 2 modules side-by-side, both made up of 32 cells. Each cell is $2.6\,\unit{m}$ long with an inner (without the PVC) depth and width of $5.9\,\unit{cm}$ and $3.8\,\unit{cm}$ respectively, same as for the other NOvA detectors. This brings the final dimensions of the Test Beam detector to 63 planes $\times$ 64 cells, or $2.6\times 2.6\times 4.1\,\unit{m^3}$.
 
 The 63 planes are numbered from 0 to 62, with even numbers corresponding to vertical planes and odd numbers to horizontal planes. Cells are numbered 0 to 63, going from bottom to top for horizontal planes and left to right, when facing the front of the detector, for vertical planes.
 
-The detector coordinate system is illustrated on figure \ref{figTBDetector}. It is centered with $\left(0,0,0\right)$ in the centre of the first plane \cite{NOVA-doc-58388}. The x axis runs left to right when facing the front of the detector, y axis bottom to top, and z axis goes along the beam direction from front to the back of the detector. Position within each cell ($w$) is aligned with the x (y) axis for the horizontal (vertical) cells, with $w=0$ centered in the middle of each cell. The exact geometry of the Test Beam detector was neasured in several alignment surveys and is saved in gdml files \cite{NOVA-doc-57955}.
+The detector coordinate system is illustrated on figure \ref{figTBDetector}. It is centred with $\left(0,0,0\right)$ in the centre of the first plane \cite{NOVA-doc-58388}. The x axis runs left to right when facing the front of the detector, y axis bottom to top, and z axis goes along the beam direction from front to the back of the detector. Position within each cell ($w$) is aligned with the x (y) axis for the horizontal (vertical) cells, with $w=0$ centred in the middle of each cell. The exact geometry of the Test Beam detector was measured in several alignment surveys and is saved in gdml files \cite{NOVA-doc-57955}.
 
-In the past we encountered an issue when trying to align the Test Beam detector with the beamline measurements by rotating the detector. This broke several assumptions within the Test Beam geometry \cite{NOVA-doc-58388} and manifested as uncalibrated cells in the back of the detector \cite{NOVA-doc-57516-v2}. This was fixed by realigning both the detector and the beamline separately, based on the last alignment survey, measured during the decomissioning of the detector. We implemented the fix in the production tag R23-04-05-testbeam-production.a \cite{NOVA-doc-58388}.
+In the past we encountered an issue when trying to align the Test Beam detector with the beamline measurements by rotating the detector. This broke several assumptions within the Test Beam geometry \cite{NOVA-doc-58388} and manifested as uncalibrated cells in the back of the detector \cite{NOVA-doc-57516-v2}. This was fixed by realigning both the detector and the beamline separately, based on the last alignment survey, measured during the decommissioning of the detector. We implemented the fix in the production tag R23-04-05-testbeam-production.a \cite{NOVA-doc-58388}.
 
 %FD: maxPlane=900, maxCell=390. ND: maxPlane=220, maxCell=100. TB: maxPlane=63, maxCell=64
 
 \subsubsection*{Scintillator}
+%[TB task force report]: The NDOS decommissioning yielded 25000 gallons of scintillator. Since storage available is limited to 12000 gallons, it was decided to blend most of the 5000 gallons of existing ND/FD scintillator with the NDOS scintillator. 200 gallons of ND/FD scintillator, which has a slightly higher photon yield, are reserved for special studies. We also plan to reuse the NDOS secondary containment tub to provide oil+scintillator containment in case the test beam detector undergoes a catastrophic structural failure.
+
 The Test Beam detector is filled with several different versions of the NOvA scintillator oil, which differ mainly in the way they were stored since the filling of the near and far detectors. This is illustrated on figure \ref{figScintillators}.
 
 \begin{figure}[!ht]
@@ -222,7 +154,7 @@ The scintillator oils used in the Test Beam detector are:
 \fi
 %The original plan \cite{NOVA-doc-34196} was to use the tanker and tank scinitillator for the entire Test Beam detector. However, due to extreme cloudeness of the scintillaotr in the tanks 
 
-The original plan \cite{NOVA-doc-34196} was to use the scintillator from a tanker and one of the tanks located outside at Fermilab. First tests showed acceptable results and the tanker oil was used to fill out almost the entirety of the first block of the detector (first 32 planes) \cite{NOVA-doc-38349}. However, when we loaded the oil from tank two into the tanker, it became extremely cloudy and unusable, possibly due to contamination with water accumulated at the bottom of the tanks, which was mixed with oil by the pump. The rest of the first block was the topped up with high quality scintillator from NDOS, which has been stored inside in barelles at MiniBooNE \cite{NOVA-doc-33012}. This is labeled as "Fermilab ND+NDOS oil" on figure \ref{figScintillators}.
+The original plan \cite{NOVA-doc-34196} was to use the scintillator from a tanker and one of the tanks located outside at Fermilab. First tests showed acceptable results and the tanker oil was used to fill out almost the entirety of the first block of the detector (first 32 planes) \cite{NOVA-doc-38349}. However, when we loaded the oil from tank two into the tanker, it became extremely cloudy and unusable, possibly due to contamination with water accumulated at the bottom of the tanks, which was mixed with oil by the pump. The rest of the first block was the topped up with high quality scintillator from NDOS, which has been stored inside in barrels at MiniBooNE \cite{NOVA-doc-33012}. This is labelled as "Fermilab ND+NDOS oil" on figure \ref{figScintillators}.
 
 %NDOS+ND scin3llator were stored in MEast tank farm in translucent tanks open to the atmosphere in 2016 [docdb:41229]
 %docdb:41229 actually contains a pretty good description of the whole story
@@ -261,7 +193,7 @@ Unlike the near and the far detector, the Test Beam detector does not have any o
 %Placed in the Fermilab Test Beam Facility with no overburden. Describe environmental controls, temperature dependence etc. Maybe add plots from environmental control (temperature differences etc.) with descriptions of where were the readings taken.
 
 \subsubsection*{Underfilled cells issue}
-The Test Beam detector is slightly tilted around the Z axis by about 0.7$^{\circ}$ towards the readout. This caused the top cells of both modules of all the horizontal planes (cells 31 and 63) to be underfilled, creating an air bubble on the left side of the detector and severly affecting the energy response in those cells \cite{TeresaThesis}. This has been fixed \cite{NOVA-doc-49439} during the period 3 running by adding extensions to the filling ports and overfilling the horizontal cells with the NDOS scintillator stored. 
+The Test Beam detector is slightly tilted around the Z axis by about 0.7$^{\circ}$ towards the readout. This caused the top cells of both modules of all the horizontal planes (cells 31 and 63) to be underfilled, creating an air bubble on the left side of the detector and severely affecting the energy response in those cells \cite{TeresaThesis}. This has been fixed \cite{NOVA-doc-49439} during the period 3 running by adding extensions to the filling ports and overfilling the horizontal cells with the NDOS scintillator stored. 
 %This scintillator was also used in the first half of the detector (Fermilab ND+NDOS oil on figure \ref{figScintillators}), but is different from the "Ash River oil" used in part of the second half of the detector (bright part of figure \ref{figScintillators}). The overfilling was done in April 2021 in 3 stages in between the full operation of the Test Beam detector.
 
 %The detector is tilted around z axis towards the readout by about 0.7 degrees (the largest tilt is for the 11th plane of 0.79330 degrees. The ND has an oposite tilt of -0.2515 degrees on average (but also the readout is on the opposite side, so is it actually the same tilt?). Correcting this by 8 degrees would require lifting the east edge by at least 3.66cm, or to correct it to the ND tilt by lifting the east edge by 4.17cm. [docdb:47491 - this is the original talk by Teresa explaining the tilt on 21st Sep 2020]
@@ -289,7 +221,7 @@ Test Beam is following the same ideas and procedures as the standard NOvA calibr
 The purpose of calibration is to make sure that we get the same amount of energy wherever or whenever it's deposited in whichever of NOvA's detectors and to express this energy in physical units. The NOvA calibration uses cosmic ray muons, which provide a consistent, abundant and well-understood source of energy deposition and consists of two closely connected parts \cite{NOVA-doc-7410}:
 \begin{enumerate}
 \item The \textbf{relative calibration} corrects for attenuation of scintillator light as it travels through the cell to the readout, as well as for differences between detector cells.
-\item This is followed by the \textbf{absolute calibration}, which only uses stopping muons when they are minimum ionising particles and calculates a scale between the measured charge readout, corrected by the relative calibration, and the simulated energy deposition in physical units of $\unit{MeV}$. This scale is calculated for each time period and each detector separately, which ensures the energy deposition is directly comparable wherever or whenever it occured.
+\item This is followed by the \textbf{absolute calibration}, which only uses stopping muons when they are minimum ionising particles and calculates a scale between the measured charge readout, corrected by the relative calibration, and the simulated energy deposition in physical units of $\unit{MeV}$. This scale is calculated for each time period and each detector separately, which ensures the energy deposition is directly comparable wherever or whenever it occurred.
 \end{enumerate}
 
 There is also \textbf{timing calibration}, which corrects for the time differences of the signal to be processed and is done as a separate project to the relative and absolute calibrations and is out of scope of this technical note \cite{NinerThesis}.
@@ -314,7 +246,7 @@ where ADCScale is 217000 for FEBv4.1 and 204800 for FEBv5.2.
 
 %The PECorr scaling is 75.0 (NDOS), 37.51 (ND), 39.91 (FD) and 39.91 (TB)
 
-The units and varibales used to define energy deposited in NOvA detectors are listed in table \ref{tabCalibrationVars}:
+The units and variables used to define energy deposited in NOvA detectors are listed in table \ref{tabCalibrationVars}:
 \begin{table}[!ht]
 \centering
 \def\arraystretch{1.4}
@@ -323,7 +255,7 @@ ADC & The digitized charge collected by the APDs from the \textbf{A}nalog to \te
 PE & Number of \textbf{P}hoto \textbf{E}lectrons. Calculated by a simple rescaling of the best estimate of the peak ADC. The PE per ADC scale only depends on the FEB type and the APD gain settings. This is technically done before the calibration and serves as the base unit for calibration.\\
 PECorr & \textbf{Corr}ected \textbf{PE} after applying the relative calibration results. The correction is a ratio between an average energy response (a pre-determined semi-arbitrary number) and the result of the the relative calibration fit (also called attenuation fit), which depends on w, cell, plane, epoch and detector. This makes the energy response equivalent across each detector.\\
 MEU & \textbf{M}uon \textbf{E}nergy \textbf{U}nit is the mean detector response to a stopping cosmic minimum ionising muon.  Mean MeV/cm or mean PECorr/cm\\
-MeV & Estimated energy deposited in the scintiallator calculated from PECorr using the results of the absolute calibration. Additional correction for dead material needs to be made in order to get a calorimetric energy estimate.
+MeV & Estimated energy deposited in the scintillator calculated from PECorr using the results of the absolute calibration. Additional correction for dead material needs to be made in order to get a calorimetric energy estimate.
 \end{tabular}
 \caption{Definitions of variables commonly used in calibration \cite{NOVA-doc-13579,NOVA-doc-7410}.}
 \label{tabCalibrationVars}
@@ -351,7 +283,7 @@ where both the relative calibration results (blue fraction) and the absolute cal
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CalibrationFlowChart.png}
-\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration proces (red border), which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
+\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration process (red border), which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
 \label{figCalibrationFlowchart}
 \end{figure}
 
@@ -371,7 +303,7 @@ To select good quality cosmic ray muons we first remove beam related events base
 \label{figRemoveBeamSpill}
 \end{figure}
 
-Since energy deposition in a cell depends on the pathlength the particle traveled through the cell, we only use hits for which we can reliably calculate their pathlength. We call these hits \textbf{tricell} hits, as we require that all accepted hits also have a recorded hit in both neighboring cells of the same plane, as shown on figure \ref{figTricellCondition}. In case there's a bad channel in a neighboring cell, we ignore this channel and look one cell further. We can then calculate the pathlength simply as the cell width divided by the cosine of the direction angle \cite{NOVA-doc-13579,NOVA-doc-7410}.
+Since energy deposition in a cell depends on the path length the particle travelled through the cell, we only use hits for which we can reliably calculate their path length. We call these hits \textbf{tricell} hits, as we require that all accepted hits also have a recorded hit in both neighbouring cells of the same plane, as shown on figure \ref{figTricellCondition}. In case there's a bad channel in a neighbouring cell, we ignore this channel and look one cell further. We can then calculate the path length simply as the cell width divided by the cosine of the direction angle \cite{NOVA-doc-13579,NOVA-doc-7410}.
 
 \begin{figure}[hbtp]
 \centering
@@ -385,7 +317,7 @@ Since energy deposition in a cell depends on the pathlength the particle travele
 \includegraphics[width=0.6\textwidth]{Plots/TricellConditionWithBadChannel.png}
 \caption{}
 \end{subfigure}
-\caption{Illustration of the tricell condition (a). We only use hits that have two surrounding hits in the same plane to be used in the NOvA calibration. This is to ensure a good quality of the pathlength (d) reconstruction, which is calculated from the known cell height (h) and the reconstructed track angle $\left(\varphi\right)$. In case the hit is next to a bad channel (b), we ignore this bad channel and require a hit in the next cell over.}
+\caption{Illustration of the tricell condition (a). We only use hits that have two surrounding hits in the same plane to be used in the NOvA calibration. This is to ensure a good quality of the path length (d) reconstruction, which is calculated from the known cell height (h) and the reconstructed track angle $\left(\varphi\right)$. In case the hit is next to a bad channel (b), we ignore this bad channel and require a hit in the next cell over.}
 \label{figTricellCondition}
 \end{figure}
 
@@ -405,11 +337,11 @@ For each data period/epoch and each simulation version we create two calibration
 \item pcliststop = pclist files only containing stopping muons used for the absolute calibration 
 \end{itemize}
 
-\subsubsection*{Fiber brightness}
+\subsubsection*{Fibre brightness}
 
-For data, the relative calibration is done for each individual cell in each plane to properly account for any potential variations. Therefore we have to repeat the attenuation fit $N_{cell}\times N_{plane}$ times. However, generating enough simulated events would be very computationaly intensive. Additionally, we can assume that the simulated detector is approximately uniform plane to plane. Therefore, for simulation, we want to \textit{consolidate} the detector planes and only consider variation in the two views and their cells, so repeat the fit $N_{cell}\times N_{view}$ times \cite{NOVA-doc-13579-SAAttenuationAndThreshold,NOVA-doc-34909}.
+For data, the relative calibration is done for each individual cell in each plane to properly account for any potential variations. Therefore we have to repeat the attenuation fit $N_{cell}\times N_{plane}$ times. However, generating enough simulated events would be very computationally intensive. Additionally, we can assume that the simulated detector is approximately uniform plane to plane. Therefore, for simulation, we want to \textit{consolidate} the detector planes and only consider variation in the two views and their cells, so repeat the fit $N_{cell}\times N_{view}$ times \cite{NOVA-doc-13579-SAAttenuationAndThreshold,NOVA-doc-34909}.
 
-There are some variations in the detector response cell by cell, that can be caused by different fiber brightnesses, but also by different qualities of the scintillator, air bubbles, APD gains, looped or zipped fibers and potentially others. To emulate these differences in the simulation without the need to simulate every cell individually and properly, we divide all the cells of each detector into 12 brightness bins, as shown on figure \ref{figFiberBrightnessBins}. These bins describe the relative differences in the detector response between individual cells \cite{NOVA-doc-34909}. Therefore in the end, for simulation we perform the attenuation fit in the $N_{view}\times N_{fiber brightness bin}\times N_{cell}$ phase space.
+There are some variations in the detector response cell by cell, that can be caused by different fibre brightnesses, but also by different qualities of the scintillator, air bubbles, APD gains, looped or zipped fibres and potentially others. To emulate these differences in the simulation without the need to simulate every cell individually and properly, we divide all the cells of each detector into 12 brightness bins, as shown on figure \ref{figFiberBrightnessBins}. These bins describe the relative differences in the detector response between individual cells \cite{NOVA-doc-34909}. Therefore in the end, for simulation we perform the attenuation fit in the $N_{view}\times N_{fiber brightness bin}\times N_{cell}$ phase space.
 
 %Do I need to describe here how we do it or is it enough if I just say that we do?
 %To divide the detector into brightness bins, we use the results of the attenuation fit and look at the fitted response at cell centre, which should represent the average response in that cell. Then we normalize the 
@@ -425,7 +357,7 @@ There are some variations in the detector response cell by cell, that can be cau
 \centering
 \includegraphics[width=\textwidth]{Plots/BrightnessIndexToValue.pdf}
 \end{subfigure}
-\caption{The Test Beam detector is (like the standard NOvA detectors) divided into 12 brightness bins (left plot), each representing a relative difference in energy response (right plot) due to different brightnesses of the fibers, scintillators, or readout.}
+\caption{The Test Beam detector is (like the standard NOvA detectors) divided into 12 brightness bins (left plot), each representing a relative difference in energy response (right plot) due to different brightnesses of the fibres, scintillators, or readout.}
 \label{figFiberBrightnessBins}
 \end{figure}
 
@@ -433,7 +365,7 @@ TO DO: describe how do we create the brightness file
 
 \subsubsection*{Threshold and shielding correction}
 
-Energy deposited far away from the readout may get attenuated enough to be shifted below the threshold. These low energy depositions would be mising from the attenuation fit, biasing it towards larger light levels going away from the readout. A similar effect, specifically for the vertical cells, is caused by using cosmic muons for calibration. The top of the detector effectively shields the bottom of the detector, skewing the energy distribution of cosmic muons. To correct for both of these effect, we use simulation to calculate the threshold and shielding (also called threshold and shadowing) correction by comparing the true and reconstructed information. We apply this correction before the attenuation fits \cite{NOVA-doc-13579-SAAttenuationAndThreshold}.
+Energy deposited far away from the readout may get attenuated enough to be shifted below the threshold. These low energy depositions would be missing from the attenuation fit, biasing it towards larger light levels going away from the readout. A similar effect, specifically for the vertical cells, is caused by using cosmic muons for calibration. The top of the detector effectively shields the bottom of the detector, skewing the energy distribution of cosmic muons. To correct for both of these effect, we use simulation to calculate the threshold and shielding (also called threshold and shadowing) correction by comparing the true and reconstructed information. We apply this correction before the attenuation fits \cite{NOVA-doc-13579-SAAttenuationAndThreshold}.
 
 %Should I write anything more? Maybe about how do we calculate this more specifically, or that it's done for view X fb bin X cell X w
 
@@ -451,12 +383,12 @@ Relative calibration aims to create a fit, called \textit{attenuation fit}, to t
  
 To create the attenuation fit we follow the following procedure \cite{NOVA-doc-7410}:
 \begin{enumerate}
-\item Create \textit{attenuation profiles}, which are profile histograms of detector response in terms of energy deposited per pathlength (PE/cm) as a function of position in the cell (w) through each cell for all planes. We construct the attenuation profiles over a little wider range than the actual length of the cell and alway with 100 bins for each detector. This means that smaller detectors, like the Test Beam detector, have a finer binning ($\sim 3\unit{cm}$/bin) compared to the Far Detector ($\sim 18\unit{cm}$/bin).
-\item Analyse the attenuation profiles. The job to create the attenuation profiles also creates validation histograms, which should be analyzed prior to performing the attenuation fit to make sure the attenuation profiles look as expected.
+\item Create \textit{attenuation profiles}, which are profile histograms of detector response in terms of energy deposited per path length (PE/cm) as a function of position in the cell (w) through each cell for all planes. We construct the attenuation profiles over a little wider range than the actual length of the cell and always with 100 bins for each detector. This means that smaller detectors, like the Test Beam detector, have a finer binning ($\sim 3\unit{cm}$/bin) compared to the Far Detector ($\sim 18\unit{cm}$/bin).
+\item Analyse the attenuation profiles. The job to create the attenuation profiles also creates validation histograms, which should be analysed prior to performing the attenuation fit to make sure the attenuation profiles look as expected.
 \item Apply the threshold and shielding correction that were created using the simulation pclist sample before the relative calibration.
 \item Do the attenuation fit over the full length of each cell. The fit consists of
 \begin{enumerate}
-\item exponential fit, which combines two cases. Light from the energy deposition traveling straight to the readout, or going the opposite direction, looping around the cell and then to the readout. The fitted function has a form:\\
+\item exponential fit, which combines two cases. Light from the energy deposition travelling straight to the readout, or going the opposite direction, looping around the cell and then to the readout. The fitted function has a form:\\
 \begin{equation}
 y=C+A\left(\exp\left(\frac{w}{X}\right)+\exp\left(-\frac{L+w}{X}\right)\right),
 \end{equation}
@@ -464,7 +396,7 @@ where $y$ is the response, $L$ is the length of the cell and $C$, $A$ and $X$ ar
 \item To remove the effect of residuals, mainly at the end of cells, we smooth out the residuals from the exponential fit with LOcally WEighted Scatter plot Smoothing (LOWESS).
 \end{enumerate}
 \item Check the plots of the attenuation fit for a selection of cells.
-\item Save the fit result to the databese in the form of two csv tables. The \textit{calib\_atten\_consts.csv} table holds the results of the exponential fit, together with the final $\chi^2$ of the fit. The \textit{calib\_atten\_points.csv} table holds the results of the LOWESS smoothing.
+\item Save the fit result to the database in the form of two csv tables. The \textit{calib\_atten\_consts.csv} table holds the results of the exponential fit, together with the final $\chi^2$ of the fit. The \textit{calib\_atten\_points.csv} table holds the results of the LOWESS smoothing.
 \end{enumerate}
 
 To ensure the quality of the attenuation fit, we only apply the results if the final $\chi^2<0.2$. If $\chi^2>0.2$ we ignore the results for this cell and mark it as \textit{uncalibrated}.
@@ -485,7 +417,7 @@ To ensure the quality of the attenuation fit, we only apply the results if the f
 
 \subsection{Absolute calibration}
 
-To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are minimum ionising particels and their energy deposition is almost constant and well understood. We take a mean of their corrected deposited energy separate for each view and for each calibrated sample. We then take the average over the two views to get the final $\textsf{MEU}_{reco} \unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
+To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are minimum ionising particles and their energy deposition is almost constant and well understood. We take a mean of their corrected deposited energy separate for each view and for each calibrated sample. We then take the average over the two views to get the final $\textsf{MEU}_{reco} \unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
 
 From simulation we get the mean of the true energy deposited in scintillator $\textsf{MEU}_{truth} \unit{MeV/cm}$ for the same sample of stopping muons. We ignore the energy that's lost in the dead material (PVC extrusions) and deal with it separately. The absolute energy scale for each sample is then the ratio of $\textsf{MEU}_{truth}/\textsf{MEU}_{reco}$. We save these absolute energy scales in another csv table called \textit{calib\_abs\_consts.csv} which stores the $\textsf{MEU}$ values and their errors.
 
@@ -509,10 +441,10 @@ As part of the absolute calibration we also produce validation plots that show t
 From Calibration\_Meta\_READFIRST.pdf:
 Validations	of any calibration correction take the same basic form:
 \begin{enumerate}
-\item What deficency are you correcting for? (For Test Beam this would be the difference between the different scintillators, also the faulty FEBs, distribution of w is not flat, especially in the overfilled cells. The energy response between the different cells and planes is not the same. Maybe I should talk about this for each period separately when I have the calibhist plots which show the non-linearities. Also the PhotonTransport plots don't really show the PECorr but the PE/cm itself but with the fit!!!
+\item What deficiency are you correcting for? (For Test Beam this would be the difference between the different scintillators, also the faulty FEBs, distribution of w is not flat, especially in the overfilled cells. The energy response between the different cells and planes is not the same. Maybe I should talk about this for each period separately when I have the calibhist plots which show the non-linearities. Also the PhotonTransport plots don't really show the PECorr but the PE/cm itself but with the fit!!!
 \item What correction factors/scales have you found? Show them in plot form. (This is basically the PhotonTransport plots for the relative calibration and the pecorrcm distributions for the absolute calibration)
 \item Now generate the same plots as in (1) but with the corrections applied. Technically this is the absolute calibration validation plots. Does this mean that the PE/cm plots from the absolute calibration should be/are exactly the same as the calibhist plots? Not entirely as those are only for the stopping muons, whereas the calibhist are for the through-going muons. Does it mean I should maybe generate the calibhist plots with the relative calibration applied?
-\item Ratios of plots in (3) to (1) to highlight any patterns or difficult-to-spot discrpancies between what we think should happen when the constants are applied, and what does happen. But what does this tell us? It's basically just an average of the attenuation correction...
+\item Ratios of plots in (3) to (1) to highlight any patterns or difficult-to-spot discrepancies between what we think should happen when the constants are applied, and what does happen. But what does this tell us? It's basically just an average of the attenuation correction...
 \end{enumerate}
 \fi
 
@@ -588,11 +520,11 @@ The calibration samples used for the Test Beam detector calibration are listed i
 \label{tabTBCalibrationDefinitions}
 \end{table}
 
-The calibration samples were originally created in keepups by the production, but due to a fix to the Test Beam geometry, most of them had to be reproduced in 2023.
+The calibration samples were originally created in keep-ups by the production, but due to a fix to the Test Beam geometry, most of them had to be reproduced in 2023.
 
-\subsection{Fiber Brightness}
+\subsection{Fibre Brightness}
 
-To divide the Test Beam detector into fiber brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brighness file. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correct represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results, for which $\chi^2<0.7$.
+To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brightness file. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correct represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results, for which $\chi^2<0.7$.
 
 %Describe and show plots that since we are only using the fitted response at cell centre we can allow fits with $\chi^2>0.2$. Show examples of responses with chisq larger than that and say what is the final chisq chosen. No need to show the final distribution of the fb bins here as they were technically shown in the general calibration description. But might refer back to it...
 
@@ -617,7 +549,7 @@ To divide the Test Beam detector into fiber brightness bins we used the attenuat
 
 %We originally used Teresa's calibration MC sample, but after we saw disagreement, we developed a new MC based off of the period 3 data, which we ended up using for both period 2 and period 3. For fibre brightness we are also using the same MC from period 3 data as it represents the detector in its best condition.
 
-We used a data-based simulation of cosmic muons for the Test Beam detector calibration. The details are described in the Data-based simulation of cosmic muons (not only) for calibration technote [link to docdb]. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fiber brightness file to inform the simulation on the realistice detector conditions.
+We used a data-based simulation of cosmic muons for the Test Beam detector calibration. The details are described in the Data-based simulation of cosmic muons (not only) for calibration technical note [link to docdb]. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fibre brightness file to inform the simulation on the realistic detector conditions.
 
 The distribution of events cosmic muon events from the new simulation is shown on figure \ref{figCalibhistSim}.
 
@@ -635,7 +567,7 @@ The results of the attenuation fit are shown for each cell (in its centre) on fi
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{Plots/CellResponseAtCentre_Prod4DataBasedSim_Limited.pdf}
-\caption{Overview of the attenuation fit results for the Teast Beam detector calibration simulation. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
+\caption{Overview of the attenuation fit results for the Test Beam detector calibration simulation. Each cell represents the result of the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \label{figCellCentreResponseSim}
 \end{figure}
 
@@ -661,7 +593,7 @@ There is only one cell in the middle of the detector that is left uncalibrated, 
 This is a much better result of the relative calibration (attenuation fit) for a simulation than the previous versions of Test Beam detector calibration simulations were able to accomplish.
 
 \subsection{Threshold and shielding corrections}
-The threshold and shielding correction for Test Beam is almost uniform across all cells as can be seen on figure \ref{figTBThresholdCorrections}. This is expected as the hight of the Test Beam detector is $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. The correction is basically just a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor doesn't change anything.
+The threshold and shielding correction for Test Beam is almost uniform across all cells as can be seen on figure \ref{figTBThresholdCorrections}. This is expected as the height of the Test Beam detector is $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. The correction is basically just a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor doesn't change anything.
 
 \begin{figure}[hbtp]
 \centering
@@ -688,7 +620,7 @@ TO DO: add a description of period 1 data
 
 \FloatBarrier
 \subsection{Period 2}
-The underfilled cells issue describe in section \ref{secTBDetector} was present throughout period 2 data taking. This can be clearly seen on figure \ref{figCalibhist_period2}, represented by the empty cells 31 and 63 in the horizontal planes, which were marked as bad channels and therefore ignored during processing. This also affects the neighboring cells to the underfilled cells, which have fewer events due to the tricell condition.
+The underfilled cells issue describe in section \ref{secTBDetector} was present throughout period 2 data taking. This can be clearly seen on figure \ref{figCalibhist_period2}, represented by the empty cells 31 and 63 in the horizontal planes, which were marked as bad channels and therefore ignored during processing. This also affects the neighbouring cells to the underfilled cells, which have fewer events due to the tricell condition.
 
 \begin{figure}[h]
 \centering
@@ -750,13 +682,13 @@ The results of the attenuation fit for period 2 are summarised on figure \ref{fi
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{Plots/CellResponseAtCentre_period2_Limited.pdf}
-\caption{Overview of the relative calibration results for the Teast Beam detector period 2 data. Each cell represents the result of the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
+\caption{Overview of the relative calibration results for the Test Beam detector period 2 data. Each cell represents the result of the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \label{figCellCentreResponsePeriod2}
 \end{figure}
 
 Most of the cells have the expected response, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}. Here the mean response in $\unit{PE/cm}$ slowly and approximately constantly rises towards the readout (right side of the plot) and drops down on the cell edges, marked with dashed lines.
 
-Some cells have a non-flat response across the cell, with one or more regions with lower energy response, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}. These low regions are (almost certainly) a real physical effect caused by zipped, or possibly even twisted fibers \cite{NOVA-doc-43249}, present in all of NOvA's detectors. Relative calibration corrects for this effect in data, but zipped fibers are not included in simulation, for any of the detectors. This could potentially cause issues with the ADC threshold in simulation.
+Some cells have a non-flat response across the cell, with one or more regions with lower energy response, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}. These low regions are (almost certainly) a real physical effect caused by zipped, or possibly even twisted fibres \cite{NOVA-doc-43249}, present in all of NOvA's detectors. Relative calibration corrects for this effect in data, but zipped fibres are not included in simulation, for any of the detectors. This could potentially cause issues with the ADC threshold in simulation.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -765,7 +697,7 @@ Some cells have a non-flat response across the cell, with one or more regions wi
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_022_035.png}
   \end{subfigure}
-  \caption{Attenuation fits for a selection of cells in period 2. Left plot shows an example of the standard energy deposition in the Test Beam. Right plot shows the effect of zipped fibers.}
+  \caption{Attenuation fits for a selection of cells in period 2. Left plot shows an example of the standard energy deposition in the Test Beam. Right plot shows the effect of zipped fibres.}
   \label{figAttenfitResultsPerio2_ZippedFibers}
 \end{figure}
 
@@ -793,7 +725,7 @@ Since the underfilled cells were marked as bad channels we didn't even attempt t
   \label{figAttenfitResultsPerio2_UnderfilledCellsPlane01}
 \end{figure}
 
-The left half of plane 55 has $>3\times$ larger response than it's surrounding planes, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. Similarly, the left half of plane 57 has lightly lower response than the surrounding planes, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. This is due to the corresponding APDs/FEBs faultly recording different energy response than the real energy deposited in the detector. Since this is present for all data, not only for the comsic muons used for calibration, it is important to correctly calibrate them. The issue can arrise if these FEBs have been "faulty" only for a limited time of the entire calibrated period. Since we are doing the attenuation fit on the profile histograms, if an FEB records a standard response for half of the time and $7\times$ larger response for the seconds half, calibration is going to assume the response was $4\times$ larger the entire time, which is incorrect. Since both of these planes are in the back of the detector, we decided to ignore this effect for period 2.
+The left half of plane 55 has $>3\times$ larger response than it's surrounding planes, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. Similarly, the left half of plane 57 has lightly lower response than the surrounding planes, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. This is due to the corresponding APDs/FEBs faultily recording different energy response than the real energy deposited in the detector. Since this is present for all data, not only for the cosmic muons used for calibration, it is important to correctly calibrate them. The issue can arise if these FEBs have been "faulty" only for a limited time of the entire calibrated period. Since we are doing the attenuation fit on the profile histograms, if an FEB records a standard response for half of the time and $7\times$ larger response for the seconds half, calibration is going to assume the response was $4\times$ larger the entire time, which is incorrect. Since both of these planes are in the back of the detector, we decided to ignore this effect for period 2.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -802,7 +734,7 @@ The left half of plane 55 has $>3\times$ larger response than it's surrounding p
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_057_011.png}
   \end{subfigure}
-  \caption{Fit to the energy response in period 2. Lower halfs of planes 55 and 57 have a different scale of energy response than the surrounding planes.}
+  \caption{Fit to the energy response in period 2. Lower halves of planes 55 and 57 have a different scale of energy response than the surrounding planes.}
   \label{figAttenfitResultsPerio2_FaultyFEB}
 \end{figure}
 
@@ -819,7 +751,7 @@ The swapped cables in plane 55 have almost no events, which affects both them an
   \label{figAttenfitResultsPerio2_SwappedCables}
 \end{figure}
 
-Several cells in the end of the Test Beam detector are uncalibrated due to bins on the edges of the cell having an unusually high response, or no events at all, as shown on figure \ref{figAttenfitResultsPerio2_CellEdge}. It is unknown if this is a real physical effect, possibly related to the fibers, or unfiltered noise hits, or something else entirely. Since these cells are in the end of the detector, it is safe to ignore them.
+Several cells in the end of the Test Beam detector are uncalibrated due to bins on the edges of the cell having an unusually high response, or no events at all, as shown on figure \ref{figAttenfitResultsPerio2_CellEdge}. It is unknown if this is a real physical effect, possibly related to the fibres, or unfiltered noise hits, or something else entirely. Since these cells are in the end of the detector, it is safe to ignore them.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -846,13 +778,13 @@ The underfilled cells were refilled (or overfilled) during the period 3 data tak
 \centering
 \def\arraystretch{1.4}
 \begin{tabular}{m{0.11\textwidth} m{0.22\textwidth} m{0.55\textwidth}}
-Epoch 3a & Janurary $12^{\textsf{th}}$ 2021 & Underfilled cells\\
+Epoch 3a & January $12^{\textsf{th}}$ 2021 & Underfilled cells\\
 Epoch 3b & April $21^{\textsf{st}}$ 2021 & Overfilling the back 9 horizontal planes and the 7th horizontal plane from the front\\
 Epoch 3c & April $27^{\textsf{th}}$ 2021 & Overfilling of the 15 front horizontal planes (except the 7th, which was already done) and the 14th horizontal plane\\
 Epoch 3d & April $30^{\textsf{th}}$ 2021 & Overfilling of the remaining 8 horizontal planes\\
 Epoch 3e & May $12^{\textsf{th}}$ 2021 & FEB swaps
 \end{tabular}
-\caption{Test Beam period 3 epochs, their start dates and the reason for thir separation.}
+\caption{Test Beam period 3 epochs, their start dates and the reason for their separation.}
 \label{tabTestBeamPeriod3Epochs}
 \end{table}
 
@@ -927,7 +859,7 @@ The results of the attenuation fit are summarised on figure \ref{figCellCentreRe
 \begin{figure}[!hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CellResponseAtCentre_epoch3abc_Limited.pdf}
-\caption{Overview of the relative calibration results for the Teast Beam detector period 3, combined epochs 3a, 3b and 3c data. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
+\caption{Overview of the relative calibration results for the Test Beam detector period 3, combined epochs 3a, 3b and 3c data. Each cell represents the result of the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \label{figCellCentreResponseEp3abc}
 \end{figure}
 
@@ -979,7 +911,7 @@ The results of the attenuation fits for epochs 3 d and e are shown on figure \re
 \begin{figure}[!hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CellResponseAtCentre_epoch3de_Limited.pdf}
-\caption{Overview of the relative calibration results for the Teast Beam detector period 3, combined epochs 3d and 3e data. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
+\caption{Overview of the relative calibration results for the Test Beam detector period 3, combined epochs 3d and 3e data. Each cell represents the result of the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \label{figCellCentreResponseEp3de}
 \end{figure}
 
@@ -1003,7 +935,7 @@ Epochs 3 d and e should have all the previously underfilled cells now refilled, 
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3de_059_031.png}
   \end{subfigure}
-  \caption{Fit to the energy response in epochs 3 d and e. The scintillator oil used for refilling of the underfilled cells has lower energy response than the oil used for the intial filling. These oils didn't mix properly causing a different energy response in the left and right side of the cell.}
+  \caption{Fit to the energy response in epochs 3 d and e. The scintillator oil used for refilling of the underfilled cells has lower energy response than the oil used for the initial filling. These oils didn't mix properly causing a different energy response in the left and right side of the cell.}
   \label{figAttenfitResultsEpoch3de_RefilledDiscrepancy}
 \end{figure}
 
@@ -1039,7 +971,7 @@ The period 4 Test Beam data taking period is the best data we managed to collect
 \centering
 \includegraphics[width=.9\textwidth]{Plots/Attenprofs_P4Data_CellPlane_GoodRuns.pdf}
 \end{subfigure}
-\caption{Distribution of events in the Test Beam period 4 data calibration sample. The top plot shows the first three comissioning runs, the middle plot the status of the detector during the Cell Masking studies and the bottom plot shows the rest.}
+\caption{Distribution of events in the Test Beam period 4 data calibration sample. The top plot shows the first three commissioning runs, the middle plot the status of the detector during the Cell Masking studies and the bottom plot shows the rest.}
 \label{figCalibhist_period4}
 \end{figure}
 
@@ -1091,16 +1023,16 @@ Figures \ref{figCalibhistWPE_period4}, \ref{figCalibhistCellPE_period4} and \ref
 
 \subsubsection*{Period 4 relative calibration results}
 
-Results of the attenutation fits for period 4 are summarised on figure \ref{figCellCentreResponsePeriod4}.
+Results of the attenuation fits for period 4 are summarised on figure \ref{figCellCentreResponsePeriod4}.
 
 \begin{figure}[!hbtp]
 \centering
 \includegraphics[width=\textwidth]{Plots/CellResponseAtCentre_period4_Limited.pdf}
-\caption{Overview of the relative calibration results for the Teast Beam detector period 4 data. Each cell represents the result fo the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
+\caption{Overview of the relative calibration results for the Test Beam detector period 4 data. Each cell represents the result of the attenuation fit to the energy response in the centre of that cell. The blank cells are uncalibrated.}
 \label{figCellCentreResponsePeriod4}
 \end{figure}
 
-We can see that majority of the detector is calibrated, besided some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}) and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}). We treated the formerly underfilled cells the same way as in epochs 3 d and e, by manually changing their $\chi^2$ to be $<0.2$ and therefore making them calibrated.
+We can see that majority of the detector is calibrated, besides some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}) and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}). We treated the formerly underfilled cells the same way as in epochs 3 d and e, by manually changing their $\chi^2$ to be $<0.2$ and therefore making them calibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
