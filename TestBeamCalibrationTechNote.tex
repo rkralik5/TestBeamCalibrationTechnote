@@ -294,7 +294,7 @@ where both the relative calibration results (blue fraction) and the absolute cal
 
 \subsubsection*{Creating calibration samples}
 
-We want to select good quality cosmic ray muons. First, we remove beam related events based on their time stamp relative to the time of the beam spill, using the \texttt{RemoveBeamSpills}, or \texttt{RemoveTBSpills} filter, as shown on figure \ref{figRemoveBeamSpill}. Next we apply reconstruction to get the CellHit, Slicer, and Track information, followed by a track-based selection to remove misreconstructed and poor quality events.
+We want to select good quality cosmic ray muons. First, we remove beam related events based on their time stamps relative to the time of the beam spill, using the \texttt{RemoveBeamSpills} (for the near and far detectors), or \texttt{RemoveTBSpills} filter (for the Test Beam detector), as shown on figure \ref{figRemoveBeamSpill}. Next we apply reconstruction to get the CellHit, slicer, and track information, followed by a track-based selection to remove misreconstructed and poor quality events.
 
 \begin{figure}[hbtp]
 \centering
@@ -303,7 +303,7 @@ We want to select good quality cosmic ray muons. First, we remove beam related e
 \label{figRemoveBeamSpill}
 \end{figure}
 
-Since energy deposition in a cell depends on the path length the particle travelled through the cell, we only use hits for which we can reliably calculate their path length. We call these hits \textbf{tricell} hits, as we require that all accepted hits also have a recorded hit in both neighbouring cells of the same plane, as shown on figure \ref{figTricellCondition}. In case there's a bad channel in a neighbouring cell, we ignore this channel and look one cell further. We can then calculate the path length simply as the cell width divided by the cosine of the direction angle \cite{NOVA-doc-13579,NOVA-doc-7410}.
+Since energy deposition depends on the path length particle travels through a cell, we only use hits for which we can reliably calculate their path length. We call these hits \textbf{tricell} hits, as we require that all accepted hits are accompanied by a recorded hit in both neighbouring cells of the same plane, as shown on figure \ref{figTricellCondition}. In case there is a bad channel in a neighbouring cell, we ignore this channel and look one cell further. We can then calculate the path length simply as the cell width divided by the cosine of the direction angle \cite{NOVA-doc-13579,NOVA-doc-7410}.
 
 \begin{figure}[hbtp]
 \centering
@@ -327,11 +327,11 @@ Since energy deposition in a cell depends on the path length the particle travel
 
 %from docdb:7410: A requirement that the track be “throughgoing” (lowest endpoint outside the fiducial volume) was applied, but doesn’t make much difference. I think this selection was broken by the recent changes to StopperSelection anyway. (So it seems that it was required for the relative calibration that the muons are through-going, but I assume this was discarded somewhere down the line)
 
-For the absolute calibration we select muons that stop in the detector. For this we identify muons with a Michel electron at the end of their track and only selection those \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
+For the absolute calibration we select muons that stop inside the detector, by identifying muons with a Michel electron at the end of their track \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
 
 %Stopping muon selection (from docdb:13579 - FA\_Calorimetric\_energy\_scale): There are two avenues for selecting stopping muons; i) selecting tracks whose reconstructed end point is contained within the detector and ii) selecting tracks that have a Michel electron at one end. Michel electrons are useful for both identifying muons and effective tagging of the end point of muon tracks. The stopping selection requires the reconstructed end point of the muon track to be at least 50 cm from the detector edge. The identification of a Michel electron at the end of a muon track has two stages of both temporal and spatial range requirements. Firstly, a candidate Michel electron hit is required to occur between 1 and 30 microseconds after the mean time of the hits on the track. Furthermore, the candidate Michel electron must be within a 30 cm sphere surrounding the reconstructed track end point. The candidate Michel electron hit for a muon track is the hit that produces the largest detector response among the hits that pass the above cuts. Secondly, cell hits surrounding the candidate Michel electron hit are associated with the Michel electron if they occur within a 30 cm sphere surrounding the Michel electron candidate. Furthermore, to be associated with the Michel electron the cell hits must occur between 0.5 microseconds before and 0.5 microseconds after the candidate Michel electron. Michel electrons at the end of muon tracks are reconstructed using the candidate and associated Michel electron hits. The stopping muon selection requires a Michel electron at the end of the muon track.
 
-For each data period/epoch and each simulation version we create two calibration samples that are used as the input for the relative and absolute calibration. The samples are called \cite{NOVA-doc-13579-CalibrationMetaREADFIRST}
+For each data period or epoch and for each version of the simulation we create two calibration samples that are used as the input for the relative and absolute calibration. The samples are called \cite{NOVA-doc-13579-CalibrationMetaREADFIRST}
 \begin{itemize}
 \item pclist = \textbf{list} of \textbf{p}re-\textbf{c}alibrated hist; Contains all selected cosmic muon events and is used in the relative calibration;
 \item pcliststop = pclist files only containing stopping muons used for the absolute calibration 
@@ -339,9 +339,9 @@ For each data period/epoch and each simulation version we create two calibration
 
 \subsubsection*{Fibre brightness}
 
-For data, the relative calibration is done for each individual cell in each plane to properly account for any potential variations. Therefore we have to repeat the attenuation fit $N_{cell}\times N_{plane}$ times. However, generating enough simulated events would be very computationally intensive. Additionally, we can assume that the simulated detector is approximately uniform plane to plane. Therefore, for simulation, we want to \textit{consolidate} the detector planes and only consider variation in the two views and their cells, so repeat the fit $N_{cell}\times N_{view}$ times \cite{NOVA-doc-13579-SAAttenuationAndThreshold,NOVA-doc-34909}.
+For data, the relative calibration is done for each individual cell in each plane to properly account for any potential variations, repeating the attenuation fit $N_{cell}\times N_{plane}$ times. However, generating enough simulated events turned out to be computationally expensive. Therefore, assuming the simulated detector is approximately uniform plane to plane, for simulation we can "consolidate" the detector planes and only consider variations in the two views. Therefore for simulation we would repeat the fit $N_{cell}\times N_{view}$ times \cite{NOVA-doc-13579-SAAttenuationAndThreshold,NOVA-doc-34909}.
 
-There are some variations in the detector response cell by cell, that can be caused by different fibre brightnesses, but also by different qualities of the scintillator, air bubbles, APD gains, looped or zipped fibres and potentially others. To emulate these differences in the simulation without the need to simulate every cell individually and properly, we divide all the cells of each detector into 12 brightness bins, as shown on figure \ref{figFiberBrightnessBins}. These bins describe the relative differences in the detector response between individual cells \cite{NOVA-doc-34909}. Therefore in the end, for simulation we perform the attenuation fit in the $N_{view}\times N_{fiber brightness bin}\times N_{cell}$ phase space.
+However, there are some variations in the detector response cell by cell that can be caused by different fibre brightnesses, but also by different qualities of the scintillator, air bubbles, APD gains, looped or zipped fibres and potentially others. We want to include these variations in the simulation to better match data. To emulate these differences in the simulation without the need to simulate every cell individually, we divide each detector into 12 brightness bins, as shown on figure \ref{figFiberBrightnessBins}. These brightness bins describe the relative differences in the detector response between individual cells \cite{NOVA-doc-34909}. Therefore in the end, for simulation we perform the attenuation fit $N_{cell}\times N_{view}\times N_{BrightnessBin}$ times.
 
 %Do I need to describe here how we do it or is it enough if I just say that we do?
 %To divide the detector into brightness bins, we use the results of the attenuation fit and look at the fitted response at cell centre, which should represent the average response in that cell. Then we normalize the 
@@ -361,11 +361,11 @@ There are some variations in the detector response cell by cell, that can be cau
 \label{figFiberBrightnessBins}
 \end{figure}
 
-TO DO: describe how do we create the brightness file
+To divide each detector into the 12 brightness bins, we use results from the relative calibration. Specifically we take the result of the attenuation fit (equal to the average response) in the centre of each cell and fill a 2D histogram. Then we normalize this response by dividing the response in each $\textsf{Cell}\times\textsf{View}\times\textsf{Plane}$ by the average response in the corresponding $\textsf{Cell}\times\textsf{View}$. Then we make a 1D histogram filled with the normalized responses of each cell and divide this histogram into 12 equally populated bins (so each bin represents approximately the same number of detector cells, shown on the left plot of figure \ref{figFiberBrightnessBins}). The mean normalized response in each bin represents the relative brightness value of this bin (right plot of figure \ref{figFiberBrightnessBins}). A ROOT file with the distribution of brightness bins across the detector and their corresponding relative brightness values is stored inside the \texttt{NOvASoft PhotonTransport} package as \texttt{<det>BrightnessFromCosmics.root}.
 
 \subsubsection*{Threshold and shielding correction}
 
-Energy deposited far away from the readout may get attenuated enough to be shifted below the threshold. These low energy depositions would be missing from the attenuation fit, biasing it towards larger light levels going away from the readout. A similar effect, specifically for the vertical cells, is caused by using cosmic muons for calibration. The top of the detector effectively shields the bottom of the detector, skewing the energy distribution of cosmic muons. To correct for both of these effect, we use simulation to calculate the threshold and shielding (also called threshold and shadowing) correction by comparing the true and reconstructed information. We apply this correction before the attenuation fits \cite{NOVA-doc-13579-SAAttenuationAndThreshold}.
+Energy deposited far away from the readout may get attenuated enough to be shifted below the threshold. These low energy depositions would be missing from the attenuation fit, biasing it towards larger light levels with increasing distance from the readout. Similar effect, specifically for the vertical cells, is caused by using cosmic muons for calibration and applying it to beam muons. The top of the detector effectively shields the bottom, skewing the energy distribution of cosmic muons. To correct for both of these effect, we use the simulation pclist sample to calculate the threshold and shielding (also called threshold and shadowing) correction by comparing the true and reconstructed information. We apply this correction before the attenuation fits \cite{NOVA-doc-13579-SAAttenuationAndThreshold}.
 
 %Should I write anything more? Maybe about how do we calculate this more specifically, or that it's done for view X fb bin X cell X w
 
@@ -379,27 +379,27 @@ Energy deposited far away from the readout may get attenuated enough to be shift
 
 %Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes) and on the relative calibration wiki page.
 
-Relative calibration aims to create a fit, called \textit{attenuation fit}, to the detector response over the position in a cell separately for every cell inside each detector. Scaling the fitted response to match the "average response" of the detector effectively removes relative differences throughout and between all cells across the entire detector. This average response is a single number chosen to approximately represent the average response in the middle of the cell. For the Far Detector this number is 39.91 PE, for the Near Detector it's 37.51 and for Test Beam it's the same as for the Far Detector 39.91. The scale of this number has no impact of this result as the absolute scale of the detector response is determined during the absolute calibration \cite{NOVA-doc-7410,NOVA-doc-13579-SAAttenuationAndThreshold}.
+Relative calibration corrects for the attenuation of the scintillator light by fitting the average detector response over the position in each cell (w), separately for every cell inside each detector. Dividing the "average response" of the detector by the result of the attenuation fit for each $\textsf{Plane}\times\textsf{Cell}\times\textsf{w}$ combination effectively removes relative differences within and between all cells across the entire detector. The average response is a single constant number chosen to approximately represent the average response in the middle of the cell. Its value is for the far detector and Test Beam 39.91~PE and for the near detector 37.51~PE. The value of the average response has no impact of the calibration results, as the absolute scale of the detector response is determined during the absolute calibration and relative calibration only serves to remove the relative differences \cite{NOVA-doc-7410,NOVA-doc-13579-SAAttenuationAndThreshold}.
  
-To create the attenuation fit we follow the following procedure \cite{NOVA-doc-7410}:
+To create the attenuation fit we use the following procedure \cite{NOVA-doc-7410}:
 \begin{enumerate}
-\item Create \textit{attenuation profiles}, which are profile histograms of detector response in terms of energy deposited per path length (PE/cm) as a function of position in the cell (w) through each cell for all planes. We construct the attenuation profiles over a little wider range than the actual length of the cell and always with 100 bins for each detector. This means that smaller detectors, like the Test Beam detector, have a finer binning ($\sim 3\unit{cm}$/bin) compared to the Far Detector ($\sim 18\unit{cm}$/bin).
+\item Create the \textit{attenuation profiles}. Attenuation profiles are essentially profile histograms of detector response in terms of $\unit{PE/cm}$ as a function of position in the cell (w) for each cell in all planes. We construct the attenuation profiles over a little wider range than the actual length of the cell and always with 100 bins for each detector. This means that smaller detectors, like the Test Beam detector, have a finer binning ($\sim 3\unit{cm}$/bin) compared to the Far Detector ($\sim 18\unit{cm}$/bin).
 \item Analyse the attenuation profiles. The job to create the attenuation profiles also creates validation histograms, which should be analysed prior to performing the attenuation fit to make sure the attenuation profiles look as expected.
-\item Apply the threshold and shielding correction that were created using the simulation pclist sample before the relative calibration.
+\item Apply the threshold and shielding correction that was created before the relative calibration.
 \item Do the attenuation fit over the full length of each cell. The fit consists of
 \begin{enumerate}
-\item exponential fit, which combines two cases. Light from the energy deposition travelling straight to the readout, or going the opposite direction, looping around the cell and then to the readout. The fitted function has a form:\\
+\item an exponential fit, which combines two cases. First, when the scintillating light travels the short distance straight to the readout, and second, when it goes to the far side of the cell and loops around before going to the readout. The fitted function has a form:\\
 \begin{equation}
 y=C+A\left(\exp\left(\frac{w}{X}\right)+\exp\left(-\frac{L+w}{X}\right)\right),
 \end{equation}
-where $y$ is the response, $L$ is the length of the cell and $C$, $A$ and $X$ are the fitted parameters. $X$ also represents the attenuation length.
-\item To remove the effect of residuals, mainly at the end of cells, we smooth out the residuals from the exponential fit with LOcally WEighted Scatter plot Smoothing (LOWESS).
+where $y$ is the fitted response, $L$ is the length of the cell and $C$, $A$ and $X$ are the fitted parameters. $X$ also represents the attenuation length.
+\item Smoothing of the residuals from the exponential fit, mainly at the end of cells, with the LOcally WEighted Scatter plot Smoothing (LOWESS) method.
 \end{enumerate}
 \item Check the plots of the attenuation fit for a selection of cells.
-\item Save the fit result to the database in the form of two csv tables. The \textit{calib\_atten\_consts.csv} table holds the results of the exponential fit, together with the final $\chi^2$ of the fit. The \textit{calib\_atten\_points.csv} table holds the results of the LOWESS smoothing.
+\item Save the fit result to the database in the form of two csv tables. The \texttt{calib\_atten\_consts.csv} table holds the results of the exponential fit, together with the final $\chi^2$ of the fit. The \texttt{calib\_atten\_points.csv} table holds the results of the LOWESS smoothing.
 \end{enumerate}
 
-To ensure the quality of the attenuation fit, we only apply the results if the final $\chi^2<0.2$. If $\chi^2>0.2$ we ignore the results for this cell and mark it as \textit{uncalibrated}.
+To ensure the quality of the attenuation fit, we only apply the results if the final $\chi^2<0.2$. If $\chi^2>0.2$, we ignore the results for this cell and mark it as \textit{uncalibrated}.
 
 %Attenutation profiles have a constant binnin fNBins=100 (in w), same for ND, FD and TB. This results in an effectively finer binning for TB compared to ND and FD. For FD w = (-900,+900), ND: (-250,+250), TB: (-150,+150). TB: 3cm/bin, ND: 5cm/bin, FD: 18cm/bin. What effect could this have on the relative calibration results? Particularly on the calibration shape?
 
@@ -417,11 +417,11 @@ To ensure the quality of the attenuation fit, we only apply the results if the f
 
 \subsection{Absolute calibration}
 
-To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are minimum ionising particles and their energy deposition is almost constant and well understood. We take a mean of their corrected deposited energy separate for each view and for each calibrated sample. We then take the average over the two views to get the final $\textsf{MEU}_{reco} \unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
+To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are approximately minimum ionising particles and their energy deposition is almost constant and well understood. Additionally, we don't use hits from the edges of a cell, as those might be affected by the lower number of events and fibre endings, or loops. We take a mean of their corrected deposited energy separate for each view and for each calibrated sample. We then take the average over the two views to get the final $\textsf{MEU}_{reco}$ in $\unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
+ 
+From simulation we get the mean of the true energy deposited in scintillator $\textsf{MEU}_{truth}$ in $\unit{MeV/cm}$ for the same sample of stopping muons. We ignore the energy that is lost in the dead material (PVC extrusions) and deal with it separately. The absolute energy scale for each sample is then the ratio of $\textsf{MEU}_{truth}/\textsf{MEU}_{reco}$. We save these absolute energy scales in another csv table called \texttt{calib\_abs\_consts.csv} which stores the $\textsf{MEU}$ values and their errors.
 
-From simulation we get the mean of the true energy deposited in scintillator $\textsf{MEU}_{truth} \unit{MeV/cm}$ for the same sample of stopping muons. We ignore the energy that's lost in the dead material (PVC extrusions) and deal with it separately. The absolute energy scale for each sample is then the ratio of $\textsf{MEU}_{truth}/\textsf{MEU}_{reco}$. We save these absolute energy scales in another csv table called \textit{calib\_abs\_consts.csv} which stores the $\textsf{MEU}$ values and their errors.
-
-As part of the absolute calibration we also produce validation plots that show the effect of calibration on the distribution of the stopping muons. We analyse these plots and if everything looks all right load all the csv tables into the database.
+As part of the absolute calibration we also produce validation plots that show the effect of calibration on the distribution of the stopping muons. We analyse these plots and if everything looks all right we load all the csv tables into the database.
 
 %Stopping muons provide a good sample of known energy deposits. If we can collect a “golden” sample, they should provide the scale factor to convert PECorr to GeV. So far, the method used has been imperfect, and the absolute calibration constants are known to be off by approx. 10\%. Since a factor already has to be derived to correct for dead material, this is not significantly impeding current efforts, but work was recently gone into improving this area. [docdb:7410 - this was likely before the track window cut was introduced] (Here it says that it's not such a big a problem since we have to scale for the dead material anyway. But nowadays we have to account for a large systematic uncertainty in the absolute energy scale in our analyses. How is the dead material correction different from the energy scale uncertainty?)
 
@@ -468,16 +468,15 @@ WORK IN PROGRESS
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{NOvA Test Beam detector calibration}
-
-TO DO: list all the specific commands that need to be executed for the TB calibration. Like the coloured table in the data based simulation.
+In this section we describe the details of the Test Beam detector calibration as it was finalized in June 2023. This version includes all measured Test Beam data, with the exception of Period 1, which was only used for commissioning and is not used in any Test Beam analysis. The specific commands and tips for running the Test Beam detector calibration are listed on the \href{https://cdcvs.fnal.gov/redmine/projects/novaart/wiki/Test\_Beam\_Calibration\_Instructions}{Test Beam calibration redmine wiki page}.
 
 %Temperature study (small overview - probably not needed at all, depends if Randeeth want to add his work to this technote)
 
 %From Teresa's thesis
 %Along with setting the energy scale of the detector, we need to calibrate the timing of the readout system for the detector. The Data Concentrator Modules (DCMs) responsible for collating the data from multiple FEBs get their timing information via a daisy chain originating at the detector TDU. Each DCM in the chain has a timing offset relative to the DCM before it, with the last DCM having the earliest ti. Following the procedure described in [66], I used timing information from hits on cosmic ray muon tracks that pass through multiple DCMs to determine the relative offsets between DCMs, shown in Figure 3.20.
 
-The calibration samples used for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the Test Beam data-driven activity-based triggers. To produce these samples we (or production) use the 
-\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} FHiCL file from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding mc file.
+The calibration samples used for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the Test Beam data-driven activity-based triggers (DDActivity1). To produce these samples we (or production) use the 
+\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} FHiCL file from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding mc file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
 
 %From Teresa's thesis:
 %"For Test Beam, we have three beam-based triggers, one pulsed trigger, and two data-driven triggers. The data-driven triggers are both activity-based triggers. The first is intended to record cosmic ray induced events for use in calibrating the detector.
@@ -520,7 +519,6 @@ The calibration samples used for the Test Beam detector calibration are listed i
 \label{tabTBCalibrationDefinitions}
 \end{table}
 
-The calibration samples were originally created in keep-ups by the production, but due to a fix to the Test Beam geometry, most of them had to be reproduced in 2023.
 
 \subsection{Fibre Brightness}
 
@@ -549,7 +547,7 @@ To divide the Test Beam detector into fibre brightness bins we used the attenuat
 
 %We originally used Teresa's calibration MC sample, but after we saw disagreement, we developed a new MC based off of the period 3 data, which we ended up using for both period 2 and period 3. For fibre brightness we are also using the same MC from period 3 data as it represents the detector in its best condition.
 
-We used a data-based simulation of cosmic muons for the Test Beam detector calibration. The details are described in the Data-based simulation of cosmic muons (not only) for calibration technical note [link to docdb]. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fibre brightness file to inform the simulation on the realistic detector conditions.
+We used a data-based simulation of cosmic muons for the Test Beam detector calibration. The details are described in the Data-based simulation of cosmic muons (not only) for calibration technical note \cite{NOVA-doc-60026}. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fibre brightness file to inform the simulation on the realistic detector conditions.
 
 The distribution of events cosmic muon events from the new simulation is shown on figure \ref{figCalibhistSim}.
 

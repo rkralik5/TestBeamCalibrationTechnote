@@ -292,10 +292,20 @@
 @Electronic{NOVA-doc-59024,
   author       = {Robert Kralik},
   howpublished = {NOVA Document 59024},
-  month        = jan,
+  month        = jun,
   note         = {NOvA internal document},
-  title        = {{Test beam calibration update}},
+  title        = {{Test Beam calibration results - Spring 2023}},
   url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=59024},
+  year         = {2023},
+}
+
+@Electronic{NOVA-doc-60026,
+  author       = {Robert Kralik},
+  howpublished = {NOVA Document 60026},
+  month        = oct,
+  note         = {NOvA technical note},
+  title        = {{The Attenuation and Threshold Calibration of the NOvA detectors}},
+  url          = {https://nova-docdb.fnal.gov/cgi-bin/sso/ShowDocument?docid=60026},
   year         = {2023},
 }
 
