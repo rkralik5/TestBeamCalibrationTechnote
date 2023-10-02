@@ -42,9 +42,9 @@
     urlcolor=blue!50!black
 }
 
-\author{Robert Kralik\\\small{University of Sussex}}
-\title{NOvA Test Beam detector calibration\\ \vspace*{5mm}
-\Large{Technical Note}}
+\author{Róbert Králik\\\small{University of Sussex}}
+\title{\textbf{NOvA Test Beam detector calibration\\ \vspace*{5mm}
+\Large{Technical Note}}}
 \date{\today}
 
 \begin{document}
@@ -135,26 +135,28 @@ In the past we encountered an issue when trying to align the Test Beam detector 
 \subsubsection*{Scintillator}
 %[TB task force report]: The NDOS decommissioning yielded 25000 gallons of scintillator. Since storage available is limited to 12000 gallons, it was decided to blend most of the 5000 gallons of existing ND/FD scintillator with the NDOS scintillator. 200 gallons of ND/FD scintillator, which has a slightly higher photon yield, are reserved for special studies. We also plan to reuse the NDOS secondary containment tub to provide oil+scintillator containment in case the test beam detector undergoes a catastrophic structural failure.
 
-The Test Beam detector is filled with several different versions of the NOvA scintillator oil, which differ mainly in the way they were stored since the filling of the near and far detectors. This is illustrated on figure \ref{figScintillators}.
+Test Beam used a combination of the leftover near and far detector production scintillator oils and the oil drained from the NDOS test detector. The used scintillator oils also differ in the way they were stored since the filling of the near and far detectors, or NDOS draining, which apparently impacted its quality. The distribution of individual scintillator oils and the relative difference in their energy response can be seen on figure \ref{figScintillators}.
+
+%The Test Beam detector is filled with several different versions of the NOvA scintillator oil, which differ mainly in the way they were stored since the filling of the near and far detectors. This is illustrated on figure \ref{figScintillators}.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\textwidth]{Plots/TestBeamScintillatorOils.png}
-\caption{Uncorrected energy response in the centre of cells across the Test Beam detector showing a clear distinction between the different scintillator oils.}
+\caption{Uncorrected energy response in the centre of cells across the Test Beam detector showing a clear distinction between the different scintillator oils, shown with coloured boxes.}
 \label{figScintillators}
 \end{figure}
-\iffalse
-The scintillator oils used in the Test Beam detector are:
+
+We can distinguish four samples of the NOvA scintillator oil used in the Test Beam detector:
 \begin{itemize}
-\item Oil stored in a tanker and tanks outside in Fermilab \cite{NOVA-doc-38349};
-\item ND production oil (is it ND prod or NDOS or what?) stored underground in barells at MiniBooNE \cite{NOVA-doc-33012};
-\item FD production oil stored inside at Ash River in "totes" under several layers of black plastic \cite{NOVA-doc-34067};
-\item NDOS-drained oil stored mainly inside in Texas A\&M University and University of Texas at Austin \cite{NOVA-doc-38740, NOVA-doc-39088}.
+\item Mixed near detector production oil and NDOS-drained oil stored in a tanker and tanks outside in Fermilab \cite{NOVA-doc-38349};
+\item Separate near detector production oil and NDOS-drained oil stored underground in barells at MiniBooNE \cite{NOVA-doc-33012};
+\item Far detector production oil stored inside in Ash River in "totes" under several layers of black plastic \cite{NOVA-doc-34067};
+\item NDOS-drained oil stored mainly inside at Texas A\&M University and University of Texas at Austin \cite{NOVA-doc-38740, NOVA-doc-39088}.
 \end{itemize}
-\fi
+
 %The original plan \cite{NOVA-doc-34196} was to use the tanker and tank scinitillator for the entire Test Beam detector. However, due to extreme cloudeness of the scintillaotr in the tanks 
 
-The original plan \cite{NOVA-doc-34196} was to use the scintillator from a tanker and one of the tanks located outside at Fermilab. First tests showed acceptable results and the tanker oil was used to fill out almost the entirety of the first block of the detector (first 32 planes) \cite{NOVA-doc-38349}. However, when we loaded the oil from tank two into the tanker, it became extremely cloudy and unusable, possibly due to contamination with water accumulated at the bottom of the tanks, which was mixed with oil by the pump. The rest of the first block was the topped up with high quality scintillator from NDOS, which has been stored inside in barrels at MiniBooNE \cite{NOVA-doc-33012}. This is labelled as "Fermilab ND+NDOS oil" on figure \ref{figScintillators}.
+The original plan \cite{NOVA-doc-34196} was to only use the tanker/tank scintillator (sample 1). First tests showed acceptable results and the tanker oil was used to fill out almost the entirety of the first block of the detector (first 32 planes) \cite{NOVA-doc-38349}. However, when we loaded oil from tank two into the tanker, it became extremely cloudy and unusable, possibly due to contamination with water accumulated at the bottom of the tanks. The rest of the first block was therefore topped up with high quality scintillator from NDOS (sample 2). This is labelled as "Fermilab ND+NDOS oil" on figure \ref{figScintillators}.
 
 %NDOS+ND scin3llator were stored in MEast tank farm in translucent tanks open to the atmosphere in 2016 [docdb:41229]
 %docdb:41229 actually contains a pretty good description of the whole story
@@ -165,16 +167,16 @@ The original plan \cite{NOVA-doc-34196} was to use the scintillator from a tanke
 
 %"One of the promising studies we see coming out of this is to understand the differences in performance for different type of energy depositions of scintillator A vs B vs C. " [docdb:34046]
 
-The first 21 planes of the second block (planes 32 to 52) were filled with the Far Detector production scintillator shipped in from Ash River \cite{NOVA-doc-41961}. This oil has been stored in "totes" inside a building and under several layers of black plastic \cite{NOVA-doc-34067}. We topped up these planes with the NDOS scintillator \cite{NOVA-doc-41961}.
+The first 21 planes of the second block (planes 32 to 52) were filled with the far detector production scintillator shipped in from Ash River (sample 3) \cite{NOVA-doc-41961}. We again topped up these planes with the ND+NDOS scintillator (sample 2) \cite{NOVA-doc-41961}.
 
-The last 10 planes (planes 53 to 62) \cite{NOVA-doc-41961} were filled with scintillator drained from NDOS, but stored in Texas A\&M University and University of Texas at Austin \cite{NOVA-doc-38740, NOVA-doc-39088}. This scintillator has higher light yield than the one from the tanker, but lower than the Ash River one \cite{NOVA-doc-38740}.
+The last 10 planes (planes 53 to 62) \cite{NOVA-doc-41961} were filled with the "Texas" scintillator (sample 4), which has higher light yield than the one from the tanker, but lower than the Ash River one \cite{NOVA-doc-38740}.
 
 %[docdb:38349] 2730 gallons of scintillator transferred to detector from the tanker. On April 16, circulated 20 gallons from tanker, and took scintillator sample. Extreme cloudiness meant 0\% light transmission (>=95\% required). Strongly suspect problem due to water accumulated at the bofom of tankers vented to the atmosphere since 2016, mixed with oil by pump. Used 2/4 reserved NDOS 55-gallon drums for top-off...  completed top-off of all Block 0 modules
 
 In total the Test Beam detector is filled with 5418 gallons of scintillator oil with a weight of approximately 28.6 tons \cite{NOVA-doc-29543}.
 
 \subsubsection*{Readout}
-The Test Beam detector uses in total 126 Front End Boards (FEBs), each reading out signal from 32 cells (half of a plane) \cite{NOVA-doc-29543}. The readout is located on the top and right side (when looking at the front) of the detector. 118 FEBs are version 4.1, same as in the Far Detector, and 8 FEBs, located in pairs on planes 16, 17, 48 and 49, are version 5.2, same as in the Near Detector. The Near Detector FEBs are designed to read out data in a fester rate and we used a mix of FEB types to study the difference in their response and to validate both versions in the same environment \cite{TeresaThesis}.
+The Test Beam detector uses in total 126 Front End Boards (FEBs), each reading out signal from 32 cells (one module = half of a plane) \cite{NOVA-doc-29543}. The readout is located on the top and right side (when looking at the front) of the detector. 118 FEBs are version 4.1, same as in the Far Detector, and 8 FEBs, located in pairs on planes 16, 17, 48 and 49, are version 5.2, same as in the Near Detector. The Near Detector FEBs are designed to read out data in a fester rate and we used a mix of FEB types to study the difference in their response and to validate both versions in the same environment \cite{TeresaThesis}.
 
 %The Near and Far Detectors use different front-end electronics since they handle different data volumes; the Test Beam Detector is instrumented with both types to facilitate a complete characterization of both NOvA neutrino detectors. [NOvATestBeam.pdf - Mike's proceedings]
 
@@ -193,7 +195,7 @@ Unlike the near and the far detector, the Test Beam detector does not have any o
 %Placed in the Fermilab Test Beam Facility with no overburden. Describe environmental controls, temperature dependence etc. Maybe add plots from environmental control (temperature differences etc.) with descriptions of where were the readings taken.
 
 \subsubsection*{Underfilled cells issue}
-The Test Beam detector is slightly tilted around the Z axis by about 0.7$^{\circ}$ towards the readout. This caused the top cells of both modules of all the horizontal planes (cells 31 and 63) to be underfilled, creating an air bubble on the left side of the detector and severely affecting the energy response in those cells \cite{TeresaThesis}. This has been fixed \cite{NOVA-doc-49439} during the period 3 running by adding extensions to the filling ports and overfilling the horizontal cells with the NDOS scintillator stored. 
+The Test Beam detector is slightly tilted around the Z axis by about 0.7$^{\circ}$ towards the readout. This caused the top cells of both modules of all the horizontal planes (cells 31 and 63) to be underfilled, creating an air bubble on the left side of the detector and severely affecting the energy response in those cells \cite{TeresaThesis}. This has been fixed \cite{NOVA-doc-49439} during the period 3 running by adding extensions to the filling ports and overfilling the horizontal cells with the ND+NDOS scintillator (sample 2).
 %This scintillator was also used in the first half of the detector (Fermilab ND+NDOS oil on figure \ref{figScintillators}), but is different from the "Ash River oil" used in part of the second half of the detector (bright part of figure \ref{figScintillators}). The overfilling was done in April 2021 in 3 stages in between the full operation of the Test Beam detector.
 
 %The detector is tilted around z axis towards the readout by about 0.7 degrees (the largest tilt is for the 11th plane of 0.79330 degrees. The ND has an oposite tilt of -0.2515 degrees on average (but also the readout is on the opposite side, so is it actually the same tilt?). Correcting this by 8 degrees would require lifting the east edge by at least 3.66cm, or to correct it to the ND tilt by lifting the east edge by 4.17cm. [docdb:47491 - this is the original talk by Teresa explaining the tilt on 21st Sep 2020]
@@ -216,15 +218,22 @@ The Test Beam detector is slightly tilted around the Z axis by about 0.7$^{\circ
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{NOvA calibration process}
-Test Beam is following the same ideas and procedures as the standard NOvA calibration. This section intends to provide only a brief overview of the NOvA calibration. Further details can be found in the other NOvA calibration technical notes \cite{NOVA-doc-13579}.
+Test Beam is following the same ideas and procedures as the standard NOvA calibration. This section intends to provide only a brief overview of the NOvA calibration, with further details in the range of NOvA calibration technical notes \cite{NOVA-doc-13579}. All the code required for calibration is located in the \texttt{NOvASoft Calibration} package and the outline of the files and processes in NOvA calibration are shown on figure \ref{figCalibrationFlowchart}.
 
-The purpose of calibration is to make sure that we get the same amount of energy wherever or whenever it's deposited in whichever of NOvA's detectors and to express this energy in physical units. The NOvA calibration uses cosmic ray muons, which provide a consistent, abundant and well-understood source of energy deposition and consists of two closely connected parts \cite{NOVA-doc-7410}:
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=\textwidth]{Plots/CalibrationFlowChart.png}
+\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration process (red border), which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
+\label{figCalibrationFlowchart}
+\end{figure}
+
+The purpose of calibration is to make sure that we get the same amount of energy wherever or whenever it's deposited in whichever of NOvA's detectors and to express this amount of energy in physical units. The NOvA calibration uses cosmic ray muons, which provide a consistent, abundant, and well-understood source of energy deposition and consists of two parts \cite{NOVA-doc-7410}:
 \begin{enumerate}
-\item The \textbf{relative calibration} corrects for attenuation of scintillator light as it travels through the cell to the readout, as well as for differences between detector cells.
-\item This is followed by the \textbf{absolute calibration}, which only uses stopping muons when they are minimum ionising particles and calculates a scale between the measured charge readout, corrected by the relative calibration, and the simulated energy deposition in physical units of $\unit{MeV}$. This scale is calculated for each time period and each detector separately, which ensures the energy deposition is directly comparable wherever or whenever it occurred.
+\item The \textbf{relative calibration} corrects for attenuation of scintillator light as it travels through the cell to the readout, as well as for differences between detector cells. This correction is calculated for each cell separately.
+\item Followed by the \textbf{absolute calibration}, which only uses stopping muons when they are minimum ionising particles. In the absolute calibration we calculate a scale between the measured energy deposition, corrected by the relative calibration, and the simulated energy deposition in physical units of $\unit{MeV}$. This scale is calculated for each time period and each detector separately, which ensures the energy deposition is directly comparable wherever or whenever it occurred.
 \end{enumerate}
 
-There is also \textbf{timing calibration}, which corrects for the time differences of the signal to be processed and is done as a separate project to the relative and absolute calibrations and is out of scope of this technical note \cite{NinerThesis}.
+The NOvA calibration process technically also involves \textbf{timing calibration}, which corrects for the time differences of the signal to be processed \cite{NinerThesis}. However, this is done as a separate project to the relative and absolute calibrations and is out of scope of this technical note.
 
 %Should I talk about drift now already?
 
@@ -246,16 +255,16 @@ where ADCScale is 217000 for FEBv4.1 and 204800 for FEBv5.2.
 
 %The PECorr scaling is 75.0 (NDOS), 37.51 (ND), 39.91 (FD) and 39.91 (TB)
 
-The units and variables used to define energy deposited in NOvA detectors are listed in table \ref{tabCalibrationVars}:
+The basic units and variables used to define energy deposited in the NOvA detectors are listed in table \ref{tabCalibrationVars}.
 \begin{table}[!ht]
 \centering
 \def\arraystretch{1.4}
 \begin{tabular}{m{0.1\textwidth} m{0.86\textwidth}}
 ADC & The digitized charge collected by the APDs from the \textbf{A}nalog to \textbf{D}igital \textbf{C}onverter \cite{NOVA-doc-13518}.\\
-PE & Number of \textbf{P}hoto \textbf{E}lectrons. Calculated by a simple rescaling of the best estimate of the peak ADC. The PE per ADC scale only depends on the FEB type and the APD gain settings. This is technically done before the calibration and serves as the base unit for calibration.\\
+PE & Number of \textbf{P}hoto \textbf{E}lectrons. Calculated by a simple rescaling of the best estimate of the peak ADC. The PE per ADC scale only depends on the FEB type and the APD gain settings. This conversion is done before the calibration and PE serves as the base unit for calibration.\\
 PECorr & \textbf{Corr}ected \textbf{PE} after applying the relative calibration results. The correction is a ratio between an average energy response (a pre-determined semi-arbitrary number) and the result of the the relative calibration fit (also called attenuation fit), which depends on w, cell, plane, epoch and detector. This makes the energy response equivalent across each detector.\\
-MEU & \textbf{M}uon \textbf{E}nergy \textbf{U}nit is the mean detector response to a stopping cosmic minimum ionising muon.  Mean MeV/cm or mean PECorr/cm\\
-MeV & Estimated energy deposited in the scintillator calculated from PECorr using the results of the absolute calibration. Additional correction for dead material needs to be made in order to get a calorimetric energy estimate.
+MEU & \textbf{M}uon \textbf{E}nergy \textbf{U}nit is the mean detector response to a stopping cosmic minimum ionising muon.  For true variables it's equivalent to the mean MeV/cm and for reconstructed variables to the mean PECorr/cm.\\
+MeV & Estimated energy deposited in the scintillator calculated from PECorr using the results of the absolute calibration. Additional correction for dead material needs to be made in order to get an estimate of the calorimetric energy.
 \end{tabular}
 \caption{Definitions of variables commonly used in calibration \cite{NOVA-doc-13579,NOVA-doc-7410}.}
 \label{tabCalibrationVars}
@@ -276,16 +285,7 @@ E_{dep} [\unit{MeV}]=\frac{\textsf{MEU}_{truth} [\unit{MeV/cm}]}{\textsf{MEU}_{r
 \node[below,yshift=-10pt,green!80!black] at (C) {(APD Gain, FEB)};
 \end{tikzpicture}
 \end{equation}
-where both the relative calibration results (blue fraction) and the absolute calibration results (red fraction) are stored in a database and applied together with the ADC-to-PE scale by the NOvASoft \textit{Calibrator} package during processing of every hit in the NOvA detectors.
-
-%This is all done inside the NOvASoft Calibration package and applied with the Calibrator package.
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=\textwidth]{Plots/CalibrationFlowChart.png}
-\caption{Flow chart showing the jobs (orange background) and files (blue background) needed and produced during the full NOvA calibration process. The left chain is showing the data calibration process (with green border) and is applied to every data calibration sample separately (periods or epochs). The center and right chains are showing the simulation calibration process (red border), which is redone only if there's a change to the detector simulation. The absolute calibration at the bottom combines data and simulation. The entire process is done separately for each NOvA detector.} 
-\label{figCalibrationFlowchart}
-\end{figure}
+where both the relative calibration results (blue fraction) and the absolute calibration results (red fraction) are stored in a database and applied together with the ADC-to-PE scale by the \texttt{NOvASoft Calibrator} package during processing of every hit in the NOvA detectors.
 
 %The light is attenuated while traveling through the fiber. To find the correct energy of the incident particle these losses are corrected by using cosmic ray muons. The cosmic ray muons are used to calibrate the NOvA detectors because they provide a source of consistent energy across the detectors. The purpose of the attenuation calibration is to provide constants and formulae such that an amount of energy deposited in the detector and registered by an APD can be expressed in comparable units, PECorr which are the corrected photo-electrons (PE) no matter where the deposition occurred. Variations in time are to be handled by the drift calibration. The purpose of the absolute calibration is to provide a scaling factor, independent of channel since all of that variation should have been taken out by the relative calibration, so that energy deposits can be expressed in physically meaningful units (GeV).
 %For both purposes cosmic rays are used as probes. For the attenuation calibration they represent a source of consistent energy deposits across the detector of approximately 1 minimum ionizing particle’s energy, MIP, but this is not assumed. Any average value consistent across the detector would do. For absolute calibration, stopping muons are used, whose precise energy deposits should be estimateable from the Bethe Bloch formula. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, but a lot of this is actually just copied from Backhouse's original calibration technote docdb:7410]
@@ -294,7 +294,7 @@ where both the relative calibration results (blue fraction) and the absolute cal
 
 \subsubsection*{Creating calibration samples}
 
-To select good quality cosmic ray muons we first remove beam related events based on their time stamp relative to the time of the beam spill, as shown on figure \ref{figRemoveBeamSpill}. Then we apply basic reconstruction and track-based selection.
+We want to select good quality cosmic ray muons. First, we remove beam related events based on their time stamp relative to the time of the beam spill, using the \texttt{RemoveBeamSpills}, or \texttt{RemoveTBSpills} filter, as shown on figure \ref{figRemoveBeamSpill}. Next we apply reconstruction to get the CellHit, Slicer, and Track information, followed by a track-based selection to remove misreconstructed and poor quality events.
 
 \begin{figure}[hbtp]
 \centering
