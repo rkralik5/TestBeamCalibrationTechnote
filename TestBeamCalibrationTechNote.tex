@@ -361,7 +361,7 @@ However, there are some variations in the detector response cell by cell that ca
 \label{figFiberBrightnessBins}
 \end{figure}
 
-To divide each detector into the 12 brightness bins, we use results from the relative calibration. Specifically we take the result of the attenuation fit (equal to the average response) in the centre of each cell and fill a 2D histogram. Then we normalize this response by dividing the response in each $\textsf{Cell}\times\textsf{View}\times\textsf{Plane}$ by the average response in the corresponding $\textsf{Cell}\times\textsf{View}$. Then we make a 1D histogram filled with the normalized responses of each cell and divide this histogram into 12 equally populated bins (so each bin represents approximately the same number of detector cells, shown on the left plot of figure \ref{figFiberBrightnessBins}). The mean normalized response in each bin represents the relative brightness value of this bin (right plot of figure \ref{figFiberBrightnessBins}). A ROOT file with the distribution of brightness bins across the detector and their corresponding relative brightness values is stored inside the \texttt{NOvASoft PhotonTransport} package as \texttt{<det>BrightnessFromCosmics.root}.
+To divide each detector into the 12 brightness bins, we use results from the relative calibration. Specifically we take the result of the attenuation fit (equal to the average response) in the centre of each cell to fill a 2D histogram. Then we normalize this histogram by dividing the response in each $\textsf{Cell}\times\textsf{View}\times\textsf{Plane}$ by the average response in the corresponding $\textsf{Cell}\times\textsf{View}$. All uncalibrated cells get assigned the average response (1 in normalized histogram). Then we make a 1D histogram filled with the normalized responses of each cell and divide this histogram into 12 equally populated bins (so each bin represents approximately the same number of detector cells, shown on the left plot of figure \ref{figFiberBrightnessBins}). The mean normalized response in each bin represents the relative brightness value of this bin (right plot of figure \ref{figFiberBrightnessBins}). A ROOT file with the distribution of brightness bins across the detector and their corresponding relative brightness values is stored inside the \texttt{NOvASoft PhotonTransport} package as \texttt{<det>BrightnessFromCosmics.root}.
 
 \subsubsection*{Threshold and shielding correction}
 
@@ -476,7 +476,7 @@ In this section we describe the details of the Test Beam detector calibration as
 %Along with setting the energy scale of the detector, we need to calibrate the timing of the readout system for the detector. The Data Concentrator Modules (DCMs) responsible for collating the data from multiple FEBs get their timing information via a daisy chain originating at the detector TDU. Each DCM in the chain has a timing offset relative to the DCM before it, with the last DCM having the earliest ti. Following the procedure described in [66], I used timing information from hits on cosmic ray muon tracks that pass through multiple DCMs to determine the relative offsets between DCMs, shown in Figure 3.20.
 
 The calibration samples used for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the Test Beam data-driven activity-based triggers (DDActivity1). To produce these samples we (or production) use the 
-\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} FHiCL file from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding mc file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
+\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} file from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding mc file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
 
 %From Teresa's thesis:
 %"For Test Beam, we have three beam-based triggers, one pulsed trigger, and two data-driven triggers. The data-driven triggers are both activity-based triggers. The first is intended to record cosmic ray induced events for use in calibrating the detector.
@@ -522,7 +522,9 @@ The calibration samples used for the Test Beam detector calibration are listed i
 
 \subsection{Fibre Brightness}
 
-To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brightness file. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correct represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results, for which $\chi^2<0.7$.
+To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. 
+
+As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brightness file. Otherwise, these cells would be assigned the average response and we would loose the information on their relative brightness. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correctly represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results, for which $\chi^2<0.7$.
 
 %Describe and show plots that since we are only using the fitted response at cell centre we can allow fits with $\chi^2>0.2$. Show examples of responses with chisq larger than that and say what is the final chisq chosen. No need to show the final distribution of the fb bins here as they were technically shown in the general calibration description. But might refer back to it...
 
@@ -541,7 +543,30 @@ To divide the Test Beam detector into fibre brightness bins we used the attenuat
 \label{figFiberBrightnessExamples}
 \end{figure}
 
-\subsection{Simulation}
+The final distribution of brightness bins and their corresponding relative brightnesses for the Test Beam detector is shown on figure \ref{figFiberBrightnessBins}.
+
+\subsection{Threshold and shielding corrections}
+We created the threshold and shielding correction for Test Beam from the new simulation described in the next section \ref{secSimulationResults}. As can be seen on figure \ref{figTBThresholdCorrections} the correction is almost uniform as a function of both $w$ and cell number. This is the case for all fibre brightness bins and for both views. The uniform distribution is expected as the Test Beam detector is much smaller than the far detector, which motivated creating the correction. The cell length of $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. Therefore the threshold and shielding correction for Test Beam is only a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor does not have any impact on its results.
+
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_axview_fb0_P4DataBasedSim.pdf}
+\end{subfigure}
+\begin{subfigure}[b]{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_ayview_fb5_P4DataBasedSim.pdf}
+\end{subfigure}
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_cyview_fb7_P4DataBasedSim.pdf}
+\end{subfigure}
+\caption{Examples of threshold and shielding corrections for the Test Beam detector}
+\label{figTBThresholdCorrections}
+\end{figure}
+
+\subsection{Simulation}\label{secSimulationResults}
 
 %Should I talk about the "history" of the simulation of cosmics here, or in the introduction, or not at all?
 
@@ -590,34 +615,13 @@ There is only one cell in the middle of the detector that is left uncalibrated, 
 
 This is a much better result of the relative calibration (attenuation fit) for a simulation than the previous versions of Test Beam detector calibration simulations were able to accomplish.
 
-\subsection{Threshold and shielding corrections}
-The threshold and shielding correction for Test Beam is almost uniform across all cells as can be seen on figure \ref{figTBThresholdCorrections}. This is expected as the height of the Test Beam detector is $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. The correction is basically just a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor doesn't change anything.
-
-\begin{figure}[hbtp]
-\centering
-\begin{subfigure}[t]{0.9\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_axview_fb0_P4DataBasedSim.pdf}
-\end{subfigure}
-\begin{subfigure}[b]{0.9\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_ayview_fb5_P4DataBasedSim.pdf}
-\end{subfigure}
-\begin{subfigure}[t]{0.9\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Plots/ThresholdCorrectionExample_cyview_fb7_P4DataBasedSim.pdf}
-\end{subfigure}
-\caption{Examples of threshold and shielding corrections for the Test Beam detector}
-\label{figTBThresholdCorrections}
-\end{figure}
-
-\subsection{Period 1}
+\subsection{Period 1 data}
 TO DO: add a description of period 1 data
 %Only a month of data, only first half of detector filled, primary/secondary beam halo, or oversaturation leading to FEB shutoffs [docdb:38349 and 41331].
 %Only used for comissioning, not used for any data analysis or calibration.
 
 \FloatBarrier
-\subsection{Period 2}
+\subsection{Period 2 data}
 The underfilled cells issue describe in section \ref{secTBDetector} was present throughout period 2 data taking. This can be clearly seen on figure \ref{figCalibhist_period2}, represented by the empty cells 31 and 63 in the horizontal planes, which were marked as bad channels and therefore ignored during processing. This also affects the neighbouring cells to the underfilled cells, which have fewer events due to the tricell condition.
 
 \begin{figure}[h]
@@ -769,7 +773,7 @@ Several cells in the end of the Test Beam detector are uncalibrated due to bins 
 \end{figure}
 
 \FloatBarrier
-\subsection{Period 3}
+\subsection{Period 3 data}
 The underfilled cells were refilled (or overfilled) during the period 3 data taking. This was the main motivation for dividing period 3 into individual epochs as shown on table \ref{tabTestBeamPeriod3Epochs}. One more major event that could impact the Test Beam data is the replacement of several faulty FEBs, which motivated the creation of epoch 3e.
 
 \begin{table}[!ht]
@@ -951,7 +955,7 @@ Some of the cells in the back of the detector have a rise, or drop in energy dep
 \end{figure}
 
 \FloatBarrier
-\subsection{Period 4}\label{secTBPeriod4}
+\subsection{Period 4 data}\label{secTBPeriod4}
 
 The period 4 Test Beam data taking period is the best data we managed to collect with almost an ideal condition of the detector. There's only a few commissioning runs in the very beginning, which uncovered some dead channels or faulty FEBs that have been fixed. These runs make epoch 4a shown on the top plot of figure \ref{figCalibhist_period4}.
 
