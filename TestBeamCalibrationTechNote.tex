@@ -21,6 +21,7 @@
 \usepackage{placeins}  % for FloatBarrier
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 \usetikzlibrary{decorations.pathreplacing}
+\usepackage{authblk} % To add authors' affiliations
 
 %%% Code to enter C++ code
 \usepackage{listings}
@@ -42,7 +43,8 @@
     urlcolor=blue!50!black
 }
 
-\author{Róbert Králik\\\small{University of Sussex}}
+\author[1]{Róbert Králik}
+\affil[1]{University of Sussex, Brighton, UK}
 \title{\textbf{NOvA Test Beam detector calibration\\ \vspace*{5mm}
 \Large{Technical Note}}}
 \date{\today}
@@ -64,7 +66,7 @@ Specifically, Test Beam allows us to study the response of tagged single particl
 
 All the aforementioned benefits of running the NOvA Test Beam experiment require, or benefit from, the Test Beam detector calibration.
 
-The Test Beam detector calibration was first pioneered by Kevin Moulder who adapted the NOvA calibration codebase for Test Beam and tested it on period 1 Test Beam data \cite{NOVA-doc-42700}. This was followed by Anna Hall who improved it and got the first usable calibration of the Test Beam detector based on the period 2 data \cite{NOVA-doc-50786}. Lastly, Rober Kralik took over and finished the Test Beam calibration with all Test Beam data and a new simulation in 2023 \cite{NOVA-doc-59024}.
+The Test Beam detector calibration was first pioneered by Kevin Moulder who adapted the NOvA calibration codebase for Test Beam and tested it on period 1 Test Beam data \cite{NOVA-doc-42700}. This was followed by Anna Hall who improved it and got the first usable calibration of the Test Beam detector based on the period 2 data \cite{NOVA-doc-50786}. Lastly, Rober Kralik took over and finished the Test Beam calibration with help from Randeeth Dasanayaka with all Test Beam data and a new simulation in 2023 \cite{NOVA-doc-59024}.
 
 %Only considering improvement in the calibration systematic uncertainty, the NOvA Test Beam program can reduce the overal systematic uncertainty for the main NOvA measurements by about 10\% [docdb:33012] (talk also contains a list of other talks on impact of TB in different NOvA areas). For DeltaM2: By increasing exposure, total syst. error decreases by (+) 18.5% (-) 25%; By increasing exposure and reducing calib systs., total syst. error decreases by: (+) 26% (-) 32%; Difference between the above (reducing calib systs. with large exposure): (+) 9.6% (-) 9.4%. For sin2Th23: Difference by reducing calib syst.: (+) 10.8% (-) 9.4%.
 %Statement: “The NOvA Test Beam will improve the total systema6c error on the final measurement of the oscilla6on parameters Dm232 and sin2Th23 by 10% from reduc6on of calibra6on systema6cs alone. Further, NOvA analyses will benefit from the detailed understanding of detector response to hadronic, electromagne6c, and muon energy provided by the Test Beam, which will be essen6al to solidify understanding of systema6cs, uncover poten6ally new uncertain6es, tune the simula6on modeling, and improve reconstruc6on and PID algorithms.”
@@ -103,12 +105,12 @@ The NOvA Test Beam detector is a scaled down version of the near and far detecto
 
 %Should I aslo talk about the beam halo? Could that have an influence on the calibration? Maybe it's the peaks in the cosz distribution?
 
-The Test Beam detector started with commissioning runs in May 2019 and ran, with an exception of regular summer shutdowns, until July 2022, after which it was decommissioned. The Test Beam data periods are:
+The Test Beam detector started with commissioning runs in June 2019 and ran, with an exception of regular summer shutdowns, until July 2022, after which it was decommissioned. The Test Beam data periods are:
 \begin{table}[!ht]
 \centering
 \def\arraystretch{1.4}
 \begin{tabular}{l@{\hskip 1in}lcl}
-Period 1 & March $22^{\textsf{nd}}$ 2019 & - & July $6^{\textsf{th}}$ 2019\\
+Period 1 & June $3^{\textsf{rd}}$ 2019 & - & July $6^{\textsf{th}}$ 2019\\
 Period 2 & December $5^{\textsf{th}}$ 2019 & - & March $20^{\textsf{th}}$ 2020\\
 Period 3 & January $12^{\textsf{th}}$ 2021 & - & June $27^{\textsf{th}}$ 2021\\
 Period 4 & November $30^{\textsf{th}}$ 2021 & - & July $10^{\textsf{th}}$ 2022
@@ -379,7 +381,7 @@ Energy deposited far away from the readout may get attenuated enough to be shift
 
 %Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes) and on the relative calibration wiki page.
 
-Relative calibration corrects for the attenuation of the scintillator light by fitting the average detector response over the position in each cell (w), separately for every cell inside each detector. Dividing the "average response" of the detector by the result of the attenuation fit for each $\textsf{Plane}\times\textsf{Cell}\times\textsf{w}$ combination effectively removes relative differences within and between all cells across the entire detector. The average response is a single constant number chosen to approximately represent the average response in the middle of the cell. Its value is for the far detector and Test Beam 39.91~PE and for the near detector 37.51~PE. The value of the average response has no impact of the calibration results, as the absolute scale of the detector response is determined during the absolute calibration and relative calibration only serves to remove the relative differences \cite{NOVA-doc-7410,NOVA-doc-13579-SAAttenuationAndThreshold}.
+Relative calibration corrects for the attenuation of the scintillator light by fitting the average detector response over the position in each cell (w), separately for every cell inside each detector. Dividing the "average response" of the detector by the result of the attenuation fit for each $\textsf{Plane}\times\textsf{Cell}\times\textsf{w}$ combination effectively removes relative differences within and between all cells across the entire detector. The average response is a single constant number chosen to approximately represent the average response in the middle of the cell. Its value is for the far detector and Test Beam 39.91~PE/cm and for the near detector 37.51~PE/cm. The value of the average response has no impact of the calibration results, as the absolute scale of the detector response is determined during the absolute calibration and relative calibration only serves to remove the relative differences \cite{NOVA-doc-7410,NOVA-doc-13579-SAAttenuationAndThreshold}.
  
 To create the attenuation fit we use the following procedure \cite{NOVA-doc-7410}:
 \begin{enumerate}
@@ -448,9 +450,9 @@ Validations	of any calibration correction take the same basic form:
 \end{enumerate}
 \fi
 
-\subsection{Calibration uncertainties}
+%\subsection{Calibration uncertainties}
 
-WORK IN PROGRESS
+%WORK IN PROGRESS
 
 %First Analysis systematic uncertainties due to calibration:
 %Sources of systematic uncertainty of particular concern are those introduced by residual variations remaining after calibration. Systematic errors are introduced by spatial and temporal variations in detector response. Further, any difference between the two detectors may introduce a relative shift in the energy scale between the detectors. A source of systematic uncertainty can be introduced by mis-reconstructing the end point of the muon track. Such a mis-reconstruction would shift the window within which hits are selected and hence the dE/dx of the muon.  The figure shows that the detector response varies by up to about 60\% over the range from 0 to 500 cm to the track end. This large variation illustrates the importance of careful consideration of the track window position and size. The detector response for both data and MC is minimum at about 130 cm from the track end and is flat to about 1\% in the range from 100 cm to 200 cm from the track end. For a track window starting at 100 cm from the track end, a conservative mis-reconstruction of the track end point by 10cm will shift the start of the track window to between 90cm and 110cm. This shift will alter the MEU value by less than 0.4\% over the range.
@@ -460,6 +462,7 @@ WORK IN PROGRESS
 %As mentioned in Section 5, the version (7.1) of the calibration used for first analysis has been adjusted based on studies of muons from beam neutrinos interacting in the detector [8]. A shift of 3.6\% was introduced based on the average response of muons where large sections of the track were used. When only a track window of 100-200cm is used on the beam muons the difference is only 2.7\% [8]. Our best hypothesis for this residual 2.7\% difference is that it is caused by showery events that are present in ND data but not ND MC: it was shown in [9] that doing the calorimetric energy scale calibration using a truncated mean (or a median or a fit to the peak) gave a data/MC ratio that differed by 2.7\% compared to using the untruncated mean as described in this document. A comparison of various cross checks of the calorimetric energy scale was undertaken (in [10] and [11]) and concluded that the nearly 5\% difference between ND data and MC seen in a sample of Michele electrons [12] should be applied as both an absolute and relative shift to the calorimetric energy scale. The difference between the level of calorimetric energy resolution of stopping muons was studied and it was found that data and MC agreed best when an 8\% additional smearing was introduced. Studies for the NuMu analysis indicated that this was a negligible systematic uncertainty [13]. 
 %[docdb:13579 - FA\_Calorimetric\_energy\_scale]
 \FloatBarrier
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -468,15 +471,85 @@ WORK IN PROGRESS
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{NOvA Test Beam detector calibration}
-In this section we describe the details of the Test Beam detector calibration as it was finalized in June 2023. This version includes all measured Test Beam data, with the exception of Period 1, which was only used for commissioning and is not used in any Test Beam analysis. The specific commands and tips for running the Test Beam detector calibration are listed on the \href{https://cdcvs.fnal.gov/redmine/projects/novaart/wiki/Test\_Beam\_Calibration\_Instructions}{Test Beam calibration redmine wiki page}.
+In this section we describe the details of the Test Beam detector calibration as it was finalized in June 2023. This version includes all measured Test Beam data and a new purpose-made simulation, with the exception of the Period 1 data. Period 1 only includes one month of data, with half-filled detector and several issues including the beam halo \cite{NOVA-doc-41331} and was only used for commissioning and is not used in any Test Beam analysis. 
+
+The specific commands and tips for running the Test Beam detector calibration are listed in the two coloured boxes bellow, split into relative and absolute calibration steps. These steps closely follow the standard NOvA calibration procedure as described in the last section and as shown on the calibration flow chart on figure \ref{figCalibrationFlowchart}. The most up-to-date steps and information on how to run the Test Beam calibration are listed on the \href{https://cdcvs.fnal.gov/redmine/projects/novaart/wiki/Test\_Beam\_Calibration\_Instructions}{Test Beam calibration redmine wiki page}.
+
+\hspace*{-9mm}
+\fcolorbox{black}[HTML]{E9F0E9}{
+\hspace*{-5mm}
+\parbox{1.02\textwidth}{
+\centering{\textbf{Relative calibration}}
+\begin{enumerate}
+\item Create attenuation profiles for each data period/epoch and for simulation
+\begin{enumerate}
+\item Check the parameters of fcl files in \texttt{Calibration/attenuation}\\ \texttt{fhicl-dump makeattenuationprofiletbdatajob.fcl}\\
+\texttt{fhicl-dump makeattenuationprofilemcjob.fcl}
+\item Submit the jobs to the grid\\
+\texttt{submit\_nova\_art.py -f Calibration/attenuation/grid/attenprofs.cfg}
+\item Copy attenuation profiles to an ana area\\
+\texttt{ifdh cp /pnfs/nova/scratch/.../attenprof\_outputs* /nova/ana/output/dir}
+\item hadd the calib hist analysis files\\
+\texttt{hadd -f -k calib\_hist\_all.root `pnfs2xrootd /pnfs/nova/scratch/../calib\_hist\_outputs*.root`}
+\item Analyse the calib\_hist\_all.root file
+\end{enumerate}
+\item Create the Threshold/Shielding correction (if not already done)
+\begin{enumerate}
+\item Create the job and the configuration script for each brightness bin\\
+\texttt{bash Calibration/attenuation/grid/submit\_thresh\_jobs.sh}
+\item Rebuild the test release with \texttt{novasoft\_build -t}
+\item Create a tarball with \texttt{tesrel\_tabrall <testrel> <tarball>}
+\item Submit each config script in \texttt{Calibration/attenuation/grid} to the grid\\
+\texttt{for i in {0..11};}\\ \texttt{do submit\_nova\_art.py -f "threshold\_fb"\$i".cfg"; done;}
+\item hadd the results: \texttt{bash Calibration/scripts/hadd\_all\_thresh\_hists.sh}
+\item Fit for the Threshold/Shielding correction\\
+\texttt{root -b -q 'Calibration/macros/fit\_thresh\_corrs\_fb.C(}\\\hspace*{59mm}
+\texttt{"/path/to/input/input\_file\_name.root",}\\\hspace*{20mm}
+\texttt{"<name\_of\_the\_output\_threshold\_file\_including\_tb.root>")'}
+\end{enumerate}
+\item Run the attenuation fit for each sample
+\begin{enumerate}
+\item Check the ThresholdCorrMapFile, PlotsDirectory, and the fiberbrightness file\\
+\texttt{fhicl-dump Calibration/attenuation/attenuationfitjob.fcl}
+\item Run the fit: \texttt{nova -c attenuationfitjob.fcl -s /input/attenprof*.root}
+\item Carefully check all the created csv files and plots
+\item Copy the csv files to a pnfs area
+\end{enumerate}
+\end{enumerate}
+}}
+
+\hspace*{-9mm}
+\fcolorbox{black}[HTML]{E9F0E9}{
+\hspace*{-5mm}
+\parbox{1.02\textwidth}{
+\centering{\textbf{Absolute calibration}}
+\begin{enumerate}
+\item \texttt{bash Calibration/calibana/jobsub/calibsubmit.sh -p <projectname> -t <testrel> --tar <tarballOfTestrel> -s tb\_samples.txt --relcal </path/to/csv/files/on/pnfs> --tb --data/mc --prepare/submit/check/hadd/checkhadd}
+\begin{enumerate}
+\item \texttt{--prepare}
+\item Rebuild the test release with \texttt{novasoft\_build -t}
+\item Create a tarball with \texttt{testrel\_tabrall <testrel> <tarball>}
+\item \texttt{--submit}
+\item \texttt{--check}
+\item \texttt{--hadd}
+\end{enumerate}
+\item Update the \texttt{Calibration/calibana/MakeValidCalibPDF.C} with the new calibana files
+\item Calculate the absolute energy scale and create the validation plots\\
+\texttt{root -b -q 'Calibration/calibana/MakeValidCalibPDF.C(}\\
+\texttt{"tb\_Calibration\_name", "cfg/tb\_calib.cfg", "all")'}\\
+where the first argument \textbf{must} contain "tb"
+\item Carefully analyse the validation plots
+\item Create a new calibration tag
+\end{enumerate}
+}}
 
 %Temperature study (small overview - probably not needed at all, depends if Randeeth want to add his work to this technote)
 
 %From Teresa's thesis
 %Along with setting the energy scale of the detector, we need to calibrate the timing of the readout system for the detector. The Data Concentrator Modules (DCMs) responsible for collating the data from multiple FEBs get their timing information via a daisy chain originating at the detector TDU. Each DCM in the chain has a timing offset relative to the DCM before it, with the last DCM having the earliest ti. Following the procedure described in [66], I used timing information from hits on cosmic ray muon tracks that pass through multiple DCMs to determine the relative offsets between DCMs, shown in Figure 3.20.
 
-The calibration samples used for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the Test Beam data-driven activity-based triggers (DDActivity1). To produce these samples we (or production) use the 
-\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} file from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding mc file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
+The calibration samples used as inputs for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the Test Beam data-driven activity-based triggers (DDActivity1). To produce these samples we (or production) use the 
+\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} job from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding simulation ("mc") file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
 
 %From Teresa's thesis:
 %"For Test Beam, we have three beam-based triggers, one pulsed trigger, and two data-driven triggers. The data-driven triggers are both activity-based triggers. The first is intended to record cosmic ray induced events for use in calibrating the detector.
@@ -486,7 +559,7 @@ The calibration samples used for the Test Beam detector calibration are listed i
 \hspace*{-8mm}
 \begin{tabular}{l}
 \hline\hline\\
-\textbf{pclist samples}\\[3pt]\hline
+\multicolumn{1}{c}{\textbf{pclist samples}}\\[3pt]\hline
 \textbf{Data period 2:}\\
 \texttt{prod\_pclist\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_period2\_v1}\\
 \textbf{Data period 3:}\\
@@ -500,7 +573,7 @@ The calibration samples used for the Test Beam detector calibration are listed i
 \textbf{Simulation:}\\
 \texttt{rkralik\_pclist\_testbeam\_databasedsim\_R23-04-05-testbeam-production.a}\\[5pt]
 \hline\hline\\
-\textbf{pcliststop samples}\\[3pt]\hline
+\multicolumn{1}{c}{\textbf{pcliststop samples}}\\[3pt]\hline
 \textbf{Data period 2:}\\
 \texttt{prod\_pcliststop\_R23-04-05-testbeam-production.a\_testbeam\_ddactivity1\_period2\_v1}\\
 \textbf{Data period 3:}\\
@@ -519,12 +592,11 @@ The calibration samples used for the Test Beam detector calibration are listed i
 \label{tabTBCalibrationDefinitions}
 \end{table}
 
-
 \subsection{Fibre Brightness}
 
-To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. 
+To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. Since we need the fibre brightness file to run the attenuation fits and we need the attenuation fit results to create the brightness file, we proceeded iteratively and ran the attenuation fit with an older version of the brightness file and then used the newer fit results to create a new brightness file to be used in a new attenuation fit.
 
-As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brightness file. Otherwise, these cells would be assigned the average response and we would loose the information on their relative brightness. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correctly represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results, for which $\chi^2<0.7$.
+As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brightness file. Otherwise, all the officially uncalibrated cells would be assigned an average response and we would loose the information on their relative brightness. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correctly represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (which is possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results with $\chi^2<0.7$.
 
 %Describe and show plots that since we are only using the fitted response at cell centre we can allow fits with $\chi^2>0.2$. Show examples of responses with chisq larger than that and say what is the final chisq chosen. No need to show the final distribution of the fb bins here as they were technically shown in the general calibration description. But might refer back to it...
 
@@ -546,7 +618,7 @@ As we are only using the attenuation fit results in the centre of each cell, we'
 The final distribution of brightness bins and their corresponding relative brightnesses for the Test Beam detector is shown on figure \ref{figFiberBrightnessBins}.
 
 \subsection{Threshold and shielding corrections}
-We created the threshold and shielding correction for Test Beam from the new simulation described in the next section \ref{secSimulationResults}. As can be seen on figure \ref{figTBThresholdCorrections} the correction is almost uniform as a function of both $w$ and cell number. This is the case for all fibre brightness bins and for both views. The uniform distribution is expected as the Test Beam detector is much smaller than the far detector, which motivated creating the correction. The cell length of $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. Therefore the threshold and shielding correction for Test Beam is only a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor does not have any impact on its results.
+We created the threshold and shielding correction for Test Beam from the new simulation described in the next section \ref{secSimulationResults}. As can be seen on figure \ref{figTBThresholdCorrections}, the correction is almost uniform as a function of both $w$ and cell number. This is the case for all fibre brightness bins and for both views. The uniform distribution is expected as the Test Beam detector is much smaller than the far detector and the corrected effects don't have a significant effect. The cell length of $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. Therefore the threshold and shielding correction for Test Beam is only a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor does not have any impact on its results.
 
 \begin{figure}[hbtp]
 \centering
@@ -572,7 +644,7 @@ We created the threshold and shielding correction for Test Beam from the new sim
 
 %We originally used Teresa's calibration MC sample, but after we saw disagreement, we developed a new MC based off of the period 3 data, which we ended up using for both period 2 and period 3. For fibre brightness we are also using the same MC from period 3 data as it represents the detector in its best condition.
 
-We used a data-based simulation of cosmic muons for the Test Beam detector calibration. The details are described in the Data-based simulation of cosmic muons (not only) for calibration technical note \cite{NOVA-doc-60026}. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fibre brightness file to inform the simulation on the realistic detector conditions.
+We used a custom made data-based simulation of cosmic muons for the Test Beam detector calibration. The details on the simulation and how it was created are described in the Data-based simulation of cosmic muons (not only) for calibration technical note \cite{NOVA-doc-60026}. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fibre brightness file to inform the simulation on the realistic detector conditions.
 
 The distribution of events cosmic muon events from the new simulation is shown on figure \ref{figCalibhistSim}.
 
@@ -614,11 +686,6 @@ There is only one cell in the middle of the detector that is left uncalibrated, 
 \end{figure}
 
 This is a much better result of the relative calibration (attenuation fit) for a simulation than the previous versions of Test Beam detector calibration simulations were able to accomplish.
-
-\subsection{Period 1 data}
-TO DO: add a description of period 1 data
-%Only a month of data, only first half of detector filled, primary/secondary beam halo, or oversaturation leading to FEB shutoffs [docdb:38349 and 41331].
-%Only used for comissioning, not used for any data analysis or calibration.
 
 \FloatBarrier
 \subsection{Period 2 data}
@@ -1058,20 +1125,29 @@ We can see that majority of the detector is calibrated, besides some cells on th
 TO DO: add description of the absolute calibration results, correct the table to fit the page
 
 %Standard absolute calibration cuts: track window, flat-response W, positive pe, pecorr, and pathlenght reco
-\begin{center}
+%\begin{center}
 \begin{table}[h!]
-\begin{tabular}{ |c|c|c|c|c|c|c|c|c|}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
-Sample & NHits$ x$ & MEU$ x$ & NHits$ y$ & MEU$ y$ & MEU & MEU Err & TrueE/dx & tE/dx Err\\ \hline
-epoch 3abc data & 2.638e+05 & 38.49 & 1.621e+06 & 39.4 & 38.94 & 0.006758 & 1.772 & 0.000238\\ \hline
-epoch 3de data & 1.049e+05 & 38.63 & 6.725e+05 & 39.42 & 39.02 & 0.01048 & 1.772 & 0.000238\\ \hline
-period 2 data & 2.322e+05 & 38.7 & 1.413e+06 & 39.4 & 39.05 & 0.007252 & 1.772 & 0.000238\\ \hline
-period 4 data & 5.268e+05 & 38.63 & 3.316e+06 & 39.4 & 39.01 & 0.004703 & 1.772 & 0.000238\\ \hline
-simulation & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006418 & 1.772 & 0.000238\\ \hline
+\multicolumn{2}{|c|}{\multirow{2}{*}{Sample}} & \multicolumn{2}{c|}{X view} & \multicolumn{2}{c|}{Y view} & \multicolumn{2}{c|}{Combined}\\\cline{3-8}
+\multicolumn{2}{|c|}{} & NHits & MEU & NHits & MEU & MEU$_{Reco}$ & MEU$_{Reco}$ Err\\ \hline
+ \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Data}}}
+ & Period 2 & 2.322e+05 & 38.7 & 1.413e+06 & 39.4 & 39.05 & 0.007\\ \cline{2-8} 
+ & Epochs 3abc & 2.638e+05 & 38.49 & 1.621e+06 & 39.4 & 38.94 & 0.007\\ \cline{2-8}
+ & Epochs 3de & 1.049e+05 & 38.63 & 6.725e+05 & 39.42 & 39.02 & 0.01\\ \cline{2-8}
+ & Period 4 & 5.268e+05 & 38.63 & 3.316e+06 & 39.4 & 39.01 & 0.005\\ \hline
+\multicolumn{2}{|c|}{Simulation} & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006\\ \hline
+\end{tabular}
+
+\vspace*{2mm}
+\begin{tabular}{|c|c||c|c|}
+\hline
+MEU$_{True}$ & 1.772 & MEU$_{True}$ Err & 0.0002\\ \hline
 \end{tabular}
 \label{tab:calib_summary_table}
 \end{table}
-\end{center}
+%\end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1457,6 +1533,10 @@ TO DO: describe the validation plots and possibly add more plots
 \FloatBarrier
 \section{Conclusion}
 TO DO: Write a conclusion
+
+Probably include that the intermediate results are stored in the /nova/ana/testbeam folder.
+
+When should I discuss the uncertainties? Should I just include everything here?
 
 \bibliographystyle{unsrturl}
 \bibliography{TestBeamCalibrationTechNoteLiterature}
