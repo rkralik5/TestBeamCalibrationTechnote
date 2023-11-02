@@ -8,7 +8,7 @@
 \usepackage[absolute,overlay]{textpos}
 \usepackage{fancybox}
 \usepackage{multirow}
-\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames,table,xcdraw]{xcolor}
 \usepackage{amsmath, amsthm, amssymb,amsfonts}
 \usepackage{float}
 \usepackage{fullpage}
@@ -51,12 +51,16 @@
 
 \begin{document}
 \maketitle
+\thispagestyle{empty} % Remove page number from title page
 \begin{abstract}
 The NOvA Test Beam detector calibration uses the same calibration procedure as the standard NOvA detectors. The main aim is to remove differences in energy deposition within the detector and to provide an absolute energy scale from collected charge to physical energy units. This allows for a direct comparison of the deposited energy in the Test Beam detector with the standard NOvA detectors. On top of that, the unique qualities of Test Beam allow us to use the Test Beam calibration to validate the calibration process and possibly to provide a simulation-independent absolute energy scale.
 \end{abstract}
 \newpage
+
+\thispagestyle{empty} % Remove page number from ToC
 \tableofcontents
 \newpage
+\pagenumbering{arabic} % Start pagenumbering from here
 
 \section{Introduction}
 
@@ -294,7 +298,7 @@ where both the relative calibration results (blue fraction) and the absolute cal
 
 %(Dividing data into periods and epochs) A new period is started for a major change to running conditions such as a horn current change, a long shutdown, target replacement, etc. Periods are divided into epochs. A new epoch is started whenever analysis or production reasons dictate. Calibration has been performed for all the periods separately and has used the data that are determined by the Data Quality group to be good. The effects of aging, temperature, partial filling, and cooling are neglected. The drift calibration should be able to account for all of these (but drift calibration doesn't really exist yet afaik). [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector]
 
-\subsubsection*{Creating calibration samples}
+\subsubsection*{Creating calibration samples}\label{secCreatingCalibrationSamples}
 
 We want to select good quality cosmic ray muons. First, we remove beam related events based on their time stamps relative to the time of the beam spill, using the \texttt{RemoveBeamSpills} (for the near and far detectors), or \texttt{RemoveTBSpills} filter (for the Test Beam detector), as shown on figure \ref{figRemoveBeamSpill}. Next we apply reconstruction to get the CellHit, slicer, and track information, followed by a track-based selection to remove misreconstructed and poor quality events.
 
@@ -377,7 +381,7 @@ Energy deposited far away from the readout may get attenuated enough to be shift
 %\end{equation}
 %where $T$ is the combined “threshold and shielding” correction factor, $PE$ is the simulated photoelectrons recorded at the readout, $\lambda$ is the number of simulated photons which would be seen at the readout out in the absence of fluctuations, $E_{true}$ is the true energy deposited in the cell and $E_{mip}$ is the naive energy you would expect to be deposited based on the pathlength through the cell. In this way it encodes a threshold correction based on the simulated readout PE with and without the fluctuations, with $\lambda$ dependent on your simulated threshold, as well as a shielding correction based on the simulated energy deposition and a naive no shielding approximation. This equation gives us a cell by cell correction but we use an empirical polynomial fit to that distribution which removes statistical noise from the correction and well describes the initial distribution. This correction factor is applied to the cell by cell data and MC PE/cm distributions before the attenuation fits. [docdb:13579 - SA The Attenuation and Threshold Calibration of the NOvA detector, reference 8 is for docdb:7247, a talk by Backhouse]
 
-\subsection{Relative calibration}
+\subsection{Relative calibration}\label{secRelativCalibration}
 
 %Detailed description can be found in the "Instructions for the Attenuation Calibration Job" technote from Prabhjot from docdb:13579 (list of all calibration technotes) and on the relative calibration wiki page.
 
@@ -471,9 +475,9 @@ Validations	of any calibration correction take the same basic form:
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{NOvA Test Beam detector calibration}
-In this section we describe the details of the Test Beam detector calibration as it was finalized in June 2023. This version includes all measured Test Beam data and a new purpose-made simulation, with the exception of the Period 1 data. Period 1 only includes one month of data, with half-filled detector and several issues including the beam halo \cite{NOVA-doc-41331} and was only used for commissioning and is not used in any Test Beam analysis. 
+In this section we describe the details of the Test Beam detector calibration as it was finalized in June 2023. This version includes a new purpose-made simulation and all measured Test Beam data, with the exception of period 1 data. Period 1 only includes one month of data, with half-filled detector and several issues including the beam halo \cite{NOVA-doc-41331} and was only used for commissioning and is not used in any Test Beam analysis. 
 
-The specific commands and tips for running the Test Beam detector calibration are listed in the two coloured boxes bellow, split into relative and absolute calibration steps. These steps closely follow the standard NOvA calibration procedure as described in the last section and as shown on the calibration flow chart on figure \ref{figCalibrationFlowchart}. The most up-to-date steps and information on how to run the Test Beam calibration are listed on the \href{https://cdcvs.fnal.gov/redmine/projects/novaart/wiki/Test\_Beam\_Calibration\_Instructions}{Test Beam calibration redmine wiki page}.
+The specific commands to run the Test Beam detector calibration are listed in the two coloured boxes bellow, split into relative and absolute calibration steps. These steps closely follow the standard NOvA calibration procedure, as described in the last section and as shown on the calibration flow chart on figure \ref{figCalibrationFlowchart}. The most up-to-date steps and information on how to run the Test Beam calibration are listed on the \href{https://cdcvs.fnal.gov/redmine/projects/novaart/wiki/Test\_Beam\_Calibration\_Instructions}{Test Beam calibration redmine wiki page}.
 
 \hspace*{-9mm}
 \fcolorbox{black}[HTML]{E9F0E9}{
@@ -542,14 +546,15 @@ where the first argument \textbf{must} contain "tb"
 \item Create a new calibration tag
 \end{enumerate}
 }}
+\vspace*{3mm}
 
 %Temperature study (small overview - probably not needed at all, depends if Randeeth want to add his work to this technote)
 
 %From Teresa's thesis
 %Along with setting the energy scale of the detector, we need to calibrate the timing of the readout system for the detector. The Data Concentrator Modules (DCMs) responsible for collating the data from multiple FEBs get their timing information via a daisy chain originating at the detector TDU. Each DCM in the chain has a timing offset relative to the DCM before it, with the last DCM having the earliest ti. Following the procedure described in [66], I used timing information from hits on cosmic ray muon tracks that pass through multiple DCMs to determine the relative offsets between DCMs, shown in Figure 3.20.
 
-The calibration samples used as inputs for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the Test Beam data-driven activity-based triggers (DDActivity1). To produce these samples we (or production) use the 
-\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} job from the novaprod/novaproduction/fcl/testbeam repository, or the corresponding simulation ("mc") file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
+The calibration samples used as inputs for the Test Beam detector calibration are listed in table \ref{tabTBCalibrationDefinitions}. We are using data from one of the two Test Beam data-driven activity-based triggers (DDActivity1). To produce these samples we (or production) use the 
+\href{https://github.com/novaexperiment/novaprod/blob/main/novaproduction/fcl/testbeam/prod\_tb\_ddactivity1\_pclist\_job.fcl}{prod\_tb\_ddactivity1\_pclist\_job.fcl} job from the \texttt{novaprod/novaproduction/fcl/testbeam} repository, or the corresponding simulation ("mc") file. The calibration samples were originally created in keep-ups by the production, but most of them had to be reproduced in 2023 to fix a bug in the Test Beam geometry.
 
 %From Teresa's thesis:
 %"For Test Beam, we have three beam-based triggers, one pulsed trigger, and two data-driven triggers. The data-driven triggers are both activity-based triggers. The first is intended to record cosmic ray induced events for use in calibrating the detector.
@@ -592,11 +597,11 @@ The calibration samples used as inputs for the Test Beam detector calibration ar
 \label{tabTBCalibrationDefinitions}
 \end{table}
 
-\subsection{Fibre Brightness}
+\subsection{Fibre Brightness}\label{secFibreBrightnessTB}
 
-To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), since that is the best detector conditions data we have. Since we need the fibre brightness file to run the attenuation fits and we need the attenuation fit results to create the brightness file, we proceeded iteratively and ran the attenuation fit with an older version of the brightness file and then used the newer fit results to create a new brightness file to be used in a new attenuation fit.
+To divide the Test Beam detector into fibre brightness bins we used the attenuation fit results for period 4 data (described in section \ref{secTBPeriod4}), as that is the best detector conditions data we have. Since we need the fibre brightness file to run the attenuation fits and we need the attenuation fit results to create the brightness file, we proceeded iteratively and first ran the attenuation fit with an older version of the brightness file and then used the newer fit results to create a new brightness file to be used in a new attenuation fit.
 
-As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration, to be still used for the creation of the brightness file. Otherwise, all the officially uncalibrated cells would be assigned an average response and we would loose the information on their relative brightness. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correctly represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (which is possible for Test Beam, due to its small number of cells), we concluded it is safe to use all attenuation fit results with $\chi^2<0.7$.
+As we are only using the attenuation fit results in the centre of each cell, we've decided to allow some cells that initially failed the calibration condition ($\chi^2>0.2$), to be still used for the creation of the brightness file. Otherwise, all the officially uncalibrated cells would be assigned an average response and we would loose the information on their relative brightness. As can be seen on figure \ref{figFiberBrightnessExamples}, some attenuation fits have $\chi^2>0.2$, even though they correctly represent the energy deposition in the centre of that cell. By carefully investigating all cells with $\chi^2>0.2$ (which is doable for Test Beam, due to its small number of cells), we concluded it is safe to use all the attenuation fit results with $\chi^2<0.7$.
 
 %Describe and show plots that since we are only using the fitted response at cell centre we can allow fits with $\chi^2>0.2$. Show examples of responses with chisq larger than that and say what is the final chisq chosen. No need to show the final distribution of the fb bins here as they were technically shown in the general calibration description. But might refer back to it...
 
@@ -618,7 +623,9 @@ As we are only using the attenuation fit results in the centre of each cell, we'
 The final distribution of brightness bins and their corresponding relative brightnesses for the Test Beam detector is shown on figure \ref{figFiberBrightnessBins}.
 
 \subsection{Threshold and shielding corrections}
-We created the threshold and shielding correction for Test Beam from the new simulation described in the next section \ref{secSimulationResults}. As can be seen on figure \ref{figTBThresholdCorrections}, the correction is almost uniform as a function of both $w$ and cell number. This is the case for all fibre brightness bins and for both views. The uniform distribution is expected as the Test Beam detector is much smaller than the far detector and the corrected effects don't have a significant effect. The cell length of $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. Therefore the threshold and shielding correction for Test Beam is only a normalization factor, except for the cell edges, but there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor does not have any impact on its results.
+We created the threshold and shielding correction for Test Beam from the new simulation described in the next section \ref{secSimulationResults}. As can be seen on figure \ref{figTBThresholdCorrections}, the correction is almost uniform as a function of both $w$ and cell number. This is the case for all fibre brightness bins and for both views.
+
+The uniform distribution is expected, as the Test Beam detector is much smaller than the far detector and the corrected effects don't have a significant effect. The cell length of $2.6\ \unit{m}$ has only a negligible effect on the energy distribution of cosmic muons or on the threshold saturation. Therefore the threshold and shielding correction for Test Beam is only a normalization factor, except for the cell edges, where there is a large variation in the energy response there anyway due to low number of events. Since the relative calibration only cares about relative differences across the detector, a normalization factor does not have any impact on its results.
 
 \begin{figure}[hbtp]
 \centering
@@ -644,9 +651,9 @@ We created the threshold and shielding correction for Test Beam from the new sim
 
 %We originally used Teresa's calibration MC sample, but after we saw disagreement, we developed a new MC based off of the period 3 data, which we ended up using for both period 2 and period 3. For fibre brightness we are also using the same MC from period 3 data as it represents the detector in its best condition.
 
-We used a custom made data-based simulation of cosmic muons for the Test Beam detector calibration. The details on the simulation and how it was created are described in the Data-based simulation of cosmic muons (not only) for calibration technical note \cite{NOVA-doc-60026}. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as inputs and the newly created fibre brightness file to inform the simulation on the realistic detector conditions.
+We used a custom made data-based simulation of cosmic muons for the Test Beam detector calibration. The details on the simulation and how it was created are described in the \textit{"Data-based simulation of cosmic muons (not only) for calibration technical note"} \cite{NOVA-doc-60026}. We used half of period 4 data (used every second event as saved in the root file, therefore sampled from the entire period 4) as the inputs. We also used the newly created fibre brightness file (section\ref{secFibreBrightnessTB}) to inform the simulation on the realistic detector conditions.
 
-The distribution of events cosmic muon events from the new simulation is shown on figure \ref{figCalibhistSim}.
+The distribution of cosmic muon events from the new simulation across the detector is shown on figure \ref{figCalibhistSim}.
 
 \begin{figure}[h]
 \centering
@@ -655,9 +662,9 @@ The distribution of events cosmic muon events from the new simulation is shown o
 \label{figCalibhistSim}
 \end{figure}
 
-The results of the attenuation fit are shown for each cell (in its centre) on figure \ref{figCellCentreResponseSim}. The blank cells show which cells failed the attenuation fit (their $\chi^2>0.2$). Most of the uncalibrated cells are on the edges of the detector, which is expected as those have much fewer events that pass our selection than the rest. Examples of a standard detector response and of the response for cells on the edge of the detector are shown of figure \ref{figAttenfitResultsSimulation}.
+An overview of the results of the attenuation fit are shown on figure \ref{figCellCentreResponseSim} as a map of the response in the centre of each cell. The blank cells show the uncalibrated cells which failed the calibration condition (attenuation fit $\chi^2>0.2$). Most of the uncalibrated cells are on the edges of the detector, which is expected as those have much fewer events that pass the calibration sample selection than the rest.
 
-(I should explain here what is on the plots maybe - red is the exponential fit and blue is the total with with the LOWESS. Most cells have the expected response of slow rise towards the readout falling down on the edges).
+Examples of a standard detector response and of the response for cells on the edge of the detector are shown of figure \ref{figAttenfitResultsSimulation}. Here the red line shows the initial exponential fit and the blue line the final attenuation fit, after the LOWESS correction, as described in section \ref{secRelativCalibration}. Most cells have an expected response with a slow rise towards the readout (right side of the plots), with drops on the edges, as shown on the top left plot.
 
 \begin{figure}[h]
 \centering
@@ -666,7 +673,7 @@ The results of the attenuation fit are shown for each cell (in its centre) on fi
 \label{figCellCentreResponseSim}
 \end{figure}
 
-There is only one cell in the middle of the detector that is left uncalibrated, which is the cell 32 in a vertical plane in the brightness bin 5, shown on the top right of fig.\ref{figAttenfitResultsSimulation}. The corresponding $\chi^2=0.227$. It seems the reason the $\chi^2>0.2$ is an exceptionally high response with a large uncertainty in the last bin.
+There is only one cell in the middle of the detector that is left uncalibrated, which is the cell 32 in a vertical plane in the brightness bin 5, shown on the top right of fig.\ref{figAttenfitResultsSimulation}. The corresponding $\chi^2=0.227$. It seems the reason the $\chi^2$ is $>0.2$ is the high response with a large uncertainty in the very last fitted bin.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -685,11 +692,11 @@ There is only one cell in the middle of the detector that is left uncalibrated, 
   \label{figAttenfitResultsSimulation}
 \end{figure}
 
-This is a much better result of the relative calibration (attenuation fit) for a simulation than the previous versions of Test Beam detector calibration simulations were able to accomplish.
+Overall, this is a much better result of the relative calibration (attenuation fit) for a simulation than any of the previous versions of the cosmic muon simulations in the Test Beam detector.
 
 \FloatBarrier
 \subsection{Period 2 data}
-The underfilled cells issue describe in section \ref{secTBDetector} was present throughout period 2 data taking. This can be clearly seen on figure \ref{figCalibhist_period2}, represented by the empty cells 31 and 63 in the horizontal planes, which were marked as bad channels and therefore ignored during processing. This also affects the neighbouring cells to the underfilled cells, which have fewer events due to the tricell condition.
+The issue with underfilled cells described in section \ref{secTBDetector} was present throughout the period 2 data taking. This can be clearly seen on figure \ref{figCalibhist_period2}, represented by the empty cells 31 and 63 in the horizontal planes, which were marked as bad channels and therefore ignored during production of calibration samples. This also affects the neighbouring cells to the underfilled cells, which have fewer events due to the tricell condition (see section \ref{secCreatingCalibrationSamples}).
 
 \begin{figure}[h]
 \centering
@@ -698,9 +705,9 @@ The underfilled cells issue describe in section \ref{secTBDetector} was present 
 \label{figCalibhist_period2}
 \end{figure}
 
-There was also an issue of switched cables from the readout in plane 55 between cells 3 and 46 \cite{NOVA-doc-49674}, which can also be seen on figure \ref{figCalibhist_period2}. This is manifested as fewer total number of events in those cells and in their neighbours, again due to the tricell condition.
+There was also an issue of likely switched cables from the readout in plane 55 between cells 3 and 46 \cite{NOVA-doc-49674}, which can also be seen on figure \ref{figCalibhist_period2} as dark spots. This is manifested as fewer total number of events in those cells and in their neighbours, again due to the tricell condition.
 
-Officially, period 2 is divided into 6 epochs 2a - 2f, compared on figures \ref{figCalibhistWPE_period2},\ref{figCalibhistCellPE_period2} and \ref{figCalibhistPlanePE_period2}. The epochs mostly differ in the use of various FEB firmwares, with epoch 2c being a trigger study with paddles. As can be seen on the plots, the individual epochs vary only slightly, only in a small normalization. We decided to use the entire period 2 without splitting it into any smaller samples for calibration.
+Officially, period 2 is divided into 6 epochs 2a - 2f, compared on figures \ref{figCalibhistWPE_period2},\ref{figCalibhistCellPE_period2} and \ref{figCalibhistPlanePE_period2}. The epochs mostly differ in the use of various FEB firmwares, with epoch 2c being a trigger study with paddles. As can be seen on the plots, the individual epochs vary only slightly, and only in a small normalization difference. We decided to calibrate the entire period 2 together, without splitting it into any smaller samples.
 
 \begin{figure}[h]
 \centering
@@ -746,7 +753,7 @@ Officially, period 2 is divided into 6 epochs 2a - 2f, compared on figures \ref{
 
 \subsubsection*{Period 2 relative calibration results}
 
-The results of the attenuation fit for period 2 are summarised on figure \ref{figCellCentreResponsePeriod2} showing the fitted response at the centre of each cell, or blank cell if the cell failed calibration.
+The results of the attenuation fit for period 2 are summarised on figure \ref{figCellCentreResponsePeriod2}, showing the fitted response at the centre of each cell, or a blank cell if it failed calibration.
 
 \begin{figure}[h]
 \centering
@@ -755,9 +762,9 @@ The results of the attenuation fit for period 2 are summarised on figure \ref{fi
 \label{figCellCentreResponsePeriod2}
 \end{figure}
 
-Most of the cells have the expected response, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}. Here the mean response in $\unit{PE/cm}$ slowly and approximately constantly rises towards the readout (right side of the plot) and drops down on the cell edges, marked with dashed lines.
+Most of the cells have an expected response, with steady rise towards the readout and a drop on the edges, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}.
 
-Some cells have a non-flat response across the cell, with one or more regions with lower energy response, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}. These low regions are (almost certainly) a real physical effect caused by zipped, or possibly even twisted fibres \cite{NOVA-doc-43249}, present in all of NOvA's detectors. Relative calibration corrects for this effect in data, but zipped fibres are not included in simulation, for any of the detectors. This could potentially cause issues with the ADC threshold in simulation.
+Some cells have a non-flat response across the cell, with one or more regions with a drop in the energy response, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_ZippedFibers}. These low regions are (almost certainly) a real physical effect caused by zipped, or possibly even twisted fibres \cite{NOVA-doc-43249}, present in all of NOvA's detectors. Relative calibration corrects for this effect in data, but zipped fibres are not included in simulation, for any of the detectors. This could potentially cause issues with the ADC threshold in simulation.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -770,7 +777,7 @@ Some cells have a non-flat response across the cell, with one or more regions wi
   \label{figAttenfitResultsPerio2_ZippedFibers}
 \end{figure}
 
-Since the underfilled cells were marked as bad channels we didn't even attempt to calibrate them. Their neighbours have fewer events due to the tricell condition but majority of them pass the calibration condition, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCells}. The neighbouring cells in plane 1 don't pass the calibration due to low statistics and therefore large fluctuations, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCellsPlane01}. This is likely due to a combination of the tricell condition and plane 1 being on the edge of the detector, which typically has fewer (accepted) hits than the center as shown on figure \ref{figCalibhist_period2}.
+Since the underfilled cells were marked as bad channels we didn't attempt to calibrate them. Their neighbours have fewer events due to the tricell condition, but majority of them pass the calibration condition, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCells}. The neighbouring cells in plane 1 don't pass calibration due to low statistics and therefore large fluctuations, as shown on figure \ref{figAttenfitResultsPerio2_UnderfilledCellsPlane01}. This is likely due to a combination of the tricell condition and plane 1 being on the edge of the detector, which typically has fewer (accepted) hits than the center, as shown on figure \ref{figCalibhist_period2}.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -794,7 +801,7 @@ Since the underfilled cells were marked as bad channels we didn't even attempt t
   \label{figAttenfitResultsPerio2_UnderfilledCellsPlane01}
 \end{figure}
 
-The left half of plane 55 has $>3\times$ larger response than it's surrounding planes, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. Similarly, the left half of plane 57 has lightly lower response than the surrounding planes, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. This is due to the corresponding APDs/FEBs faultily recording different energy response than the real energy deposited in the detector. Since this is present for all data, not only for the cosmic muons used for calibration, it is important to correctly calibrate them. The issue can arise if these FEBs have been "faulty" only for a limited time of the entire calibrated period. Since we are doing the attenuation fit on the profile histograms, if an FEB records a standard response for half of the time and $7\times$ larger response for the seconds half, calibration is going to assume the response was $4\times$ larger the entire time, which is incorrect. Since both of these planes are in the back of the detector, we decided to ignore this effect for period 2.
+The left half of plane 55 has more than $3\times$ larger response than it's surrounding planes, as shown on the left plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. Similarly, the left half of plane 57 has slightly lower response than the surrounding planes, as shown on the right plot of figure \ref{figAttenfitResultsPerio2_FaultyFEB}. This is due to the corresponding APDs/FEBs incorrectly recording different energy response than the real energy deposited in the detector. Since this effect is present for all data, not only for the cosmic muons used for calibration, it is important to correctly calibrate it out. The issue can arise if these FEBs have been "faulty" only for a limited time of the entire calibrated period. Since we are doing the attenuation fit on the average response across the whole calibrated period, if an FEB records a standard response for half of the time and $7\times$ larger response for the seconds half, calibration is going to assume the response was $4\times$ larger the entire time, which is incorrect. Since both of these planes are in the back of the detector, we decided to ignore this effect for period 2.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -807,7 +814,7 @@ The left half of plane 55 has $>3\times$ larger response than it's surrounding p
   \label{figAttenfitResultsPerio2_FaultyFEB}
 \end{figure}
 
-The swapped cables in plane 55 have almost no events, which affects both them and their neighbours as shown of figure \ref{figAttenfitResultsPerio2_SwappedCables}.
+The cells with (probably) swapped cables in plane 55 have almost no events, which affects both them and their neighbours as shown of figure \ref{figAttenfitResultsPerio2_SwappedCables}.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -820,7 +827,7 @@ The swapped cables in plane 55 have almost no events, which affects both them an
   \label{figAttenfitResultsPerio2_SwappedCables}
 \end{figure}
 
-Several cells in the end of the Test Beam detector are uncalibrated due to bins on the edges of the cell having an unusually high response, or no events at all, as shown on figure \ref{figAttenfitResultsPerio2_CellEdge}. It is unknown if this is a real physical effect, possibly related to the fibres, or unfiltered noise hits, or something else entirely. Since these cells are in the end of the detector, it is safe to ignore them.
+Several cells in the end of the Test Beam detector are uncalibrated due to the histogram bins on the edges of the cell having an unusually high response, or no events at all, as shown on figure \ref{figAttenfitResultsPerio2_CellEdge}. It is unknown if this is a real physical effect, possibly related to the fibres, or if it is unfiltered noise hits, or something else entirely. Since these cells are in the end of the detector, it is fairly safe to ignore them.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -847,6 +854,7 @@ The underfilled cells were refilled (or overfilled) during the period 3 data tak
 \centering
 \def\arraystretch{1.4}
 \begin{tabular}{m{0.11\textwidth} m{0.22\textwidth} m{0.55\textwidth}}
+Name & Start date & Reason for creating the epoch\\\hline
 Epoch 3a & January $12^{\textsf{th}}$ 2021 & Underfilled cells\\
 Epoch 3b & April $21^{\textsf{st}}$ 2021 & Overfilling the back 9 horizontal planes and the 7th horizontal plane from the front\\
 Epoch 3c & April $27^{\textsf{th}}$ 2021 & Overfilling of the 15 front horizontal planes (except the 7th, which was already done) and the 14th horizontal plane\\
@@ -875,7 +883,7 @@ The refilling of the underfilled cells can be clearly seen on the cell hits dist
 
 From the cell hits distributions we can also see there are a few channels (cells) that were likely dead for a certain time and weren't recording the same number of events as the surrounding cells. This is specifically plane 48, cell 39 in all of period 3 and plane 18, cell 31 in epochs 3d and 3e.
 
-The energy distributions across vertical cells and planes (X view) on figures \ref{figCalibhistCellPE_period3} and \ref{figCalibhistPlanePE_period3} shows, that the top half of plane 58 has a very distinctly different energy deposition compared to the rest of the cells, while having the same number of events, as can be seen on figure \ref{figCalibhist_period3}. This is the most impactful of the faulty FEBs replaced for Epoch 3e.
+The energy distributions across cells and planes in the X view (vertical) on figures \ref{figCalibhistCellPE_period3} and \ref{figCalibhistPlanePE_period3} shows, that the top half of plane 58 has a very distinctly different energy deposition compared to the rest of the cells. However figure \ref{figCalibhist_period3} shows that this part has the same number of events. This is the FEB, that has the largest impact on the calibration (and overall) out of the faulty FEBs replaced before the start of epoch 3e.
 
 \begin{figure}[!hbtp]
 \centering
@@ -919,7 +927,7 @@ The energy distributions across vertical cells and planes (X view) on figures \r
 \label{figCalibhistPlanePE_period3}
 \end{figure}
 
-From these discussion, we have decided to calibrate epochs 3a, 3b and 3c together (all epochs containing any underfilled cells) and separately calibrated epochs 3d and 3e. The faulty FEB in plane 58 is far enough in the back of the detector that we didn't find it necessary to calibrate epochs 3d and 3e separately. Also epochs 3b and 3c only contain a few days worth of data, which wouldn't be enough for a successful attenuation fit.
+From these considerations, we decided to calibrate epochs 3a, 3b and 3c together (all epochs containing any underfilled cells) and to separately calibrate epochs 3d and 3e. The faulty FEB in the top of plane 58 is far enough in the back of the detector, that we didn't find it necessary to calibrate epochs 3d and 3e separately. Also epochs 3b and 3c only contain a few days worth of data, which wouldn't be enough for a successful attenuation fit.
 
 \subsubsection*{Combined epochs 3a, 3b and 3c relative calibration results}
 
@@ -932,7 +940,7 @@ The results of the attenuation fit are summarised on figure \ref{figCellCentreRe
 \label{figCellCentreResponseEp3abc}
 \end{figure}
 
-We can see that some of the underfilled cells that have been refilled for epochs 3b or 3c are now calibrated thanks to including them into the same attenuation fit. An example of energy deposition in such a cell is on the left plot of figure \ref{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}.
+We can see that some of the underfilled cells that have been refilled for epochs 3b or 3c are now calibrated thanks to including these two short epochs into the same attenuation fit. An example of energy deposition in such a cell is on the left plot of figure \ref{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -945,7 +953,7 @@ We can see that some of the underfilled cells that have been refilled for epochs
   \label{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}
 \end{figure}
 
-Same as in period 2 most of the neighbouring cells to the underfilled cells are calibrated, except for cell 32 in plane 1, shown on the right of figure \ref{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}, which is also affected by the low statistics at the edges of the detector.
+Same as in period 2, most of the neighbouring cells to the underfilled cells are calibrated, except for cell 32 in plane 1, shown on the right of figure \ref{figAttenfitResultsEpoch3abc_UnderfilledCellsNeighbours}. This is due to the low statistics at the edges of the detector.
 
 There is a couple of notably faulty FEBs with a different energy response than their neighbours. Besides the expected top half of plane 58, which has about $5\times$ larger response than the usual, it's also the top half of plane 36, which has about $2.5\times$ larger response as its neighbours. This could mean that the FEB in plane 36 was faulty only for a limited time compared to the FEB in plane 58. The energy deposition for these cells is shown on figure \ref{figAttenfitResultsEpoch3abc_FaultyFEBs}.
 
@@ -956,7 +964,7 @@ There is a couple of notably faulty FEBs with a different energy response than t
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_058_048_ExtendedRange.png}
   \end{subfigure}
-  \caption{Fit to the energy response in epochs 3 a, b and c. The most obvious faulty FEBs that have a significantly larger energy response than their neighbours.}
+  \caption{Fit to the energy response in epochs 3a, 3b and 3c. The most obvious faulty FEBs that have a significantly larger energy response than their neighbours.}
   \label{figAttenfitResultsEpoch3abc_FaultyFEBs}
 \end{figure}
 
@@ -969,13 +977,13 @@ Similarly as in period 2, there are a few cell in the back of the detector that 
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_060_032.png}
   \end{subfigure}
-  \caption{Fit to the energy response in epochs 3 a, b and c. Some cells are not calibrated due to large fluctuations at one edge of the cells.}
+  \caption{Fit to the energy response in epochs 3a, 3b and 3c. Some cells are not calibrated due to large fluctuations at one edge of the cells.}
   \label{figAttenfitResultsEpoch3abc_CellEdges}
 \end{figure}
 
 \subsubsection*{Combined epochs 3d and 3e relative calibration results}
 
-The results of the attenuation fits for epochs 3 d and e are shown on figure \ref{figCellCentreResponseEp3de}. There we can see the expected uncalibrated cells in plane 17 related to the dead channel (or possible still underfilled cell). The energy deposition for this cell and one of its neighbours is shown on figure \ref{figAttenfitResultsEpoch3de_LeftoverUnderfilledCell}.
+The results of the attenuation fits for epochs 3d and 3e are shown on figure \ref{figCellCentreResponseEp3de}. There we can see the expected uncalibrated cells in plane 17 related to the dead channel (or possible still underfilled cell). The energy deposition for this cell and one of its neighbours is shown on figure \ref{figAttenfitResultsEpoch3de_LeftoverUnderfilledCell}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -991,11 +999,11 @@ The results of the attenuation fits for epochs 3 d and e are shown on figure \re
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3de_017_032.png}
   \end{subfigure}
-  \caption{Fit to the energy response in epochs 3 d and e. Possibly dead channel or still underfilled cell.}
+  \caption{Fit to the energy response in epochs 3d and 3e. Possibly dead channel or still underfilled cell.}
   \label{figAttenfitResultsEpoch3de_LeftoverUnderfilledCell}
 \end{figure}
 
-Epochs 3 d and e should have all the previously underfilled cells now refilled, but as can be seen on figure \ref{figCellCentreResponseEp3de}, there's several of these cells that are still uncalibrated. The energy deposition in these cells is shown on figure \ref{figAttenfitResultsEpoch3de_RefilledDiscrepancy}. We can see that these cells have a fairly large discrepancy between the left and right side of the cells. This is caused by using different scintillator oils for the initial filling of the cells and for the refilling. Specifically, these cells have been initially filled with the Ash River and the Texas oils, which have higher energy depositions compared to the NDOS oil that was used for the refilling. These oils clearly didn't mix properly which causes a different energy deposition in different parts of the cells. Since this is a physical effect that should be accounted for in the calibration and as we can see the fits are actually performing pretty well and are just confused by the unusual shape. We have therefore decided to manually change the $\chi^2$ inside the cvs tables (results of the attenuation fits), so that the $\chi^2<0.2$ and these cells are considered calibrated.
+Epochs 3d and 3e should have all the previously underfilled cells now refilled, but as can be seen on figure \ref{figCellCentreResponseEp3de}, there's several of these cells that are still (officially) uncalibrated. The energy deposition in these cells is shown on figure \ref{figAttenfitResultsEpoch3de_RefilledDiscrepancy}. Here we can see that these cells have a fairly large discrepancy between the left and right side of the cells. This is caused by using different scintillator oils for the initial filling of the cells and for the refilling. Specifically, these cells have been initially filled with the Ash River and the Texas oils, which have higher energy depositions compared to the NDOS oil that was used for the refilling during period 3. These oils clearly didn't mix properly which causes a different energy deposition in different parts of the cells. This is a physical effect that should be accounted for in the calibration and as we can see, the attenuation fits are actually performing reasonably well. The large $\chi^2$ value is most likely caused only by the unusual shape of the distribution, which the fit is not build for. \textbf{We have therefore decided to manually change the $\chi^2$ inside the cvs tables (results of the attenuation fits), so that the $\chi^2<0.2$ and these cells are officially considered calibrated.}
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -1008,7 +1016,7 @@ Epochs 3 d and e should have all the previously underfilled cells now refilled, 
   \label{figAttenfitResultsEpoch3de_RefilledDiscrepancy}
 \end{figure}
 
-Some of the cells in the back of the detector have a rise, or drop in energy deposition at the edge of the cell, as can be seen on figure \ref{figAttenfitResultsEpoch3de_CellEdges}. This is similar to the effect seen in period 2 and epochs 3abc and since it's again concentrated in the end of the detector we ignored these cells and left them uncalibrated.
+Some of the cells in the back of the detector have a rise, or drop in energy deposition at the edge of the cell, as can be seen on figure \ref{figAttenfitResultsEpoch3de_CellEdges}. This is similar to the effect seen in period 2 and epochs 3a+3b+3c and since it's again concentrated in the end of the detector, we ignored these cells and left them uncalibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -1017,14 +1025,14 @@ Some of the cells in the back of the detector have a rise, or drop in energy dep
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3de_062_006.png}
   \end{subfigure}
-  \caption{Fit to the energy response in epochs 3 d and e. Some cells have a drop, or a rise of energy response at the edge of the cell. This can be cause by low statistics.}
+  \caption{Fit to the energy response in epochs 3d and 3e. Some cells have a drop, or a rise of energy response at the edge of the cell. This can be cause by low statistics.}
   \label{figAttenfitResultsEpoch3de_CellEdges}
 \end{figure}
 
 \FloatBarrier
 \subsection{Period 4 data}\label{secTBPeriod4}
 
-The period 4 Test Beam data taking period is the best data we managed to collect with almost an ideal condition of the detector. There's only a few commissioning runs in the very beginning, which uncovered some dead channels or faulty FEBs that have been fixed. These runs make epoch 4a shown on the top plot of figure \ref{figCalibhist_period4}.
+The period 4 Test Beam data taking period is the best data we managed to collect with almost an ideal condition of the detector. There's only a few commissioning runs in the very beginning of period 4, which uncovered some dead channels or faulty FEBs that were immediately fixed. These runs make up epoch 4a, shown on the top plot of figure \ref{figCalibhist_period4}. There is also a few runs during which we masked parts of the detector to help with FEB saturation [reference]. We can clearly see this on the middle plot of figure \ref{figCalibhist_period4}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -1044,9 +1052,7 @@ The period 4 Test Beam data taking period is the best data we managed to collect
 \label{figCalibhist_period4}
 \end{figure}
 
-There has also been a cell masking study [reference], during which we masked parts of the front of the detector to help with FEB saturation. We can clearly see this on the middle plot of figure \ref{figCalibhist_period4}.
-
-Figures \ref{figCalibhistWPE_period4}, \ref{figCalibhistCellPE_period4} and \ref{figCalibhistPlanePE_period4} show that the epoch 4a and the cell masking study did have a noticeable impact on the energy deposition across the detector. We have therefore decided to ignore these runs and only use the rest of the period 4 data for the calibration.
+Figures \ref{figCalibhistWPE_period4}, \ref{figCalibhistCellPE_period4} and \ref{figCalibhistPlanePE_period4} show that the epoch 4a and the cell masking study did have a noticeable impact on the energy deposition across the detector. We have therefore decided to ignore these runs and only calibrate the rest of the period 4 data.
 
 \begin{figure}[!hbtp]
 \centering
@@ -1101,7 +1107,7 @@ Results of the attenuation fits for period 4 are summarised on figure \ref{figCe
 \label{figCellCentreResponsePeriod4}
 \end{figure}
 
-We can see that majority of the detector is calibrated, besides some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}) and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}). We treated the formerly underfilled cells the same way as in epochs 3 d and e, by manually changing their $\chi^2$ to be $<0.2$ and therefore making them calibrated.
+We can see that majority of the detector is calibrated, besides some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}), and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}). We treated the formerly underfilled cells the same way as in epochs 3d and 3e, by manually changing their $\chi^2$ inside the csv files to be $<0.2$ and therefore making them officially calibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -1125,29 +1131,43 @@ We can see that majority of the detector is calibrated, besides some cells on th
 TO DO: add description of the absolute calibration results, correct the table to fit the page
 
 %Standard absolute calibration cuts: track window, flat-response W, positive pe, pecorr, and pathlenght reco
-%\begin{center}
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
 \multicolumn{2}{|c|}{\multirow{2}{*}{Sample}} & \multicolumn{2}{c|}{X view} & \multicolumn{2}{c|}{Y view} & \multicolumn{2}{c|}{Combined}\\\cline{3-8}
-\multicolumn{2}{|c|}{} & NHits & MEU & NHits & MEU & MEU$_{Reco}$ & MEU$_{Reco}$ Err\\ \hline
+\multicolumn{2}{|c|}{} & NHits & MEU & NHits & MEU & \cellcolor[HTML]{F8A102}MEU$_{Reco}$ & MEU$_{Reco}$ Err\\ \hline
  \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Data}}}
- & Period 2 & 2.322e+05 & 38.7 & 1.413e+06 & 39.4 & 39.05 & 0.007\\ \cline{2-8} 
- & Epochs 3abc & 2.638e+05 & 38.49 & 1.621e+06 & 39.4 & 38.94 & 0.007\\ \cline{2-8}
- & Epochs 3de & 1.049e+05 & 38.63 & 6.725e+05 & 39.42 & 39.02 & 0.01\\ \cline{2-8}
- & Period 4 & 5.268e+05 & 38.63 & 3.316e+06 & 39.4 & 39.01 & 0.005\\ \hline
-\multicolumn{2}{|c|}{Simulation} & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & 40.05 & 0.006\\ \hline
+ & Period 2 & 2.322e+05 & 38.7 & 1.413e+06 & 39.4 & \cellcolor[HTML]{F8A102}39.05 & 0.007\\ \cline{2-8} 
+ & Epochs 3abc & 2.638e+05 & 38.49 & 1.621e+06 & 39.4 & \cellcolor[HTML]{F8A102}38.94 & 0.007\\ \cline{2-8}
+ & Epochs 3de & 1.049e+05 & 38.63 & 6.725e+05 & 39.42 & \cellcolor[HTML]{F8A102}39.02 & 0.01\\ \cline{2-8}
+ & Period 4 & 5.268e+05 & 38.63 & 3.316e+06 & 39.4 & \cellcolor[HTML]{F8A102}39.01 & 0.005\\ \hline
+\multicolumn{2}{|c|}{Simulation} & 2.829e+05 & 40.17 & 1.842e+06 & 39.93 & \cellcolor[HTML]{F8A102}40.05 & 0.006\\ \hline
 \end{tabular}
 
 \vspace*{2mm}
-\begin{tabular}{|c|c||c|c|}
+\begin{tabular}{|c|c|}
 \hline
-MEU$_{True}$ & 1.772 & MEU$_{True}$ Err & 0.0002\\ \hline
+\cellcolor[HTML]{F8A102}MEU$_{True}$ = 1.772 $\unit{MeV/cm}$ & MEU$_{True}$ Err = 0.0002 $\unit{MeV/cm}$\\ \hline
 \end{tabular}
+\caption{Table of the absolute calibration results. MEU$_{Reco}$ values (top table) are in units of $\unit{PECorr/cm}$ and MEU$_{True}$ values (bottom table) are in units of }
 \label{tab:calib_summary_table}
 \end{table}
-%\end{center}
+
+\begin{figure}[!hbtp]
+\centering
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/Period4_nhits_meu_y.pdf}
+\end{subfigure}
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/MC_nhits_mev_y.pdf}
+\end{subfigure}
+\caption{Example distributions of reconstructed (left) and true (right) energy response of stopping muons 1-2 m from the end of their tracks. The mean of the reconstructed (true) response is the reconstructed (true) MEU unit and the absolute energy scale is calculate as the ratio between the true MEU to the reconstructed MEU.}
+\label{figAbsCalibMEU}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
