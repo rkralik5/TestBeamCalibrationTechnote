@@ -1171,7 +1171,7 @@ We then look at the distributions of the reconstructed energy response in units 
 \label{tab:calib_summary_table}
 \end{table}
 
-We don't apply the absolute energy scale separately for each view, instead we combine the two views into a single $\textsf{MEU}_{Reco}$, or $\textsf{MEU}_{True}$ value. To combine the $\textsf{MEU}$ value we take a simple average $\left(\textsf{MEU}_X+\textsf{MEU}_Y\right)/2$, without accounting for the different statistics of the two views. To get the uncertainty on the final value, we calculate it as $1/\sigma^2_{Combined}=1/\sigma^2_{X} + 1/\sigma^2_Y$. The final combined values are highlighted in table \ref{tab:calib_summary_table}. Here $\textsf{MEU}_{Reco}$ values are all in units of $\unit{PECorr/cm}$.
+We don't apply the absolute energy scale separately for each view, instead we combine the two views into a single $\textsf{MEU}_{Reco}$, or $\textsf{MEU}_{True}$ value. To combine the $\textsf{MEU}$ value we take a simple average $\left(\textsf{MEU}_X+\textsf{MEU}_Y\right)/2$, without accounting for the different statistics of the two views. To get the uncertainty on the final value, we calculate it as $1/\sigma^2_{Combined}=1/\sigma^2_{X} + 1/\sigma^2_Y$. This uncertainty is however \textbf{not} the uncertainty used in NOvA for the absolute energy scale. Instead, we use a data-simulation comparison of special special samples to derive an uncertainty on the absolute energy scale \cite{NOVA-doc-36915}. The final combined values are highlighted in table \ref{tab:calib_summary_table}. Here $\textsf{MEU}_{Reco}$ values are all in units of $\unit{PECorr/cm}$.
 
 For each calibrated sample we write the combined $\textsf{MEU}_{Reco}$ value into an \texttt{calib\_abs\_consts.csv} file, together with its uncertainty and with the $\textsf{MEU}_{True}$ value, which is common for all samples.
 
@@ -1191,8 +1191,21 @@ To create the calibration tag we've asked Lisa Koerner for help. Lisa is a NOvA 
 We have also stored the final calibration results in a special location created for safekeeping of Test Beam calibration files: \texttt{/nova/ana/testbeam/calibration}. Here we have also copied all of the attenuation profiles used in the relative calibration. These can be very useful in case someone wants to re-do the calibration, as it allows to skip the prestaging of the calibration pclist samples (the pcliststop samples are much smaller and therefore easier to prestage). If there has been no change to the calibration samples, it is possible to skip the creation of attenuation profiles and reuse the existing files.
 
 \subsection{Validation}
-TO DO: describe the validation plots and possibly add more plots
-%Comparisons with older version of calibration and maybe with the FD and ND
+To validate the results of the Test Beam calibration we look at the stopping muon sample used for the absolute calibration, since these events have the most consistent and reliable energy deposition.
+
+In plots on figures \ref{figAbsCalibW1}-\ref{figAbsCalibDrift2} we look at distributions of variables used during the calibration, namely $PE$, $PECorr$, $Pathlength$, $PE/cm$ and $PECorr/cm$. Their distributions are over a range of variables we tried to correct the energy deposition in, namely position within a cell $w$, cell number, plane number, track angles and time.
+
+The most important validation plots are the distributions of $PECorr/cm$, which should be completely flat. This would mean that all the deposited energy results in an equivalent recorded energy wherever and whenever in the Test Beam detector it occurred. As can be seen on the validation plots, this was successfully achieved and the $PECorr/cm$ distributions are mostly flat across all studied variables.
+
+The distribution of $PECorr/cm$ across cells in X view on figure \ref{figAbsCalibPlane1} seems fairly scattered, however this is mostly due to the better resolution of this plot and the dispersion of the energy deposition across cells isn't large enough to constitute further investigation.
+
+The distributions of $PECorr/cm$ across planes in the X view (figure \ref{figAbsCalibPlane1}) shows a noticeable smaller corrected energy response of stopping muons in plane 36. This means that the relative calibration over-corrected the energy response due to the through-going muons having unusually high energy response (as shown on figure \ref{figAttenfitResultsEpoch3abc_FaultyFEBs}), but not the selected stopping muons. The most likely cause is that the impacted FEB was "faulty" only for a certain period of time. In that case the corrected energy response would be correct for the period when the FEB was faulty, but would be under-estimated for the period when the FEB behaved "normally". The $PECorr/cm$ over Plane plot shows the average over these responses.
+
+The corrected response across planes in Y view (figure \ref{figAbsCalibPlane1}) shows a slight incline in the first half of the detector. We do not know where does this slope come from, but it is not big enough to be of concern and we decided to ignore it.
+
+The distributions of energy deposition in time (figures \ref{figAbsCalibDrift1} and \ref{figAbsCalibDrift2}) show a non-trivial dependency. The detector response could be influenced by environmental factors (temperature and humidity) and by scintillator or readout ageing. Neither of these factors are well understood within NOvA and Test Beam detector could be potentially used to shine more light on this issue. However this is a topic for a separate study and is out of scope of this technical note.
+
+Technically, we would expect the distributions of $PECorr/cm$ to also have the same \textbf{scale} for all data samples and for simulation. As can be seen on all the validation plots, the data samples have a reasonably similar scale of $PECorr/cm$, but this is noticeably different for simulation. This is caused due to the data-based simulation we are using does not have a correct energy estimation for through-going muons, which have generally underestimated energies \cite{NOVA-doc-60026}. This results in an over-estimated correction from the relative calibration. However, this is not an issue, since we only use stopping muons to calculate the absolute energy scale and stopping muons have correct energies in the new simulation.
 
 \begin{figure}[!ht]
   \begin{subfigure}{\textwidth}
@@ -1213,7 +1226,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{essentialsec_tb/pecorrcm_w_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the position within a cell.}
   \label{figAbsCalibW1}
 \end{figure}
 
@@ -1242,7 +1255,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{essentialsec_tb/cm_w_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the position within a cell.}
   \label{figAbsCalibW2}
 \end{figure}
 
@@ -1265,7 +1278,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{essentialsec_tb/pecorrcm_cell_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cells of the detector.}
   \label{figAbsCalibCell1}
 \end{figure}
 
@@ -1294,7 +1307,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{essentialsec_tb/cm_cell_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cells of the detector.}
   \label{figAbsCalibCell2}
 \end{figure}
 
@@ -1317,7 +1330,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{essentialsec_tb/pecorrcm_plane_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the planes of the detector.}
   \label{figAbsCalibPlane1}
 \end{figure}
 
@@ -1346,7 +1359,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{essentialsec_tb/cm_plane_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the planes of the detector.}
   \label{figAbsCalibPlane2}
 \end{figure}
 
@@ -1369,7 +1382,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{PlotsAngularDistribution/pecorrcm_cosx_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cosine of the track angle from the X (horizontal) axis.}
   \label{figAbsCalibCosX1}
 \end{figure}
 
@@ -1398,7 +1411,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{PlotsAngularDistribution/cm_cosx_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cosine of the track angle from the X (horizontal) axis.}
   \label{figAbsCalibCosX2}
 \end{figure}
 
@@ -1421,7 +1434,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{PlotsAngularDistribution/pecorrcm_cosy_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cosine of the track angle from the Y (vertical) axis.}
   \label{figAbsCalibCosY1}
 \end{figure}
 
@@ -1450,7 +1463,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{PlotsAngularDistribution/cm_cosy_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cosine of the track angle from the Y (vertical) axis.}
   \label{figAbsCalibCosY2}
 \end{figure}
 
@@ -1473,7 +1486,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{PlotsAngularDistribution/pecorrcm_cosz_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cosine of the track angle from the Z (beam) axis.}
   \label{figAbsCalibCosZ1}
 \end{figure}
 
@@ -1502,7 +1515,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{PlotsAngularDistribution/cm_cosz_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the cosine of the track angle from the Z (beam) axis.}
   \label{figAbsCalibCosZ2}
 \end{figure}
 
@@ -1527,7 +1540,7 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{driftsec_tb/pecorrcm_time_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the event UNIX time.}
   \label{figAbsCalibDrift1}
 \end{figure}
 
@@ -1556,18 +1569,14 @@ TO DO: describe the validation plots and possibly add more plots
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{driftsec_tb/cm_time_y.pdf}
   \end{subfigure}
-  \caption{...}
+  \caption{Distributions of stopping muons within a 1-2 m track window from the end of their tracks across the event UNIX time.}
   \label{figAbsCalibDrift2}
 \end{figure}
 
-\FloatBarrier
 \section{Conclusion}
-TO DO: Write a conclusion
+We have successfully calibrated the NOvA Test Beam detector for all the Test Beam run periods in both data and simulation. The calibration results are implemented in the v15.09 version of the NOvASoft calibration tag. We haven't attempted to estimate the uncertainty of the calibration, which is a separate task out of scope of this technical note.
 
-Probably include that the intermediate results are stored in the /nova/ana/testbeam folder.
-
-When should I discuss the uncertainties? Should I just include everything here?
-
+\FloatBarrier
 \bibliographystyle{unsrturl}
 \bibliography{TestBeamCalibrationTechNoteLiterature}
 \end{document}
