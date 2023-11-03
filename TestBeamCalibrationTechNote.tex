@@ -423,9 +423,11 @@ To ensure the quality of the attenuation fit, we only apply the results if the f
 
 \subsection{Absolute calibration}
 
-To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are approximately minimum ionising particles and their energy deposition is almost constant and well understood. Additionally, we don't use hits from the edges of a cell, as those might be affected by the lower number of events and fibre endings, or loops. We take a mean of their corrected deposited energy separate for each view and for each calibrated sample. We then take the average over the two views to get the final $\textsf{MEU}_{reco}$ in $\unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}.
- 
-From simulation we get the mean of the true energy deposited in scintillator $\textsf{MEU}_{truth}$ in $\unit{MeV/cm}$ for the same sample of stopping muons. We ignore the energy that is lost in the dead material (PVC extrusions) and deal with it separately. The absolute energy scale for each sample is then the ratio of $\textsf{MEU}_{truth}/\textsf{MEU}_{reco}$. We save these absolute energy scales in another csv table called \texttt{calib\_abs\_consts.csv} which stores the $\textsf{MEU}$ values and their errors.
+To find the absolute energy scale, we apply the relative calibration results on the stopping muon sample and look at the energy they deposited in cells 1-2 meters from the end of their tracks. In this track window they are approximately minimum ionising particles and their energy deposition is almost constant and well understood. Additionally, we don't use hits from the edges of a cell, as those might be affected by the lower number of events, fibre endings, or loops. 
+
+For each calibrated data and simulation sample we take a mean of the corrected deposited energy distribution, separate for each view. We then take a simple average from the two views to get the final $\textsf{MEU}_{reco}$ in units of $\unit{PECorr/cm}$ for each sample \cite{NOVA-doc-13579-FACalorimetricEnergyScale}. Additionally, from simulation we can get the mean of the distribution of the true deposited energy in the scintillator, $\textsf{MEU}_{truth}$ in units of $\unit{MeV/cm}$ for the same sample of stopping muons. 
+
+We ignore the energy that is lost in the dead material (PVC extrusions) and deal with it separately. The absolute energy scale for each sample is then the ratio of $\textsf{MEU}_{truth}/\textsf{MEU}_{reco}$. We save these absolute energy scales in another csv table called \texttt{calib\_abs\_consts.csv} which stores the $\textsf{MEU}$ values and their errors.
 
 As part of the absolute calibration we also produce validation plots that show the effect of calibration on the distribution of the stopping muons. We analyse these plots and if everything looks all right we load all the csv tables into the database.
 
@@ -1032,7 +1034,7 @@ Some of the cells in the back of the detector have a rise, or drop in energy dep
 \FloatBarrier
 \subsection{Period 4 data}\label{secTBPeriod4}
 
-The period 4 Test Beam data taking period is the best data we managed to collect with almost an ideal condition of the detector. There's only a few commissioning runs in the very beginning of period 4, which uncovered some dead channels or faulty FEBs that were immediately fixed. These runs make up epoch 4a, shown on the top plot of figure \ref{figCalibhist_period4}. There is also a few runs during which we masked parts of the detector to help with FEB saturation [reference]. We can clearly see this on the middle plot of figure \ref{figCalibhist_period4}.
+The period 4 Test Beam data taking period is the best data we managed to collect with almost an ideal detector conditions. There's only a few commissioning runs in the very beginning of period 4, which uncovered some dead channels or faulty FEBs that were immediately fixed. These runs make up epoch 4a, shown on the top plot of figure \ref{figCalibhist_period4}. There is also a few runs during which we masked parts of the detector to help with FEB saturation \cite{NOVA-doc-53658}, which can clearly be seen on the middle plot of figure \ref{figCalibhist_period4}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -1098,7 +1100,7 @@ Figures \ref{figCalibhistWPE_period4}, \ref{figCalibhistCellPE_period4} and \ref
 
 \subsubsection*{Period 4 relative calibration results}
 
-Results of the attenuation fits for period 4 are summarised on figure \ref{figCellCentreResponsePeriod4}.
+Results of the attenuation fits for period 4 are summarised on figure \ref{figCellCentreResponsePeriod4}. We can see that majority of the detector is calibrated, besides some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}), and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}).
 
 \begin{figure}[!hbtp]
 \centering
@@ -1107,7 +1109,7 @@ Results of the attenuation fits for period 4 are summarised on figure \ref{figCe
 \label{figCellCentreResponsePeriod4}
 \end{figure}
 
-We can see that majority of the detector is calibrated, besides some cells on the edge of the detector, a few formerly underfilled cells (left plot on figure \ref{figAttenfitResultsPeriod4}), and one cell with an unusually high response at the edge of the cell (right plot on figure \ref{figAttenfitResultsPeriod4}). We treated the formerly underfilled cells the same way as in epochs 3d and 3e, by manually changing their $\chi^2$ inside the csv files to be $<0.2$ and therefore making them officially calibrated.
+We treated the formerly underfilled cells the same way as in epochs 3d and 3e, by manually changing their $\chi^2$ inside the csv files to be $<0.2$ and therefore making them officially calibrated.
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
@@ -1128,9 +1130,24 @@ We can see that majority of the detector is calibrated, besides some cells on th
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Absolute calibration results}
-TO DO: add description of the absolute calibration results, correct the table to fit the page
+To get the absolute energy scale we look at the stopping muon sample, apply the relative calibration results and the absolute calibration cuts to select only well-understood minimum ionising muons. The absolute calibration cuts are mostly the same as for the other detectors (hits 1-2 m from the end of track, pathlength $>0$, $PE>0$, $PECorr > 0$, $PECorr/cm < 100$), but with a smaller cell window $-80<w<80\ \unit{cm}$ to remove hits at the cell edges.
 
-%Standard absolute calibration cuts: track window, flat-response W, positive pe, pecorr, and pathlenght reco
+We then look at the distributions of the reconstructed energy response in units of $PECorr/cm$ (for all data and simulation samples), and true energy response in units of $MeV/cm$ (only for simulation) in each view, as shown on figure \ref{figAbsCalibMEU}. The mean of these distributions is the $\textsf{MEU}_{View,Reco/True}$ value, with an uncertainty calculated as $StdDev/\sqrt{N_{Entries}}$ from the distribution. The $\textsf{MEU}$ for each sample and view is shown on table \ref{tab:calib_summary_table}.
+
+\begin{figure}[!hbtp]
+\centering
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/Period4_nhits_meu_y.pdf}
+\end{subfigure}
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Plots/MC_nhits_mev_y.pdf}
+\end{subfigure}
+\caption{Example distributions of reconstructed (left) and true (right) energy response of stopping muons 1-2 m from the end of their tracks. The mean of the reconstructed (true) response is the reconstructed (true) MEU unit.}
+\label{figAbsCalibMEU}
+\end{figure}
+
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
@@ -1150,24 +1167,13 @@ TO DO: add description of the absolute calibration results, correct the table to
 \hline
 \cellcolor[HTML]{F8A102}MEU$_{True}$ = 1.772 $\unit{MeV/cm}$ & MEU$_{True}$ Err = 0.0002 $\unit{MeV/cm}$\\ \hline
 \end{tabular}
-\caption{Table of the absolute calibration results. MEU$_{Reco}$ values (top table) are in units of $\unit{PECorr/cm}$ and MEU$_{True}$ values (bottom table) are in units of }
+\caption{Table of the absolute calibration results. MEU$_{Reco}$ values (top table) are in units of $\unit{PECorr/cm}$ and MEU$_{True}$ values (bottom table) are in units of $\unit{MeV/cm}$}
 \label{tab:calib_summary_table}
 \end{table}
 
-\begin{figure}[!hbtp]
-\centering
-\begin{subfigure}[b]{0.495\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Plots/Period4_nhits_meu_y.pdf}
-\end{subfigure}
-\begin{subfigure}[b]{0.495\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Plots/MC_nhits_mev_y.pdf}
-\end{subfigure}
-\caption{Example distributions of reconstructed (left) and true (right) energy response of stopping muons 1-2 m from the end of their tracks. The mean of the reconstructed (true) response is the reconstructed (true) MEU unit and the absolute energy scale is calculate as the ratio between the true MEU to the reconstructed MEU.}
-\label{figAbsCalibMEU}
-\end{figure}
+We don't apply the absolute energy scale separately for each view, instead we combine the two views into a single $\textsf{MEU}_{Reco}$, or $\textsf{MEU}_{True}$ value. To combine the $\textsf{MEU}$ value we take a simple average $\left(\textsf{MEU}_X+\textsf{MEU}_Y\right)/2$, without accounting for the different statistics of the two views. To get the uncertainty on the final value, we calculate it as $1/\sigma^2_{Combined}=1/\sigma^2_{X} + 1/\sigma^2_Y$. The final combined values are highlighted in table \ref{tab:calib_summary_table}. Here $\textsf{MEU}_{Reco}$ values are all in units of $\unit{PECorr/cm}$.
 
+For each calibrated sample we write the combined $\textsf{MEU}_{Reco}$ value into an \texttt{calib\_abs\_consts.csv} file, together with its uncertainty and with the $\textsf{MEU}_{True}$ value, which is common for all samples.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1176,9 +1182,13 @@ TO DO: add description of the absolute calibration results, correct the table to
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Results}
-TO DO: talk about where are the results and what is the final calibration tag
-%Table of final results.
-%Final CSVs are locate in the \path{/nova/ana/testbeam/calibration} and they have been included in the vXX.XX calibration tag.
+The results of the relative and the absolute calibration, in form of the csv files, are stored in \texttt{/grid/fermiapp/products/nova/externals/calibcsvs/} and are applied within NOvASoft in the calibration tag v15.09 and higher.
+
+The \texttt{csv} files follow the official NOvA calibration naming convention, which is \\\texttt{calib\_\{abs/atten\}\_\{consts/points\}.\{nd/fd/tb\}.\{data/mc\}.\{version\}.\{period\}.csv}. Here \texttt{version} is the calibration tag (i.e. v15) and period is the range of runs for that sample (i.e. \texttt{r100857-r101356} for the combined epochs 3a, 3b, and 3c, or \texttt{r-r} for simulation, since it is not divided into different periods).
+
+To create the calibration tag we've asked Lisa Koerner for help. Lisa is a NOvA calibration expert who wrote the instructions for calibration tagging \cite{NOVA-doc-59268}. It is possible to do it ourselves following these instructions, but it is advised to consult the detector systematics group before hand.
+
+We have also stored the final calibration results in a special location created for safekeeping of Test Beam calibration files: \texttt{/nova/ana/testbeam/calibration}. Here we have also copied all of the attenuation profiles used in the relative calibration. These can be very useful in case someone wants to re-do the calibration, as it allows to skip the prestaging of the calibration pclist samples (the pcliststop samples are much smaller and therefore easier to prestage). If there has been no change to the calibration samples, it is possible to skip the creation of attenuation profiles and reuse the existing files.
 
 \subsection{Validation}
 TO DO: describe the validation plots and possibly add more plots
