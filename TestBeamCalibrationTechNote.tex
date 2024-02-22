@@ -304,7 +304,7 @@ We want to select good quality cosmic ray muons. First, we remove beam related e
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=\textwidth]{Plots/RemoveTBSpills.pdf}
+\includegraphics[width=.7\textwidth]{Plots/RemoveTBSpills.pdf}
 \caption{Test Beam beam spill events removed from the calibration samples. Test Beam beam spill is 4.2 seconds long and we remove events (in blue) within a 5 seconds window from the start of the beam spill. The remaining events (green) should mostly consist of cosmic particles. This example and the numbers of entries are for the full period 4 Test Beam sample.}
 \label{figRemoveBeamSpill}
 \end{figure}
@@ -606,12 +606,12 @@ As we are only using the attenuation fit results in the centre of each cell, we'
 \centering
 \begin{subfigure}[b]{0.495\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Plots/ExampleCellForFBFile_3000.pdf}
+\includegraphics[width=\textwidth]{Plots/ExampleForBrightFile_fb0_030_000.png}
 \end{subfigure}
 %\hfill
 \begin{subfigure}[b]{0.495\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Plots/ExampleCellForFBFile_61061.pdf}
+\includegraphics[width=\textwidth]{Plots/ExampleForBrightFile_fb5_061_061.png}
 \end{subfigure}
 \caption{Attenuation fits for two cells that fail the calibration condition, but the fit (blue line) correctly represents the energy deposition in the centre of that cell (yellow dashed line).}
 \label{figFiberBrightnessExamples}
@@ -802,7 +802,7 @@ The left half of plane 55 has more than $3\times$ larger response than it's surr
 
 \begin{figure}[h]
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_055_011_extendedRange.png}
+    \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_055_011.png}
   \end{subfigure}
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/p2_057_011.png}
@@ -959,7 +959,7 @@ There is a couple of notably faulty FEBs with a different energy response than t
     \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_036_054.png}
   \end{subfigure}
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_058_048_ExtendedRange.png}
+    \includegraphics[width=\linewidth]{RelativeCalibrationResults/ep3abc_058_048.png}
   \end{subfigure}
   \caption{Fit to the energy response in epochs 3a, 3b and 3c. The most obvious faulty FEBs that have a significantly larger energy response than their neighbours.}
   \label{figAttenfitResultsEpoch3abc_FaultyFEBs}
@@ -1133,11 +1133,11 @@ We then look at the distributions of the reconstructed energy response in units 
 \centering
 \begin{subfigure}[b]{0.495\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Plots/Period4_nhits_meu_y.pdf}
+\includegraphics[width=\textwidth]{Plots/Period4_meu_y_NOvAPlotStyle.pdf}
 \end{subfigure}
 \begin{subfigure}[b]{0.495\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Plots/MC_nhits_mev_y.pdf}
+\includegraphics[width=\textwidth]{Plots/Simulation_mev_y_NOvAPlotStyle.pdf}
 \end{subfigure}
 \caption{Example distributions of reconstructed (left) and true (right) energy response of stopping muons 1-2 m from the end of their tracks. The mean of the reconstructed (true) response is the reconstructed (true) MEU unit.}
 \label{figAbsCalibMEU}
